@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { PhoneCall, Menu, X } from "lucide-react";
 import { useState } from "react";
