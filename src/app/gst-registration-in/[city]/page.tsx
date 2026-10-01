@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import { SERVICE_PRICE } from "@/lib/constants";
 import { LeadForm } from "@/components/shared/LeadForm";

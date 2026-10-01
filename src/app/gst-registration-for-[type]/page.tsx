@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+export const dynamic = "force-dynamic";
 import { SERVICE_PRICE } from "@/lib/constants";
 import { LeadForm } from "@/components/shared/LeadForm";
 import { CheckCircle2 } from "lucide-react";
