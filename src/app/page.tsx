@@ -269,7 +269,7 @@ export default function Home() {
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto max-w-3xl px-4">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-navy mb-10 text-center">Frequently Asked Questions</h2>
-          <Accordion type="single" collapsible className="w-full bg-card rounded-2xl border border-border px-6">
+          <Accordion className="w-full bg-card rounded-2xl border border-border px-6">
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-left font-semibold text-navy">What is the government fee for GST registration online?</AccordionTrigger>
               <AccordionContent className="text-muted-foreground">

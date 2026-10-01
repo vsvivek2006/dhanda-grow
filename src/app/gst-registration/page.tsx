@@ -137,7 +137,7 @@ export default function GstRegistrationServicePage() {
 
           <div>
              <h2 className="text-3xl font-heading font-bold text-navy mb-8 text-center">Frequently Asked Questions</h2>
-             <Accordion type="single" collapsible className="w-full">
+             <Accordion className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="text-left font-semibold text-navy">How long does GST registration take?</AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">
