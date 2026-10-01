@@ -7,8 +7,9 @@ import { CheckCircle2 } from "lucide-react";
 // In a real app, this might come from a DB or be pre-generated.
 const VALID_CITIES = ["mumbai", "delhi", "bangalore", "hyderabad", "chennai", "kolkata", "pune", "ahmedabad", "jaipur", "surat"];
 
-export async function generateMetadata({ params }: { params: { city: string } }): Promise<Metadata> {
-  const city = params.city.replace(/-/g, " ");
+export async function generateMetadata({ params }: { params: Promise<{ city: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const city = resolvedParams.city.replace(/-/g, " ");
   const CityName = city.charAt(0).toUpperCase() + city.slice(1);
 
   return {
@@ -17,8 +18,9 @@ export async function generateMetadata({ params }: { params: { city: string } })
   };
 }
 
-export default function CityGstRegistrationPage({ params }: { params: { city: string } }) {
-  const cityRaw = params.city.toLowerCase();
+export default async function CityGstRegistrationPage({ params }: { params: Promise<{ city: string }> }) {
+  const resolvedParams = await params;
+  const cityRaw = resolvedParams.city.toLowerCase();
   
   // Basic validation (optional: remove if you want it to work for any slug)
   if (!VALID_CITIES.includes(cityRaw)) {

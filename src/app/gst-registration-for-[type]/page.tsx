@@ -3,8 +3,9 @@ import { SERVICE_PRICE } from "@/lib/constants";
 import { LeadForm } from "@/components/shared/LeadForm";
 import { CheckCircle2 } from "lucide-react";
 
-export async function generateMetadata({ params }: { params: { type: string } }): Promise<Metadata> {
-  const type = params.type.replace(/-/g, " ");
+export async function generateMetadata({ params }: { params: Promise<{ type: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const type = resolvedParams.type.replace(/-/g, " ");
   const TypeName = type.charAt(0).toUpperCase() + type.slice(1);
 
   return {
@@ -13,8 +14,9 @@ export async function generateMetadata({ params }: { params: { type: string } })
   };
 }
 
-export default function TypeGstRegistrationPage({ params }: { params: { type: string } }) {
-  const type = params.type.replace(/-/g, " ");
+export default async function TypeGstRegistrationPage({ params }: { params: Promise<{ type: string }> }) {
+  const resolvedParams = await params;
+  const type = resolvedParams.type.replace(/-/g, " ");
   const TypeName = type.charAt(0).toUpperCase() + type.slice(1);
 
   return (
