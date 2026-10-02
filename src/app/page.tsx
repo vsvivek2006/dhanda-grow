@@ -779,8 +779,8 @@ export default function HomePage() {
         </RevealOnScroll>
 
         <RevealOnScroll direction="up" delay={0.15}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse glass-card rounded-3xl overflow-hidden border border-white/15">
+          <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar">
+            <table className="w-full min-w-[620px] text-left border-collapse glass-card rounded-3xl overflow-hidden border border-white/15">
               <thead>
                 <tr className="border-b border-white/10 bg-white/5 text-xs md:text-sm">
                   <th className="p-5 text-slate-300 font-semibold">Features & Benefits</th>

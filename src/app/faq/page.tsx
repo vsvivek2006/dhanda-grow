@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { BRAND_NAME, WHATSAPP_LINK } from "@/lib/constants";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 export const metadata: Metadata = {
   title: `Frequently Asked Questions | ${BRAND_NAME}`,
@@ -97,58 +98,62 @@ export default function FAQPage() {
 
       {/* FAQ Accordion */}
       <section className="py-8 px-4 container mx-auto max-w-3xl relative z-10">
-        <div className="glass-card rounded-3xl p-6 md:p-10 border border-white/10 shadow-2xl bg-[#09091f]">
-          <Accordion className="w-full space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="border border-white/10 bg-white/5 rounded-2xl px-6 data-[state=open]:border-purple-500/50 data-[state=open]:bg-purple-950/20 transition-all"
-              >
-                <AccordionTrigger className="text-left font-bold text-base md:text-lg text-white py-5 hover:no-underline hover:text-purple-300 transition-colors">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-slate-300 text-sm md:text-base leading-relaxed pb-6">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+        <RevealOnScroll direction="up" delay={0.1}>
+          <div className="glass-card rounded-3xl p-6 md:p-10 border border-white/10 shadow-2xl bg-[#09091f]">
+            <Accordion className="w-full space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="border border-white/10 bg-white/5 rounded-2xl px-4 sm:px-6 data-[state=open]:border-purple-500/50 data-[state=open]:bg-purple-950/20 transition-all"
+                >
+                  <AccordionTrigger className="text-left font-bold text-base md:text-lg text-white py-5 hover:no-underline hover:text-purple-300 transition-colors">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-slate-300 text-sm md:text-base leading-relaxed pb-6">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </RevealOnScroll>
       </section>
 
       {/* CTA Section */}
       <section className="py-24 px-4 container mx-auto max-w-4xl text-center relative z-10 border-t border-white/10 mt-16">
-        <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-white mb-6">
-          Still Have Questions?
-        </h2>
-        <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Chat with our growth specialists directly on WhatsApp or book a free 5-minute product walkthrough.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button
-            size="lg"
-            asChild
-            className="bg-gradient-brand hover:opacity-90 text-white font-bold text-lg h-14 px-8 rounded-full shadow-2xl shadow-purple-600/40 hover:scale-105 transition-all"
-          >
-            <Link href="/contact" className="inline-flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>Book Free Strategy Demo</span>
-            </Link>
-          </Button>
+        <RevealOnScroll direction="up" delay={0.15}>
+          <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-white mb-6">
+            Still Have Questions?
+          </h2>
+          <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Chat with our growth specialists directly on WhatsApp or book a free 5-minute product walkthrough.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button
+              size="lg"
+              asChild
+              className="bg-gradient-brand hover:opacity-90 text-white font-bold text-lg h-14 px-8 rounded-full shadow-2xl shadow-purple-600/40 hover:scale-105 transition-all"
+            >
+              <Link href="/contact" className="inline-flex items-center gap-2">
+                <Sparkles className="w-5 h-5" />
+                <span>Book Free Strategy Demo</span>
+              </Link>
+            </Button>
 
-          <Button
-            size="lg"
-            variant="outline"
-            asChild
-            className="border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg h-14 px-8 rounded-full"
-          >
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-emerald-400" />
-              <span>Ask on WhatsApp</span>
-            </a>
-          </Button>
-        </div>
+            <Button
+              size="lg"
+              variant="outline"
+              asChild
+              className="border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg h-14 px-8 rounded-full"
+            >
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-emerald-400" />
+                <span>Ask on WhatsApp</span>
+              </a>
+            </Button>
+          </div>
+        </RevealOnScroll>
       </section>
     </div>
   );

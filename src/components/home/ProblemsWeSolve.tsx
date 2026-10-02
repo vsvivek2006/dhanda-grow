@@ -162,7 +162,7 @@ export function ProblemsWeSolve() {
       {/* Deep-Dive Problem vs Solution Workstation */}
       <RevealOnScroll direction="up" delay={0.2}>
         <div
-          className={`rounded-3xl border ${current.borderColor} bg-gradient-to-b from-[#0b0b18] to-[#06060e] p-6 sm:p-10 shadow-2xl relative z-10`}
+          className={`rounded-3xl border ${current.borderColor} bg-gradient-to-b from-[#0b0b18] to-[#06060e] p-5 sm:p-8 lg:p-10 shadow-2xl relative z-10`}
         >
         <div className="grid lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: The Problem & Pain */}
@@ -220,13 +220,13 @@ export function ProblemsWeSolve() {
             </div>
 
             {/* Concrete Result Banner */}
-            <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-between">
+            <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <div className="text-[11px] text-zinc-400 uppercase font-mono">The Real Bottom Line</div>
                 <div className="text-sm font-bold text-white mt-0.5">{current.clientBenefit}</div>
               </div>
-              <Button asChild className="bg-white text-black hover:bg-zinc-200 rounded-xl px-5 text-xs font-semibold shrink-0 ml-4 shadow-lg">
-                <a href="#lead-capture" className="flex items-center gap-1.5">
+              <Button asChild className="bg-white text-black hover:bg-zinc-200 rounded-xl px-5 text-xs font-semibold shrink-0 sm:ml-4 shadow-lg w-full sm:w-auto">
+                <a href="#lead-capture" className="flex items-center justify-center gap-1.5">
                   <span>Automate This Now</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>

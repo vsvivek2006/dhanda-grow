@@ -111,4 +111,33 @@ test.describe("UI & UX Visual Audit", () => {
     await expect(page.locator("h1")).toBeVisible();
     await expect(page.locator("article")).toBeVisible();
   });
+
+  test("About and Legal pages render cleanly with zero horizontal overflow", async ({ page }) => {
+    const pagesToCheck = ["/about", "/privacy-policy", "/terms-and-conditions", "/refund-policy"];
+    for (const path of pagesToCheck) {
+      await page.goto(path, { waitUntil: "domcontentloaded" });
+      await expect(page.locator("h1")).toBeVisible();
+      const hasHorizontalOverflow = await page.evaluate(() => {
+        return document.documentElement.scrollWidth > window.innerWidth;
+      });
+      expect(hasHorizontalOverflow).toBeFalsy();
+    }
+  });
+
+  test("In-view scroll animation triggers smoothly on scroll", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("load");
+
+    // Scroll to the problems section
+    const problemsHeading = page.getByRole("heading", { name: /Why Local Businesses Lose Customers/i });
+    await problemsHeading.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    await expect(problemsHeading).toBeVisible();
+
+    // Scroll down to Lead capture section
+    const leadCapture = page.locator("#lead-capture");
+    await leadCapture.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(600);
+    await expect(leadCapture).toBeVisible();
+  });
 });

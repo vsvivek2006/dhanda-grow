@@ -4,6 +4,7 @@ import { getAllPosts } from "@/lib/blog-utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CalendarIcon, Sparkles } from "lucide-react";
 import { BRAND_NAME } from "@/lib/constants";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 export const metadata: Metadata = {
   title: `Local Business Growth Blog & Guides | ${BRAND_NAME}`,
@@ -33,34 +34,36 @@ export default function BlogIndexPage() {
         </div>
 
         <div className="space-y-6">
-          {posts.map((post) => (
-            <Link key={post.slug} href={`/blog/${post.slug}`} className="block group">
-              <Card className="glass-card border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-                <CardHeader>
-                  <div className="flex items-center gap-2 text-sm text-primary font-medium mb-2">
-                    <CalendarIcon className="w-4 h-4" />
-                    <time dateTime={post.date}>
-                      {new Date(post.date).toLocaleDateString('en-IN', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </time>
-                  </div>
-                  <CardTitle className="text-2xl font-heading text-foreground group-hover:text-primary transition-colors">
-                    {post.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                  <div className="mt-4 inline-flex items-center text-primary text-sm font-semibold group-hover:translate-x-1 transition-transform">
-                    Read article →
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+          {posts.map((post, idx) => (
+            <RevealOnScroll key={post.slug} delay={idx * 0.1} direction="up">
+              <Link href={`/blog/${post.slug}`} className="block group">
+                <Card className="glass-card border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                  <CardHeader>
+                    <div className="flex items-center gap-2 text-sm text-primary font-medium mb-2">
+                      <CalendarIcon className="w-4 h-4" />
+                      <time dateTime={post.date}>
+                        {new Date(post.date).toLocaleDateString('en-IN', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </time>
+                    </div>
+                    <CardTitle className="text-2xl font-heading text-foreground group-hover:text-primary transition-colors">
+                      {post.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground leading-relaxed">
+                      {post.excerpt}
+                    </p>
+                    <div className="mt-4 inline-flex items-center text-primary text-sm font-semibold group-hover:translate-x-1 transition-transform">
+                      Read article →
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            </RevealOnScroll>
           ))}
           {posts.length === 0 && (
             <p className="text-muted-foreground text-center py-12">No blog posts found yet.</p>

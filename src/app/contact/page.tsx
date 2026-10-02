@@ -3,6 +3,7 @@ import { Mail, Phone, MapPin, MessageCircle, Sparkles, CheckCircle2 } from "luci
 import { Card, CardContent } from "@/components/ui/card";
 import { SUPPORT_EMAIL, SUPPORT_PHONE, WHATSAPP_LINK, BRAND_NAME } from "@/lib/constants";
 import { LeadForm } from "@/components/shared/LeadForm";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 export const metadata: Metadata = {
   title: `Contact Us | ${BRAND_NAME} Support`,
@@ -31,93 +32,97 @@ export default function ContactPage() {
 
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Contact Details */}
-          <div className="space-y-8">
-            <h2 className="text-2xl font-heading font-bold text-foreground">Get in Touch</h2>
-            
-            <div className="grid sm:grid-cols-2 gap-6">
-              <Card className="glass-card border-border hover:border-primary/50 transition-all duration-300">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-3">
-                  <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-500">
-                    <MessageCircle className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">WhatsApp Chat</h3>
-                  <p className="text-sm text-muted-foreground mb-2">Fastest response for instant queries.</p>
-                  <a href={WHATSAPP_LINK} className="text-primary font-semibold hover:underline text-sm">
-                    Chat with us →
-                  </a>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-border hover:border-primary/50 transition-all duration-300">
-                <CardContent className="p-6 flex flex-col items-center text-center space-y-3">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                    <Phone className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-semibold text-foreground">Direct Call</h3>
-                  <p className="text-sm text-muted-foreground mb-2">Mon-Sat, 9:00 AM to 7:00 PM</p>
-                  <a href={`tel:${SUPPORT_PHONE.replace(/\D/g, '')}`} className="text-primary font-semibold hover:underline text-sm">
-                    {SUPPORT_PHONE}
-                  </a>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="glass-card p-6 rounded-2xl border border-border space-y-6">
-              <div className="flex items-start gap-4">
-                <Mail className="w-6 h-6 text-primary shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-foreground">Email Support</h4>
-                  <a href={`mailto:${SUPPORT_EMAIL}`} className="text-muted-foreground hover:text-primary transition-colors">
-                    {SUPPORT_EMAIL}
-                  </a>
-                </div>
-              </div>
+          <RevealOnScroll direction="up" delay={0.1}>
+            <div className="space-y-8">
+              <h2 className="text-2xl font-heading font-bold text-foreground">Get in Touch</h2>
               
-              <div className="flex items-start gap-4">
-                <MapPin className="w-6 h-6 text-primary shrink-0 mt-1" />
-                <div>
-                  <h4 className="font-semibold text-foreground">Corporate Location</h4>
-                  <p className="text-muted-foreground">
-                    Jaipur, Rajasthan, India
-                  </p>
+              <div className="grid sm:grid-cols-2 gap-6">
+                <Card className="glass-card border-border hover:border-primary/50 transition-all duration-300">
+                  <CardContent className="p-6 flex flex-col items-center text-center space-y-3">
+                    <div className="w-12 h-12 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-500">
+                      <MessageCircle className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-semibold text-foreground">WhatsApp Chat</h3>
+                    <p className="text-sm text-muted-foreground mb-2">Fastest response for instant queries.</p>
+                    <a href={WHATSAPP_LINK} className="text-primary font-semibold hover:underline text-sm">
+                      Chat with us →
+                    </a>
+                  </CardContent>
+                </Card>
+
+                <Card className="glass-card border-border hover:border-primary/50 transition-all duration-300">
+                  <CardContent className="p-6 flex flex-col items-center text-center space-y-3">
+                    <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                      <Phone className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-semibold text-foreground">Direct Call</h3>
+                    <p className="text-sm text-muted-foreground mb-2">Mon-Sat, 9:00 AM to 7:00 PM</p>
+                    <a href={`tel:${SUPPORT_PHONE.replace(/\D/g, '')}`} className="text-primary font-semibold hover:underline text-sm">
+                      {SUPPORT_PHONE}
+                    </a>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="glass-card p-6 rounded-2xl border border-border space-y-6">
+                <div className="flex items-start gap-4">
+                  <Mail className="w-6 h-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-foreground">Email Support</h4>
+                    <a href={`mailto:${SUPPORT_EMAIL}`} className="text-muted-foreground hover:text-primary transition-colors">
+                      {SUPPORT_EMAIL}
+                    </a>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <MapPin className="w-6 h-6 text-primary shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-foreground">Corporate Location</h4>
+                    <p className="text-muted-foreground">
+                      Jaipur, Rajasthan, India
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* What we help with */}
-            <div className="glass-card p-6 rounded-2xl border border-border">
-              <h3 className="font-heading font-semibold text-foreground mb-4">What we help with:</h3>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  <span><strong>Onboarding assistance:</strong> Connect your Google Business Profile & social channels</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  <span><strong>Google Maps ranking:</strong> Profile audit and local SEO optimization</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  <span><strong>Social media automation:</strong> Daily posters, festival banners & auto-scheduling</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                  <span><strong>Review management:</strong> Automated WhatsApp review collection & AI replies</span>
-                </li>
-              </ul>
+              {/* What we help with */}
+              <div className="glass-card p-6 rounded-2xl border border-border">
+                <h3 className="font-heading font-semibold text-foreground mb-4">What we help with:</h3>
+                <ul className="space-y-3 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span><strong>Onboarding assistance:</strong> Connect your Google Business Profile & social channels</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span><strong>Google Maps ranking:</strong> Profile audit and local SEO optimization</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span><strong>Social media automation:</strong> Daily posters, festival banners & auto-scheduling</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span><strong>Review management:</strong> Automated WhatsApp review collection & AI replies</span>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
+          </RevealOnScroll>
 
           {/* Contact Form */}
-          <div className="glass-card rounded-3xl shadow-xl border border-border overflow-hidden">
-            <div className="p-4 border-b border-border bg-muted/40">
-              <h3 className="text-center font-heading font-semibold text-base text-foreground">Request a Free Demo / Support</h3>
-              <p className="text-center text-xs text-muted-foreground mt-1">Leave your details and our team will get back to you within 2 business hours.</p>
+          <RevealOnScroll direction="up" delay={0.2}>
+            <div className="glass-card rounded-3xl shadow-xl border border-border overflow-hidden">
+              <div className="p-4 border-b border-border bg-muted/40">
+                <h3 className="text-center font-heading font-semibold text-base text-foreground">Request a Free Demo / Support</h3>
+                <p className="text-center text-xs text-muted-foreground mt-1">Leave your details and our team will get back to you within 2 business hours.</p>
+              </div>
+              <div className="p-4 md:p-6">
+                <LeadForm />
+              </div>
             </div>
-            <div className="p-4 md:p-6">
-              <LeadForm />
-            </div>
-          </div>
+          </RevealOnScroll>
         </div>
       </div>
     </div>

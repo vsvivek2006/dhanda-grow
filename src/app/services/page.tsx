@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { BRAND_NAME, WHATSAPP_LINK } from "@/lib/constants";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 export const metadata: Metadata = {
   title: `Services & AI Marketing Capabilities | ${BRAND_NAME}`,
@@ -112,35 +113,34 @@ export default function ServicesPage() {
           {capabilities.map((item, index) => {
             const Icon = item.icon;
             return (
-              <div
-                key={index}
-                className="glass-card rounded-3xl p-8 border border-white/10 hover:border-purple-500/40 transition-all duration-300 relative overflow-hidden group"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-lg`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider bg-white/5 px-3 py-1 rounded-full border border-white/10">
-                    {item.tag}
-                  </span>
-                </div>
-
-                <h3 className="font-heading text-2xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
-                  {item.description}
-                </p>
-
-                <div className="space-y-2.5 pt-4 border-t border-white/10">
-                  {item.features.map((feat, fIndex) => (
-                    <div key={fIndex} className="flex items-start gap-2.5 text-xs md:text-sm text-slate-300">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                      <span>{feat}</span>
+              <RevealOnScroll key={index} delay={index * 0.1} direction="up">
+                <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 hover:border-purple-500/40 transition-all duration-300 relative overflow-hidden group h-full">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white shadow-lg`}>
+                      <Icon className="w-6 h-6" />
                     </div>
-                  ))}
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider bg-white/5 px-3 py-1 rounded-full border border-white/10">
+                      {item.tag}
+                    </span>
+                  </div>
+
+                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-300 text-sm md:text-base leading-relaxed mb-6">
+                    {item.description}
+                  </p>
+
+                  <div className="space-y-2.5 pt-4 border-t border-white/10">
+                    {item.features.map((feat, fIndex) => (
+                      <div key={fIndex} className="flex items-start gap-2.5 text-xs md:text-sm text-slate-300">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </RevealOnScroll>
             );
           })}
         </div>
@@ -148,83 +148,87 @@ export default function ServicesPage() {
 
       {/* How It Works Workflow Steps */}
       <section className="py-24 px-4 container mx-auto max-w-6xl relative z-10 border-t border-white/10 mt-12">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-          <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
-            Simple 3-Step Setup
-          </span>
-          <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-white">
-            How Dhanda Grow Works for You
-          </h2>
-          <p className="text-slate-300 text-base md:text-lg">
-            No complex tech setup, no expensive consultants. You're up and running in 2 minutes.
-          </p>
-        </div>
+        <RevealOnScroll direction="up" delay={0.1}>
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
+              Simple 3-Step Setup
+            </span>
+            <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-white">
+              How Dhanda Grow Works for You
+            </h2>
+            <p className="text-slate-300 text-base md:text-lg">
+              No complex tech setup, no expensive consultants. You're up and running in 2 minutes.
+            </p>
+          </div>
+        </RevealOnScroll>
 
         <div className="grid md:grid-cols-3 gap-8">
-          <div className="glass-card p-8 rounded-3xl border border-white/10 relative text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-brand text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-purple-600/30">
-              1
-            </div>
-            <h3 className="font-heading text-xl font-bold text-white">Connect Your Profiles</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Link your Google Business Profile and social media accounts in 1-click. Our AI immediately audits your visibility.
-            </p>
-          </div>
-
-          <div className="glass-card p-8 rounded-3xl border border-white/10 relative text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-brand text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-purple-600/30">
-              2
-            </div>
-            <h3 className="font-heading text-xl font-bold text-white">AI Takes Over Marketing</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Daily posts are scheduled, Google Maps keywords are optimized, and WhatsApp review requests are dispatched automatically.
-            </p>
-          </div>
-
-          <div className="glass-card p-8 rounded-3xl border border-white/10 relative text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-brand text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-purple-600/30">
-              3
-            </div>
-            <h3 className="font-heading text-xl font-bold text-white">Watch Your Foot Traffic Grow</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">
-              Gain top Google Maps ranks, attract consistent customer calls, and collect a steady stream of authenticated 5-star reviews.
-            </p>
-          </div>
+          {[
+            {
+              num: 1,
+              title: "Connect Your Profiles",
+              desc: "Link your Google Business Profile and social media accounts in 1-click. Our AI immediately audits your visibility.",
+            },
+            {
+              num: 2,
+              title: "AI Takes Over Marketing",
+              desc: "Daily posts are scheduled, Google Maps keywords are optimized, and WhatsApp review requests are dispatched automatically.",
+            },
+            {
+              num: 3,
+              title: "Watch Your Foot Traffic Grow",
+              desc: "Gain top Google Maps ranks, attract consistent customer calls, and collect a steady stream of authenticated 5-star reviews.",
+            },
+          ].map((step, idx) => (
+            <RevealOnScroll key={step.num} delay={idx * 0.1} direction="up">
+              <div className="glass-card p-6 sm:p-8 rounded-3xl border border-white/10 relative text-center space-y-4 h-full">
+                <div className="w-12 h-12 rounded-full bg-gradient-brand text-white font-black text-xl flex items-center justify-center mx-auto shadow-lg shadow-purple-600/30">
+                  {step.num}
+                </div>
+                <h3 className="font-heading text-xl font-bold text-white">{step.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  {step.desc}
+                </p>
+              </div>
+            </RevealOnScroll>
+          ))}
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-24 px-4 container mx-auto max-w-4xl text-center relative z-10 border-t border-white/10">
-        <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-white mb-6">
-          Ready to Put Your Marketing on Autopilot?
-        </h2>
-        <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Join thousands of local business owners who save 10+ hours every week and dominate their neighborhood market.
-        </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button
-            size="lg"
-            asChild
-            className="bg-gradient-brand hover:opacity-90 text-white font-bold text-lg h-14 px-8 rounded-full shadow-2xl shadow-purple-600/40 hover:scale-105 transition-all"
-          >
-            <Link href="/contact" className="inline-flex items-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>Get Free Demo & Setup</span>
-            </Link>
-          </Button>
+        <RevealOnScroll direction="up" delay={0.1}>
+          <h2 className="font-heading text-3xl md:text-5xl font-extrabold text-white mb-6">
+            Ready to Put Your Marketing on Autopilot?
+          </h2>
+          <p className="text-lg text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Join thousands of local business owners who save 10+ hours every week and dominate their neighborhood market.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button
+              size="lg"
+              asChild
+              className="bg-gradient-brand hover:opacity-90 text-white font-bold text-lg h-14 px-8 rounded-full shadow-2xl shadow-purple-600/40 hover:scale-105 transition-all"
+            >
+              <Link href="/contact" className="inline-flex items-center gap-2">
+                <Sparkles className="w-5 h-5" />
+                <span>Get Free Demo & Setup</span>
+              </Link>
+            </Button>
 
-          <Button
-            size="lg"
-            variant="outline"
-            asChild
-            className="border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg h-14 px-8 rounded-full"
-          >
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-emerald-400" />
-              <span>Talk to Specialist</span>
-            </a>
-          </Button>
-        </div>
+            <Button
+              size="lg"
+              variant="outline"
+              asChild
+              className="border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold text-lg h-14 px-8 rounded-full"
+            >
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
+                <MessageCircle className="w-5 h-5 text-emerald-400" />
+                <span>Talk to Specialist</span>
+              </a>
+            </Button>
+          </div>
+        </RevealOnScroll>
       </section>
     </div>
   );

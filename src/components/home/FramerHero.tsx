@@ -97,7 +97,7 @@ export function FramerHero() {
         </div>
 
         {/* Framer Headline (Clean, Large, Negative Letter Spacing) */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.04em] text-white mb-6 leading-[1.08]">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-[-0.04em] text-white mb-6 leading-[1.08]">
           Grow Your Business <br />
           <span className="text-gradient-brand">with Intelligent AI</span> <br />
           <span className="text-gradient-brand">Marketing</span>
@@ -176,13 +176,13 @@ export function FramerHero() {
       {/* ============================================================== */}
       <div id="features" className="relative max-w-5xl mx-auto">
         {/* Navigation Tabs atop the Canvas */}
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="inline-flex p-1 rounded-xl bg-zinc-900/80 border border-white/10 backdrop-blur-xl">
+        <div className="flex items-center justify-center gap-2 mb-4 overflow-x-auto no-scrollbar max-w-full px-2">
+          <div className="inline-flex p-1 rounded-xl bg-zinc-900/80 border border-white/10 backdrop-blur-xl shrink-0">
             {keynoteTabs.map((tab, idx) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(idx)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[11px] sm:text-xs font-semibold transition-all duration-200 whitespace-nowrap ${
                   activeTab === idx
                     ? "bg-white text-black shadow-md"
                     : "text-zinc-400 hover:text-white"

@@ -30,10 +30,10 @@ export function Navbar() {
   return (
     <>
       {/* Top Announcement Bar */}
-      <div className="bg-gradient-brand text-white text-xs md:text-sm py-2 px-4 text-center font-medium tracking-wide flex items-center justify-center gap-2">
-        <span className="flex h-2 w-2 rounded-full bg-emerald-400 pulse-dot" />
-        <span>AI-powered marketing for local businesses — Google Maps, Instagram, WhatsApp & Reviews</span>
-        <Link href="/contact" className="underline font-bold hover:text-cyan-200 transition-colors inline-flex items-center gap-1 ml-1">
+      <div className="bg-gradient-brand text-white text-[11px] sm:text-xs md:text-sm py-1.5 sm:py-2 px-3 sm:px-4 text-center font-medium tracking-wide flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 leading-snug">
+        <span className="flex h-2 w-2 rounded-full bg-emerald-400 pulse-dot shrink-0" />
+        <span>AI marketing for local businesses — Google Maps, Instagram & WhatsApp</span>
+        <Link href="/contact" className="underline font-bold hover:text-cyan-200 transition-colors inline-flex items-center gap-1 ml-1 whitespace-nowrap">
           Get Started Free <ArrowRight className="w-3 h-3" />
         </Link>
       </div>
