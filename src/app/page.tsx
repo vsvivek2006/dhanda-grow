@@ -204,7 +204,7 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           3D FEATURE 1: GOOGLE MAPS DOMINANCE
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-7xl relative overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-7xl relative overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Left Text */}
           <div className="lg:col-span-6">
@@ -295,7 +295,7 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           3D FEATURE 2: SOCIAL CREATIVE STUDIO
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Left 3D Visual (Alternating) */}
           <div className="lg:col-span-6 order-2 lg:order-1">
@@ -386,7 +386,7 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           3D FEATURE 3: 5-STAR WHATSAPP REVIEW ENGINE
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6">
             <RevealOnScroll delay={0.05}>
@@ -501,9 +501,9 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           3D APP SCREENSHOTS & MOBILE EXPERIENCE
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 bg-[#060618]/60 overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 bg-[#060618]/60 overflow-hidden">
         <RevealOnScroll direction="up" delay={0.1}>
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16 space-y-4">
             <span className="text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3.5 py-1.5 rounded-full border border-purple-500/20">
               Native Mobile Experience
             </span>
@@ -667,7 +667,7 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           INTERACTIVE INDUSTRY SELECTOR
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
         <RevealOnScroll direction="up" delay={0.1}>
           <div className="text-center max-w-3xl mx-auto mb-14 space-y-4">
             <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
@@ -763,9 +763,9 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           COMPARISON TABLE: WHY DHANDA GROW WINS
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-6xl relative border-t border-white/10 overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-6xl relative border-t border-white/10 overflow-hidden">
         <RevealOnScroll direction="up" delay={0.1}>
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <div className="text-center max-w-3xl mx-auto mb-8 md:mb-16 space-y-4">
             <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
               Unbeatable Value
             </span>
@@ -843,7 +843,7 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           LEAD CAPTURE / STRATEGY DEMO SECTION
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-5xl relative border-t border-white/10 overflow-hidden" id="lead-capture">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-5xl relative border-t border-white/10 overflow-hidden" id="lead-capture">
         <RevealOnScroll direction="up" delay={0.1}>
           <div className="grid md:grid-cols-12 gap-10 items-center">
             <div className="md:col-span-6 space-y-6">
@@ -885,7 +885,7 @@ export default function HomePage() {
       {/* ──────────────────────────────────────────
           FINAL DOWNLOAD CTA
       ────────────────────────────────────────── */}
-      <section className="py-24 px-4 container mx-auto max-w-4xl text-center relative border-t border-white/10 overflow-hidden">
+      <section className="py-14 sm:py-24 px-4 container mx-auto max-w-4xl text-center relative border-t border-white/10 overflow-hidden">
         <RevealOnScroll direction="up" delay={0.1}>
           <div className="space-y-6">
             <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">

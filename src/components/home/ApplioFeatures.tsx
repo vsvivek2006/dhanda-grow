@@ -76,12 +76,12 @@ const threeSteps = [
 
 export function ApplioFeatures() {
   return (
-    <section className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section className="relative py-12 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* ──────────────────────────────────────────
           3-STEP APP ONBOARDING TOUR
       ────────────────────────────────────────── */}
       <RevealOnScroll direction="up" delay={0.1}>
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 mb-4">
             <Zap className="w-3.5 h-3.5 text-cyan-400" />
             <span>Simple 3-Step Setup</span>
@@ -96,7 +96,7 @@ export function ApplioFeatures() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16 md:mb-24">
           {threeSteps.map((step) => (
-            <SpotlightCard key={step.num} className="p-8 flex flex-col justify-between group">
+            <SpotlightCard key={step.num} className="p-5 sm:p-8 flex flex-col justify-between group">
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <span className="text-3xl font-black font-mono text-zinc-600 group-hover:text-cyan-400 transition-colors">
@@ -122,7 +122,7 @@ export function ApplioFeatures() {
           APP STORE VERIFIED REVIEWS
       ────────────────────────────────────────── */}
       <RevealOnScroll direction="up" delay={0.15}>
-        <div className="text-center max-w-3xl mx-auto mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-amber-500/10 border border-amber-500/20 text-amber-300 mb-4">
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <span>Verified Merchant Stories</span>
@@ -137,7 +137,7 @@ export function ApplioFeatures() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16 md:mb-24">
           {appReviews.map((rev, idx) => (
-            <SpotlightCard key={idx} className="p-7 flex flex-col justify-between">
+            <SpotlightCard key={idx} className="p-5 sm:p-7 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-amber-400">
@@ -171,7 +171,7 @@ export function ApplioFeatures() {
           DIRECT DOWNLOAD BANNER (APPLIO STYLE)
       ────────────────────────────────────────── */}
       <RevealOnScroll direction="up" delay={0.2}>
-        <div className="relative rounded-3xl overflow-hidden p-8 sm:p-12 border border-white/20 bg-gradient-to-br from-[#12122b] via-[#0c0c1e] to-[#060612] shadow-2xl">
+        <div className="relative rounded-3xl overflow-hidden p-6 sm:p-10 border border-white/20 bg-gradient-to-br from-[#12122b] via-[#0c0c1e] to-[#060612] shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/15 blur-3xl pointer-events-none rounded-full" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-600/15 blur-3xl pointer-events-none rounded-full" />
 

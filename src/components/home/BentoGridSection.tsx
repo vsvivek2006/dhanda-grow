@@ -107,13 +107,13 @@ export function BentoGridSection() {
   );
 
   return (
-    <section className="relative py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* Background Jet Glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-violet-600/10 blur-[140px] pointer-events-none rounded-full" />
       <div className="absolute bottom-10 right-10 w-[500px] h-[300px] bg-cyan-600/10 blur-[130px] pointer-events-none rounded-full" />
 
       {/* Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-16">
+      <div className="text-center max-w-3xl mx-auto mb-8 md:mb-14">
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-violet-500/10 border border-violet-500/20 text-violet-300 mb-4">
           <Sparkles className="w-3.5 h-3.5 text-violet-400" />
           <span>The Jet-Engine Architecture</span>

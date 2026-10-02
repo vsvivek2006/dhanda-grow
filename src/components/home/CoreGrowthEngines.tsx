@@ -130,14 +130,14 @@ export function CoreGrowthEngines() {
   };
 
   return (
-    <section className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section className="relative py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* Background Subtle Ambience */}
       <div className="absolute top-1/3 left-1/4 w-[600px] h-[400px] bg-purple-600/8 blur-[160px] pointer-events-none rounded-full" />
       <div className="absolute bottom-10 right-1/4 w-[600px] h-[400px] bg-cyan-600/8 blur-[160px] pointer-events-none rounded-full" />
 
       {/* Header */}
       <RevealOnScroll direction="up" delay={0.1}>
-        <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-10 md:mb-16 relative z-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/[0.04] border border-white/10 text-zinc-300 mb-4 backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
             <span>The Autonomous Growth Engine</span>
