@@ -10,7 +10,6 @@ export const revalidate = 0; // Always fresh list
 export default async function AdminBlogListPage() {
   const fetchPosts = async (): Promise<PostSummary[]> => {
     try {
-      // 1. Fetch from Supabase blog_posts
       const { data: dbPosts, error } = await supabaseAdmin
         .from("blog_posts")
         .select("id, title, slug, excerpt, tags, created_at, updated_at")
@@ -20,9 +19,7 @@ export default async function AdminBlogListPage() {
         console.warn("Notice fetching posts from Supabase:", error.message);
       }
 
-      // 2. Fetch local markdown posts
       const localPosts = getLocalPosts();
-
       const postsMap = new Map<string, PostSummary>();
 
       // Populate from DB
@@ -74,21 +71,21 @@ export default async function AdminBlogListPage() {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-white/10">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-gray-800">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-            Blog Posts &amp; Content Hub
+            Blog Posts
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Manage, draft, edit, and publish your AI-crafted or manual articles.
+          <p className="text-xs text-gray-400 mt-0.5">
+            Manage, draft, edit, and publish your blog articles.
           </p>
         </div>
         <Link
           href="/admin/blog/new"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-md shadow-purple-600/30 cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition-colors cursor-pointer self-start sm:self-auto"
         >
-          <PlusCircle className="w-4 h-4" />
-          Create New Post
+          <PlusCircle className="w-3.5 h-3.5" />
+          Create Post
         </Link>
       </div>
 

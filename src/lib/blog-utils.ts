@@ -12,6 +12,7 @@ export interface BlogPost {
   content: string;
   tags?: string[];
   cover_image_url?: string;
+  author?: string;
 }
 
 export function getLocalPosts(): BlogPost[] {

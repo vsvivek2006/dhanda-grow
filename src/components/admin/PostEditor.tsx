@@ -39,7 +39,7 @@ const TiptapEditor = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="min-h-[350px] w-full rounded-xl border border-white/10 bg-[#07071a] p-6 flex flex-col items-center justify-center text-slate-400 animate-pulse">
+      <div className="min-h-[350px] w-full rounded-xl border border-gray-800 bg-gray-900/60 p-6 flex flex-col items-center justify-center text-gray-500 animate-pulse">
         <Loader2 className="w-6 h-6 animate-spin text-purple-500 mb-2" />
         <span className="text-xs font-medium">Loading rich text editor...</span>
       </div>
@@ -105,95 +105,102 @@ export function PostEditor({ initialData }: PostEditorProps) {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [isDirty, isSubmitting, isDeleting]);
 
-  // Autosave to localStorage (debounced 1.5s)
-  useEffect(() => {
-    if (!isDirty) return;
-    const timer = setTimeout(() => {
-      try {
-        localStorage.setItem(
-          draftKey,
-          JSON.stringify({
-            savedAt: new Date().toISOString(),
-            title: titleValue,
-            content: contentValue,
-            meta_description: metaDescriptionValue,
-            slug: slugValue,
-          })
-        );
-      } catch {
-        // localStorage quota exceeded — silently skip
-      }
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, [isDirty, draftKey, titleValue, contentValue, metaDescriptionValue, slugValue]);
-
-  // Draft recovery: show banner if a newer localStorage draft exists
+  // Check for recovered draft in localStorage
   useEffect(() => {
     try {
       const raw = localStorage.getItem(draftKey);
       if (!raw) return;
-      const draft = JSON.parse(raw) as { savedAt: string };
-      const draftDate = new Date(draft.savedAt);
-      const dbDate = initialData?.updated_at ? new Date(initialData.updated_at) : null;
-      if (!dbDate || draftDate > dbDate) {
+      const draft = JSON.parse(raw);
+      if (
+        draft &&
+        (draft.title || draft.content) &&
+        (!initialData || (draft.savedAt && draft.savedAt > (initialData.updated_at || "")))
+      ) {
         setShowDraftBanner(true);
-      } else {
-        localStorage.removeItem(draftKey);
       }
     } catch {
-      // corrupt localStorage entry — ignore
+      // Ignore parse errors on localStorage
     }
-  }, [draftKey, initialData?.updated_at]);
+  }, [draftKey, initialData]);
 
-  // Handle automatic slug generation
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTitle = e.target.value;
-    setValue("title", newTitle, { shouldValidate: true, shouldDirty: true });
-    if (!isSlugCustomized) {
-      const generatedSlug = slugify(newTitle, { lower: true, strict: true });
+  // Autosave draft every 30s when dirty
+  useEffect(() => {
+    if (!isDirty) return;
+    const interval = setInterval(() => {
+      try {
+        const payload = {
+          title: titleValue,
+          slug: slugValue,
+          content: contentValue,
+          meta_description: metaDescriptionValue,
+          savedAt: new Date().toISOString(),
+        };
+        localStorage.setItem(draftKey, JSON.stringify(payload));
+      } catch {
+        // quota exceeded or blocked
+      }
+    }, 30_000);
+    return () => clearInterval(interval);
+  }, [isDirty, draftKey, titleValue, slugValue, contentValue, metaDescriptionValue]);
+
+  // Auto-generate slug from title (unless manually customized)
+  useEffect(() => {
+    if (!isSlugCustomized && titleValue) {
+      const generatedSlug = slugify(titleValue, {
+        lower: true,
+        strict: true,
+        trim: true,
+      });
       setValue("slug", generatedSlug, { shouldValidate: true, shouldDirty: true });
     }
-  };
+  }, [titleValue, isSlugCustomized, setValue]);
 
-  // Callback when AI generation succeeds
+  // Handle incoming AI Generator output
   const handleAiGenerated = (output: GenerateBlogPostOutput) => {
     setValue("title", output.title, { shouldValidate: true, shouldDirty: true });
-    const generatedSlug = slugify(output.title, { lower: true, strict: true });
-    setValue("slug", generatedSlug, { shouldValidate: true, shouldDirty: true });
     setValue("meta_description", output.metaDescription, {
       shouldValidate: true,
       shouldDirty: true,
     });
     setValue("content", output.content, { shouldValidate: true, shouldDirty: true });
-    setValue("tags", output.suggestedTags, { shouldValidate: true, shouldDirty: true });
-    setValue("source", "ai", { shouldDirty: true });
-    setValue("status", "draft", { shouldDirty: true });
+
+    if (output.suggestedTags && output.suggestedTags.length > 0) {
+      setValue("tags", output.suggestedTags, { shouldValidate: true, shouldDirty: true });
+    }
+
+    const generatedSlug = slugify(output.title, {
+      lower: true,
+      strict: true,
+      trim: true,
+    });
+    setValue("slug", generatedSlug, { shouldValidate: true, shouldDirty: true });
 
     setIsAiGenerated(true);
     setOriginalAiContent(output.content);
-    setIsSlugCustomized(false);
+    setEditorMode("manual");
+
+    toast.success("AI draft populated into editor!", {
+      description: "Review, edit, or customize before saving or publishing.",
+    });
   };
 
-  const handleSave = async (targetStatus: "draft" | "published") => {
-    if (isSubmitting || isDeleting) return;
-
-    setValue("status", targetStatus);
-
-    await handleSubmit(async (formData: PostInput) => {
+  const handleSave = (targetStatus: "draft" | "published") => {
+    handleSubmit(async (formData) => {
       setIsSubmitting(true);
-      const actionLabel = targetStatus === "published" ? "Publishing" : "Saving draft";
-      const toastId = toast.loading(`${actionLabel}...`, {
-        description: "Validating schema and persisting article.",
-      });
+      const toastId = toast.loading(
+        targetStatus === "published" ? "Publishing post..." : "Saving draft...",
+        {
+          description: "Persisting changes and invalidating caches.",
+        }
+      );
 
       try {
         let finalSource = formData.source;
         if (isAiGenerated) {
-          if (originalAiContent && contentValue !== originalAiContent) {
-            finalSource = "ai-edited";
-          } else if (!formData.source || formData.source === "manual") {
-            finalSource = "ai";
-          }
+          finalSource =
+            originalAiContent && originalAiContent !== formData.content
+              ? "ai-edited"
+              : "ai";
         }
 
         const payload: PostInput = {
@@ -226,7 +233,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
             description:
               targetStatus === "published"
                 ? "Your article is now live on the public blog."
-                : "Your changes have been saved successfully.",
+                : "Your changes have been saved to the database.",
           }
         );
         // Clear autosaved draft on successful persist
@@ -248,8 +255,8 @@ export function PostEditor({ initialData }: PostEditorProps) {
     if (!initialData?.id || isDeleting) return;
 
     setIsDeleting(true);
-    const toastId = toast.loading("Deleting blog post...", {
-      description: "Permanently removing post record.",
+    const toastId = toast.loading("Deleting post...", {
+      description: "Removing post and metadata from storage.",
     });
 
     try {
@@ -279,30 +286,28 @@ export function PostEditor({ initialData }: PostEditorProps) {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8 max-w-5xl mx-auto pb-24 sm:pb-8">
-      {/* Accessible Custom Delete Modal */}
+    <div className="space-y-6 max-w-5xl mx-auto">
+      {/* Confirm Delete Dialog */}
       <ConfirmDialog
         isOpen={isConfirmDeleteOpen}
         title="Delete Blog Post?"
-        description={`Are you sure you want to delete "${
-          titleValue || "this post"
-        }"? This action cannot be undone.`}
-        confirmLabel="Delete Post"
-        cancelLabel="Cancel"
-        isDestructive={true}
+        description={`Are you sure you want to permanently delete "${titleValue || "Untitled"}"? This will remove the article and cannot be undone.`}
+        confirmText="Yes, Delete Post"
+        cancelText="Cancel"
+        isDestructive
         isLoading={isDeleting}
         onConfirm={handleConfirmDelete}
-        onCancel={() => setIsConfirmDeleteOpen(false)}
+        onClose={() => setIsConfirmDeleteOpen(false)}
       />
 
-      {/* Draft Recovery Banner */}
+      {/* Recovered Draft Banner */}
       {showDraftBanner && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-blue-500/40 bg-blue-950/40 px-4 py-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg border border-blue-700/50 bg-blue-950/40 px-4 py-3">
           <div className="flex items-center gap-2.5">
             <Info className="w-4 h-4 text-blue-400 shrink-0" />
             <p className="text-xs text-blue-200">
               <span className="font-bold text-white">Unsaved draft recovered.</span>{" "}
-              You have a locally autosaved version newer than the last saved post.
+              You have a locally autosaved version newer than the last database save.
             </p>
           </div>
           <div className="flex items-center gap-2 self-end sm:self-auto">
@@ -329,7 +334,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
                 }
                 setShowDraftBanner(false);
               }}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-md text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors"
             >
               Restore
             </button>
@@ -339,7 +344,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
                 localStorage.removeItem(draftKey);
                 setShowDraftBanner(false);
               }}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium border border-white/10 text-slate-400 hover:bg-white/5 transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-md text-xs font-medium border border-gray-700 text-gray-400 hover:bg-gray-800 transition-colors"
             >
               Dismiss
             </button>
@@ -350,23 +355,23 @@ export function PostEditor({ initialData }: PostEditorProps) {
       {/* Unsaved changes indicator */}
       {isDirty && (
         <div className="flex justify-end">
-          <span className="text-[11px] font-semibold text-amber-400 bg-amber-950/60 px-3 py-1 rounded-full border border-amber-800/40 animate-pulse">
-            ● Unsaved changes in form
+          <span className="text-[11px] font-semibold text-yellow-400 bg-yellow-950/60 px-3 py-1 rounded-full border border-yellow-800/40 animate-pulse">
+            • Unsaved changes in form
           </span>
         </div>
       )}
 
       {/* Mode Toggle (only for new posts) */}
       {!isEditing && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl bg-[#08081a] border border-white/10 shadow-lg">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-gray-900 border border-gray-800 shadow-sm">
           <div className="flex items-center gap-1.5">
             <button
               type="button"
               onClick={() => setEditorMode("manual")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 editorMode === "manual"
-                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-purple-600 text-white shadow-sm"
+                  : "text-gray-400 hover:text-white hover:bg-gray-800"
               }`}
             >
               <PenTool className="w-3.5 h-3.5" />
@@ -375,10 +380,10 @@ export function PostEditor({ initialData }: PostEditorProps) {
             <button
               type="button"
               onClick={() => setEditorMode("ai")}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                 editorMode === "ai"
-                  ? "bg-purple-600 text-white shadow-md shadow-purple-600/30"
-                  : "text-slate-400 hover:text-white hover:bg-white/5"
+                  ? "bg-purple-600 text-white shadow-sm"
+                  : "text-gray-400 hover:text-white hover:bg-gray-800"
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
@@ -386,10 +391,10 @@ export function PostEditor({ initialData }: PostEditorProps) {
             </button>
           </div>
 
-          <span className="text-[11px] text-slate-400 hidden sm:inline px-3">
+          <span className="text-[11px] text-gray-400 hidden sm:inline px-3">
             {editorMode === "ai"
-              ? "Groq AI drafts complete structured post into editor for you to review."
-              : "Standard WYSIWYG rich text editor."}
+              ? "AI drafts complete structured post into editor for you to review."
+              : "Standard WYSIWYG editor."}
           </span>
         </div>
       )}
@@ -399,10 +404,10 @@ export function PostEditor({ initialData }: PostEditorProps) {
         <AIGeneratorPanel onGenerated={handleAiGenerated} disabled={isSubmitting} />
       )}
 
-      {/* Sticky Action Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 sm:p-4 rounded-2xl border border-white/10 bg-[#08081a]/95 sticky top-20 z-20 backdrop-blur-md shadow-2xl">
+      {/* Desktop Sticky Action Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 sm:p-4 rounded-xl border border-gray-800 bg-gray-900/95 sticky top-4 z-20 backdrop-blur-md shadow-md">
         <div className="flex items-center gap-3">
-          <span className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+          <span className="text-xs font-semibold uppercase tracking-wider text-gray-300">
             {isEditing ? "Editing Post" : "Draft Editor"}
           </span>
           {initialData?.status && (
@@ -429,9 +434,9 @@ export function PostEditor({ initialData }: PostEditorProps) {
             <Link
               href={`/blog/${slugValue}`}
               target="_blank"
-              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-colors border border-white/10"
+              className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors border border-gray-700"
             >
-              <Eye className="w-3.5 h-3.5 text-slate-400" />
+              <Eye className="w-3.5 h-3.5 text-gray-400" />
               Preview Live
             </Link>
           )}
@@ -456,7 +461,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
             type="button"
             onClick={() => handleSave("draft")}
             disabled={isSubmitting || isDeleting}
-            className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 py-2 px-3.5 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -470,33 +475,32 @@ export function PostEditor({ initialData }: PostEditorProps) {
             type="button"
             onClick={() => handleSave("published")}
             disabled={isSubmitting || isDeleting}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all disabled:opacity-50 cursor-pointer"
+            className="inline-flex items-center gap-1.5 py-2 px-4 rounded-lg text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition-colors disabled:opacity-50 cursor-pointer"
           >
             {isSubmitting ? (
               <Loader2 className="w-3.5 h-3.5 animate-spin" />
             ) : (
               <Send className="w-3.5 h-3.5" />
             )}
-            Publish Post
+            Publish
           </button>
         </div>
       </div>
 
-      {/* Editor Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-        {/* Main Content (Left col) */}
-        <div className="lg:col-span-2 space-y-6">
+      {/* Main Grid: Content Form (left) + Metadata Sidebar (right) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left col: Title, Slug, Content */}
+        <div className="lg:col-span-2 space-y-5">
           {/* Post Title */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-              Article Title <span className="text-rose-400">*</span>
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">
+              Post Title <span className="text-rose-400">*</span>
             </label>
             <input
               type="text"
-              placeholder="e.g. 7 Proven Local SEO Strategies for Indian Businesses"
+              placeholder="e.g. 7 Proven SEO Tactics for Service Businesses in India"
               {...register("title")}
-              onChange={handleTitleChange}
-              className="w-full px-4 py-3 rounded-xl bg-[#08081a] border border-white/10 text-base sm:text-lg font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all shadow-inner"
+              className="w-full px-4 py-2.5 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 text-sm font-semibold focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
             />
             {errors.title && (
               <p className="mt-1.5 text-xs text-rose-400">{errors.title.message}</p>
@@ -506,7 +510,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
           {/* Slug */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-xs font-semibold text-gray-300">
                 URL Slug <span className="text-rose-400">*</span>
               </label>
               <button
@@ -528,7 +532,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
               </button>
             </div>
             <div className="relative">
-              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-xs text-slate-400 font-mono select-none">
+              <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-xs text-gray-400 font-mono select-none">
                 /blog/
               </span>
               <input
@@ -539,7 +543,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
                   setIsSlugCustomized(true);
                   setValue("slug", e.target.value, { shouldValidate: true, shouldDirty: true });
                 }}
-                className="w-full pl-16 pr-4 py-2 rounded-xl bg-[#08081a] border border-white/10 text-xs sm:text-sm text-yellow-400 font-mono placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+                className="w-full pl-16 pr-4 py-2 rounded-lg bg-gray-900 border border-gray-700 text-xs sm:text-sm text-yellow-400 font-mono placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
               />
             </div>
             {errors.slug && (
@@ -549,7 +553,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
 
           {/* Rich Content Editor */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-gray-300 mb-1.5">
               Post Content <span className="text-rose-400">*</span>
             </label>
             <Controller
@@ -571,8 +575,8 @@ export function PostEditor({ initialData }: PostEditorProps) {
         {/* Sidebar Metadata (Right col) */}
         <div className="space-y-5">
           {/* Cover Image */}
-          <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#08081a] space-y-2.5 shadow-lg">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="p-4 sm:p-5 rounded-xl border border-gray-800 bg-gray-900 space-y-2.5 shadow-sm">
+            <label className="block text-xs font-semibold text-gray-300">
               Cover Image
             </label>
             <Controller
@@ -588,9 +592,9 @@ export function PostEditor({ initialData }: PostEditorProps) {
           </div>
 
           {/* SEO Meta Description */}
-          <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#08081a] space-y-2 shadow-lg">
+          <div className="p-4 sm:p-5 rounded-xl border border-gray-800 bg-gray-900 space-y-2 shadow-sm">
             <div className="flex items-center justify-between">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-xs font-semibold text-gray-300">
                 Meta Description (SEO)
               </label>
               <span
@@ -599,7 +603,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
                     ? "text-emerald-400"
                     : metaDescriptionValue.length > 160
                     ? "text-rose-400"
-                    : "text-slate-400"
+                    : "text-gray-400"
                 }`}
               >
                 {metaDescriptionValue.length}/160
@@ -609,7 +613,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
               rows={3}
               placeholder="Brief summary for search engines (120-160 characters recommended)..."
               {...register("meta_description")}
-              className="w-full px-3.5 py-2 rounded-xl bg-[#07071a] border border-white/10 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none"
+              className="w-full px-3.5 py-2 rounded-lg bg-gray-800 border border-gray-700 text-xs sm:text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all resize-none"
             />
             {errors.meta_description && (
               <p className="text-xs text-rose-400">{errors.meta_description.message}</p>
@@ -617,8 +621,8 @@ export function PostEditor({ initialData }: PostEditorProps) {
           </div>
 
           {/* Tags */}
-          <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#08081a] space-y-2 shadow-lg">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="p-4 sm:p-5 rounded-xl border border-gray-800 bg-gray-900 space-y-2 shadow-sm">
+            <label className="block text-xs font-semibold text-gray-300">
               Tags &amp; Taxonomy
             </label>
             <Controller
@@ -634,17 +638,17 @@ export function PostEditor({ initialData }: PostEditorProps) {
           </div>
 
           {/* Author */}
-          <div className="p-4 sm:p-5 rounded-2xl border border-white/10 bg-[#08081a] space-y-2 shadow-lg">
-            <label className="block text-xs font-semibold text-slate-300">
+          <div className="p-4 sm:p-5 rounded-xl border border-gray-800 bg-gray-900 space-y-2 shadow-sm">
+            <label className="block text-xs font-semibold text-gray-300">
               Author (Public Byline)
             </label>
             <input
               type="text"
               placeholder="Dhanda Grow Team"
               {...register("author")}
-              className="w-full px-3.5 py-2 rounded-xl bg-[#07071a] border border-white/10 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
+              className="w-full px-3.5 py-2 rounded-lg bg-gray-800 border border-gray-700 text-xs sm:text-sm text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
             />
-            <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-1">
+            <p className="text-[11px] text-gray-400 flex items-center gap-1.5 mt-1">
               <Info className="w-3 h-3 text-yellow-400 shrink-0" />
               Public byline displayed to readers on the article page.
             </p>
@@ -656,12 +660,12 @@ export function PostEditor({ initialData }: PostEditorProps) {
       </div>
 
       {/* Mobile Sticky Bottom Action Bar (<sm) */}
-      <div className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-[#08081a]/95 border-t border-white/10 backdrop-blur-md z-40 flex items-center justify-between gap-2 shadow-2xl">
+      <div className="sm:hidden fixed bottom-0 left-0 right-0 p-3 bg-gray-900/95 border-t border-gray-800 backdrop-blur-md z-40 flex items-center justify-between gap-2 shadow-xl">
         <button
           type="button"
           onClick={() => handleSave("draft")}
           disabled={isSubmitting || isDeleting}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-colors disabled:opacity-50"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors disabled:opacity-50"
         >
           {isSubmitting ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -675,7 +679,7 @@ export function PostEditor({ initialData }: PostEditorProps) {
           type="button"
           onClick={() => handleSave("published")}
           disabled={isSubmitting || isDeleting}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/30 transition-all disabled:opacity-50"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white shadow-xs transition-all disabled:opacity-50"
         >
           {isSubmitting ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />

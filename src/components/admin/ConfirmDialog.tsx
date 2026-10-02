@@ -8,35 +8,45 @@ interface ConfirmDialogProps {
   title: string;
   description: string;
   confirmLabel?: string;
+  confirmText?: string;
   cancelLabel?: string;
+  cancelText?: string;
   isDestructive?: boolean;
   isLoading?: boolean;
   onConfirm: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
+  onClose?: () => void;
 }
 
 export function ConfirmDialog({
   isOpen,
   title,
   description,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  confirmLabel,
+  confirmText,
+  cancelLabel,
+  cancelText,
   isDestructive = true,
   isLoading = false,
   onConfirm,
   onCancel,
+  onClose,
 }: ConfirmDialogProps) {
+  const handleClose = onCancel || onClose || (() => {});
+  const resolvedConfirmLabel = confirmText || confirmLabel || "Confirm";
+  const resolvedCancelLabel = cancelText || cancelLabel || "Cancel";
+
   // Close on Escape key
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && !isLoading) {
-        onCancel();
+        handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, isLoading, onCancel]);
+  }, [isOpen, isLoading, handleClose]);
 
   if (!isOpen) return null;
 
@@ -46,7 +56,7 @@ export function ConfirmDialog({
       <div
         className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
         onClick={() => {
-          if (!isLoading) onCancel();
+          if (!isLoading) handleClose();
         }}
         aria-hidden="true"
       />
@@ -61,7 +71,7 @@ export function ConfirmDialog({
         {/* Close Button */}
         <button
           type="button"
-          onClick={onCancel}
+          onClick={handleClose}
           disabled={isLoading}
           aria-label="Close dialog"
           className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 hover:bg-white/10 hover:text-white transition-colors disabled:opacity-50 cursor-pointer"
@@ -97,11 +107,11 @@ export function ConfirmDialog({
         <div className="flex items-center justify-end gap-3 pt-2">
           <button
             type="button"
-            onClick={onCancel}
+            onClick={handleClose}
             disabled={isLoading}
             className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors disabled:opacity-50 cursor-pointer"
           >
-            {cancelLabel}
+            {resolvedCancelLabel}
           </button>
           <button
             type="button"
@@ -114,7 +124,7 @@ export function ConfirmDialog({
             }`}
           >
             {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
-            {confirmLabel}
+            {resolvedConfirmLabel}
           </button>
         </div>
       </div>

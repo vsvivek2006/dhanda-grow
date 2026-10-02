@@ -4,20 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
   FileText,
-  Sparkles,
-  Users,
-  ExternalLink,
   PlusCircle,
+  ExternalLink,
   X,
   LogOut,
   Loader2,
-  TrendingUp,
-  Compass,
+  Sparkles,
 } from "lucide-react";
 import { DhandaLogo } from "@/components/ui/DhandaLogo";
-import { createBrowserClient } from "@supabase/ssr";
 
 interface SidebarProps {
   userEmail?: string | null;
@@ -25,38 +20,24 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-interface NavItem {
+export interface NavItem {
   label: string;
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   exact?: boolean;
 }
 
-interface NavGroup {
+export interface NavGroup {
   title: string;
   items: NavItem[];
 }
 
-const NAV_GROUPS: NavGroup[] = [
+export const navGroups: NavGroup[] = [
   {
-    title: "Blog Studio",
+    title: "Content",
     items: [
-      {
-        label: "Blog Hub",
-        href: "/admin",
-        icon: LayoutDashboard,
-        exact: true,
-      },
-      {
-        label: "AI Article Writer",
-        href: "/admin/blog/new",
-        icon: Sparkles,
-      },
-      {
-        label: "All Blog Posts",
-        href: "/admin/blog",
-        icon: FileText,
-      },
+      { label: "Blog Posts", href: "/admin/blog", icon: FileText, exact: true },
+      { label: "Create Post", href: "/admin/blog/new", icon: PlusCircle },
     ],
   },
 ];
@@ -82,11 +63,11 @@ export function Sidebar({
   };
 
   const navContent = (
-    <div className="flex flex-col h-full bg-[#07071a] border-r border-white/10">
+    <div className="flex flex-col h-full bg-gray-900 border-r border-gray-800">
       {/* Brand Header */}
-      <div className="h-16 px-4 flex items-center justify-between border-b border-white/10 shrink-0">
+      <div className="h-16 px-4 flex items-center justify-between border-b border-gray-800 shrink-0">
         <Link
-          href="/admin"
+          href="/admin/blog"
           className="flex items-center gap-2.5 group"
           onClick={onClose}
         >
@@ -95,8 +76,8 @@ export function Sidebar({
             <div className="text-sm font-bold tracking-tight text-white leading-none">
               Dhanda <span className="text-yellow-400">Grow</span>
             </div>
-            <p className="text-[10px] text-slate-400 font-medium mt-1">
-              Admin Portal
+            <p className="text-[10px] text-gray-400 font-medium mt-1">
+              Admin Blog Studio
             </p>
           </div>
         </Link>
@@ -104,7 +85,7 @@ export function Sidebar({
           <button
             type="button"
             onClick={onClose}
-            className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+            className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors cursor-pointer"
             aria-label="Close sidebar"
           >
             <X className="w-4 h-4" />
@@ -112,24 +93,24 @@ export function Sidebar({
         )}
       </div>
 
-      {/* Primary Action Button */}
+      {/* Primary Action Button: Create Post */}
       <div className="px-3 pt-3 pb-1 shrink-0">
         <Link
           href="/admin/blog/new"
           onClick={onClose}
-          className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white transition-all shadow-md shadow-purple-900/40 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-lg text-xs font-semibold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-md shadow-purple-900/40 cursor-pointer"
         >
           <PlusCircle className="w-4 h-4 text-yellow-300" />
           <span>Create Post</span>
         </Link>
       </div>
 
-      {/* Navigation Groups */}
+      {/* Navigation Groups - ONLY BLOG */}
       <div className="flex-1 overflow-y-auto min-h-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <nav className="p-3 space-y-3">
-          {NAV_GROUPS.map((group) => (
+          {navGroups.map((group) => (
             <div key={group.title} className="space-y-1">
-              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-purple-300/60 font-mono">
+              <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-gray-400 font-mono">
                 {group.title}
               </div>
               {group.items.map((item) => {
@@ -143,15 +124,15 @@ export function Sidebar({
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                       isActive
-                        ? "bg-gradient-to-r from-purple-900/70 via-purple-800/50 to-purple-900/30 border border-purple-500/40 text-white font-semibold shadow-xs"
-                        : "text-slate-300 hover:bg-white/5 hover:text-white"
+                        ? "bg-purple-600/20 text-purple-300 border border-purple-500/30 font-semibold"
+                        : "text-gray-300 hover:bg-gray-800 hover:text-white"
                     }`}
                   >
                     <Icon
                       className={`w-3.5 h-3.5 transition-colors ${
-                        isActive ? "text-yellow-400" : "text-slate-400"
+                        isActive ? "text-yellow-400" : "text-gray-400"
                       }`}
                     />
                     <span>{item.label}</span>
@@ -161,25 +142,26 @@ export function Sidebar({
             </div>
           ))}
 
-          <div className="pt-2 border-t border-white/10 mt-2">
+          {/* Public Website Blog Link */}
+          <div className="pt-2 border-t border-gray-800 mt-2">
             <Link
               href="/blog"
               target="_blank"
-              className="flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="flex items-center justify-between px-3 py-2 rounded-lg text-xs text-gray-400 hover:text-white hover:bg-gray-800 transition-colors"
             >
               <div className="flex items-center gap-2.5">
-                <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                <span>View Live Blog</span>
+                <ExternalLink className="w-3.5 h-3.5 text-gray-400" />
+                <span>View Public Blog</span>
               </div>
-              <span className="text-[10px] text-slate-500 font-mono">↗</span>
+              <span className="text-[10px] text-gray-500 font-mono">↗</span>
             </Link>
           </div>
         </nav>
       </div>
 
       {/* User Profile & Sign Out Footer */}
-      <div className="p-3 border-t border-white/10 space-y-2 bg-[#09091f] shrink-0">
-        <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-2">
+      <div className="p-3 border-t border-gray-800 space-y-2 bg-gray-900 shrink-0">
+        <div className="p-2.5 rounded-lg bg-gray-800/60 border border-gray-800 flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800 flex items-center justify-center text-yellow-400 shrink-0 font-bold text-xs uppercase shadow-sm">
               {(userEmail || "A")[0]}
@@ -189,7 +171,7 @@ export function Sidebar({
                 {userEmail?.split("@")[0] || "admin"}
               </p>
               <span className="inline-block mt-0.5 text-[9px] font-semibold px-1.5 py-0.2 rounded-full border uppercase tracking-wider bg-emerald-950/80 text-emerald-400 border-emerald-800/60">
-                SUPERADMIN
+                ADMIN
               </span>
             </div>
           </div>
@@ -199,7 +181,7 @@ export function Sidebar({
           type="button"
           onClick={handleLogout}
           disabled={isLoggingOut}
-          className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl text-xs font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-950/20 border border-transparent hover:border-rose-900/30 transition-all disabled:opacity-50 cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-rose-400 hover:bg-rose-950/20 border border-transparent hover:border-rose-900/30 transition-all disabled:opacity-50 cursor-pointer"
         >
           {isLoggingOut ? (
             <>
@@ -220,7 +202,7 @@ export function Sidebar({
   return (
     <>
       {/* Desktop Persistent Sidebar */}
-      <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-[#07071a] border-r border-white/10 flex-col shrink-0 text-slate-200 select-none overflow-hidden print:!hidden">
+      <aside className="hidden lg:flex w-64 h-screen sticky top-0 bg-gray-900 border-r border-gray-800 flex-col shrink-0 text-gray-200 select-none overflow-hidden print:!hidden">
         {navContent}
       </aside>
 
@@ -232,7 +214,7 @@ export function Sidebar({
             onClick={onClose}
             aria-hidden="true"
           />
-          <div className="relative w-64 max-w-[80vw] bg-[#07071a] border-r border-white/10 shadow-2xl h-full z-10 flex flex-col">
+          <div className="relative w-64 max-w-[80vw] bg-gray-900 border-r border-gray-800 shadow-2xl h-full z-10 flex flex-col">
             {navContent}
           </div>
         </div>

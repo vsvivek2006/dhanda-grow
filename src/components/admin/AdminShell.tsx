@@ -50,8 +50,8 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
   }, [pathname]);
 
   return (
-    <div className="flex h-screen w-full bg-[#04040f] text-slate-100 overflow-hidden relative font-sans">
-      {/* Top Navigation Progress Indicator (0ms tactile feedback) */}
+    <div className="flex h-screen w-full bg-gray-950 text-gray-200 overflow-hidden relative font-sans">
+      {/* Top Navigation Progress Indicator */}
       <div
         className={`fixed top-0 left-0 right-0 h-[2.5px] z-50 pointer-events-none transition-all duration-300 ${
           isNavigating
@@ -69,13 +69,13 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        {/* Navigation Header (Mobile + Desktop) */}
-        <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 lg:px-8 bg-[#07071a]/95 backdrop-blur-md border-b border-white/10 shrink-0">
+        {/* Navigation Header */}
+        <header className="sticky top-0 z-30 flex items-center justify-between px-4 py-3 lg:px-8 bg-gray-900/95 backdrop-blur-md border-b border-gray-800 shrink-0">
           <div className="flex items-center gap-3">
             <button
               type="button"
               onClick={() => setIsMobileOpen(true)}
-              className="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+              className="lg:hidden p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors cursor-pointer"
               aria-label="Open sidebar menu"
             >
               <Menu className="w-5 h-5" />
@@ -83,7 +83,7 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
 
             {/* Mobile Header Title */}
             <Link
-              href="/admin"
+              href="/admin/blog"
               className="lg:hidden flex items-center gap-2 text-sm font-bold text-white tracking-wide"
             >
               <DhandaLogo size="sm" />
@@ -93,10 +93,10 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
             </Link>
 
             {/* Desktop Breadcrumb Status */}
-            <div className="hidden lg:flex items-center gap-2 text-xs text-slate-400 font-medium">
+            <div className="hidden lg:flex items-center gap-2 text-xs text-gray-400 font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-slate-300 font-semibold">Dhanda Grow</span>
-              <span className="text-slate-600">/</span>
+              <span className="text-gray-300 font-semibold">Dhanda Grow</span>
+              <span className="text-gray-600">/</span>
               <span className="text-purple-400 font-medium font-mono text-[11px] uppercase tracking-wider">
                 Blog Studio
               </span>
@@ -108,7 +108,7 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
             <Link
               href="/blog"
               target="_blank"
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-white/10 transition-colors"
+              className="p-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 border border-gray-800 transition-colors"
               title="View Live Blog"
             >
               <ExternalLink className="w-4 h-4" />
@@ -118,8 +118,8 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
           </div>
         </header>
 
-        {/* Page Content Body with smooth scroll */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-y-auto focus:outline-none [scrollbar-width:thin] [scrollbar-color:#374151_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-white/10 hover:[&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
+        {/* Page Content Body */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 min-w-0 overflow-y-auto focus:outline-none [scrollbar-width:thin] [scrollbar-color:#374151_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-800 hover:[&::-webkit-scrollbar-thumb]:bg-gray-700 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent">
           {children}
         </main>
       </div>

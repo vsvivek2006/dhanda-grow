@@ -20,7 +20,7 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
       // 1. Try finding in Supabase by ID
       const { data: dbPostById } = await supabaseAdmin
         .from("blog_posts")
-        .select("id, title, slug, content, excerpt, tags, created_at, updated_at")
+        .select("id, title, slug, content, excerpt, tags, cover_image_url, created_at, updated_at")
         .eq("id", id)
         .single();
 
@@ -31,7 +31,7 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
           slug: dbPostById.slug,
           content: dbPostById.content || "",
           meta_description: dbPostById.excerpt || "",
-          cover_image_url: "",
+          cover_image_url: dbPostById.cover_image_url || "",
           author: "Dhanda Grow Team",
           tags: Array.isArray(dbPostById.tags) ? dbPostById.tags : [],
           status: "published",
@@ -45,7 +45,7 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
       // 2. Try finding in Supabase by Slug
       const { data: dbPostBySlug } = await supabaseAdmin
         .from("blog_posts")
-        .select("id, title, slug, content, excerpt, tags, created_at, updated_at")
+        .select("id, title, slug, content, excerpt, tags, cover_image_url, created_at, updated_at")
         .eq("slug", id)
         .single();
 
@@ -56,7 +56,7 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
           slug: dbPostBySlug.slug,
           content: dbPostBySlug.content || "",
           meta_description: dbPostBySlug.excerpt || "",
-          cover_image_url: "",
+          cover_image_url: dbPostBySlug.cover_image_url || "",
           author: "Dhanda Grow Team",
           tags: Array.isArray(dbPostBySlug.tags) ? dbPostBySlug.tags : [],
           status: "published",
@@ -76,9 +76,9 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
           slug: localPost.slug,
           content: localPost.content || "",
           meta_description: localPost.excerpt || "",
-          cover_image_url: "",
+          cover_image_url: localPost.cover_image_url || "",
           author: "Dhanda Grow Team",
-          tags: [],
+          tags: localPost.tags || [],
           status: "published",
           source: "manual",
           published_at: localPost.date,
@@ -102,10 +102,10 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
-      <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+      <div className="flex items-center gap-3 pb-2 border-b border-gray-800">
         <Link
           href="/admin/blog"
-          className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-white/10 transition-colors cursor-pointer"
+          className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 border border-gray-800 transition-colors cursor-pointer"
           title="Back to Blog Posts"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -114,7 +114,7 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             Edit Blog Post
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-gray-400 mt-0.5">
             Modify article contents, regenerate sections, update meta tags, or change publishing status.
           </p>
         </div>

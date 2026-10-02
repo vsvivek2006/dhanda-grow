@@ -1,17 +1,5 @@
-import { supabaseAdmin } from "@/lib/supabase/server";
-import { LeadsClient, Lead } from "./LeadsClient";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function AdminLeadsPage() {
-  const { data: leads, error } = await supabaseAdmin
-    .from("leads")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    console.error("Failed to fetch leads:", error);
-  }
-
-  return <LeadsClient initialLeads={(leads as Lead[]) || []} />;
+export default function AdminLeadsPage() {
+  redirect("/admin/blog");
 }
