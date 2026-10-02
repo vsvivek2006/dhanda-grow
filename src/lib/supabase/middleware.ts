@@ -35,11 +35,22 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
-  const isProtectedPath =
+  const isProtectedPage =
     pathname.startsWith("/admin") || pathname.startsWith("/blog/new");
+  const isProtectedApi =
+    pathname.startsWith("/api/admin") ||
+    pathname === "/api/blog/publish" ||
+    pathname === "/api/blog/generate";
   const isLoginPage = pathname === "/login";
 
-  if (isProtectedPath && !user) {
+  if (isProtectedApi && !user) {
+    return NextResponse.json(
+      { error: "Unauthorized: Admin session required" },
+      { status: 401 }
+    );
+  }
+
+  if (isProtectedPage && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.searchParams.set("redirect", pathname);

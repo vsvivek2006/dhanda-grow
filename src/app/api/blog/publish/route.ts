@@ -1,12 +1,24 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { supabaseAdmin } from "@/lib/supabase/server";
+import { createSupabaseServerClient, supabaseAdmin } from "@/lib/supabase/server";
 
-const BLOG_DIR = path.join(process.cwd(), "content/blog");
+const BLOG_DIR = path.resolve(process.cwd(), "content/blog");
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Unauthorized: Admin authentication required" },
+        { status: 401 }
+      );
+    }
+
     const { title, excerpt, content, slug, tags } = await req.json();
 
     if (!title || !content) {
@@ -23,8 +35,24 @@ export async function POST(req: Request) {
       .replace(/[\s_-]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
+    if (!postSlug) {
+      return NextResponse.json(
+        { error: "Invalid post slug" },
+        { status: 400 }
+      );
+    }
+
     if (!fs.existsSync(BLOG_DIR)) {
       fs.mkdirSync(BLOG_DIR, { recursive: true });
+    }
+
+    const filePath = path.resolve(BLOG_DIR, `${postSlug}.md`);
+    // Ensure path traversal cannot write outside BLOG_DIR
+    if (!filePath.startsWith(BLOG_DIR)) {
+      return NextResponse.json(
+        { error: "Invalid target path" },
+        { status: 400 }
+      );
     }
 
     const today = new Date().toISOString().split("T")[0];
@@ -40,7 +68,6 @@ excerpt: "${cleanExcerpt}"
 ${content}
 `;
 
-    const filePath = path.join(BLOG_DIR, `${postSlug}.md`);
     fs.writeFileSync(filePath, fileContent, "utf8");
 
     // Also persist/sync into Supabase blog_posts table

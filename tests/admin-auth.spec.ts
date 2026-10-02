@@ -42,4 +42,38 @@ test.describe("Admin Authentication & Route Protection", () => {
     const registerTab = page.getByRole("button", { name: /Register/i });
     await expect(registerTab).toHaveCount(0);
   });
+
+  test("Protected API endpoints reject unauthenticated requests with 401 Unauthorized", async ({
+    request,
+  }) => {
+    // 1. Leads API
+    const leadsRes = await request.get("/api/admin/leads");
+    expect(leadsRes.status()).toBe(401);
+    const leadsJson = await leadsRes.json();
+    expect(leadsJson.error).toContain("Unauthorized");
+
+    // 2. Blog Publish API
+    const publishRes = await request.post("/api/blog/publish", {
+      data: { title: "Malicious Post", content: "Should be blocked" },
+    });
+    expect(publishRes.status()).toBe(401);
+
+    // 3. Blog Generate API
+    const generateRes = await request.post("/api/blog/generate", {
+      data: { topic: "Should be blocked" },
+    });
+    expect(generateRes.status()).toBe(401);
+  });
+
+  test("HTTP responses include OWASP recommended security headers", async ({
+    page,
+  }) => {
+    const response = await page.goto("/");
+    expect(response).not.toBeNull();
+    const headers = response!.headers();
+
+    expect(headers["x-frame-options"]).toBe("DENY");
+    expect(headers["x-content-type-options"]).toBe("nosniff");
+    expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+  });
 });
