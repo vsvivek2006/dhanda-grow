@@ -39,8 +39,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
-  const isProtectedPage =
-    pathname.startsWith("/admin") || pathname.startsWith("/blog/new");
+  const isProtectedPage = pathname.startsWith("/admin");
   const isProtectedApi = pathname.startsWith("/api/admin");
   const isLoginPage = pathname === "/login";
 

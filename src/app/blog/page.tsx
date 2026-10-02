@@ -93,6 +93,18 @@ export default async function BlogIndexPage() {
                     <p className="text-muted-foreground leading-relaxed">
                       {post.excerpt}
                     </p>
+                    {post.tags && post.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 mt-3">
+                        {post.tags.map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-purple-950/70 text-purple-300 border border-purple-800/50"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     <div className="mt-4 inline-flex items-center text-primary text-sm font-semibold group-hover:translate-x-1 transition-transform">
                       Read article →
                     </div>

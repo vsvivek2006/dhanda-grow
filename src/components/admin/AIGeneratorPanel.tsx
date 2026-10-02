@@ -20,10 +20,9 @@ interface AIGeneratorPanelProps {
 }
 
 const SUGGESTED_TOPICS = [
-  "How to Rank #1 on Google Maps in Your Local Area",
-  "Why WhatsApp Review Automation Beats Traditional Feedback",
-  "Local SEO Playbook for Retail Shops & Clinics in India",
-  "Automated Daily Festival Banners & Social Creatives for Footfall",
+  "7 Local SEO Strategies for Indian Service Businesses",
+  "How WhatsApp Review Automation Multiplies 5-Star Reviews",
+  "Daily Social Media Marketing Calendar for Local Shops in 2026",
 ];
 
 export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProps) {
@@ -33,7 +32,7 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
   const [tone, setTone] = useState("Professional & Authoritative");
   const [keywords, setKeywords] = useState("");
   const [wordCount, setWordCount] = useState(800);
-  const [audience, setAudience] = useState("Local shop owners, doctors, clinic directors, restaurant founders");
+  const [audience, setAudience] = useState("Business owners and marketing leaders");
   const [hasGenerated, setHasGenerated] = useState(false);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
   const [isRateLimited, setIsRateLimited] = useState(false);
@@ -92,7 +91,7 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
   const handleGenerate = async () => {
     if (!topic.trim()) {
       toast.error("Topic is required", {
-        description: "Please enter a blog post topic or click a suggested inspiration prompt.",
+        description: "Please enter a blog post topic or click a suggested prompt.",
       });
       return;
     }
@@ -143,6 +142,7 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
         err instanceof Error
           ? err.message
           : "Unexpected error during AI generation. Check your network or API quota.";
+      // Detect rate-limit: Groq SDK error message or HTTP 429 in body
       const isLimit =
         message.toLowerCase().includes("429") ||
         message.toLowerCase().includes("rate limit") ||
@@ -175,36 +175,32 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
             <Sparkles className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
-              AI Content Strategist
-              <span className="text-[10px] px-2 py-0.5 rounded-md font-semibold bg-purple-950/80 text-purple-300 border border-purple-800/60">
-                {selectedModelInfo.name}
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              AI Blog Draft Generator
+              <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-950 text-purple-300 border border-purple-800">
+                Groq LPUs
               </span>
-            </h3>
-            <p className="text-xs text-gray-400 mt-0.5">
-              Draft an SEO-structured article tailored to Dhanda Grow.
+            </h2>
+            <p className="text-xs text-gray-400">
+              Outputs full semantic HTML articles, human cadence, and auto-generated tags.
             </p>
           </div>
         </div>
 
-        {hasGenerated && !isGenerating && (
-          <span className="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 bg-emerald-950/80 px-3 py-1 rounded-md border border-emerald-800/60">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            Draft In Editor
-          </span>
-        )}
+        <div className="flex items-center gap-2 text-xs text-gray-400 self-end sm:self-auto">
+          <Sliders className="w-3.5 h-3.5 text-yellow-400" />
+          <span>Configurable parameters</span>
+        </div>
       </div>
 
-      {/* Rate-Limit Fallback Banner */}
-      {isRateLimited && !isGenerating && (
-        <div className="p-3.5 rounded-lg border border-amber-700/50 bg-amber-950/40 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-start gap-2.5">
-            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <div>
-              <h4 className="text-xs font-bold text-white">Flagship Model Rate-Limited</h4>
-              <p className="text-xs text-amber-200/90 mt-0.5">
-                GPT-OSS 120B is temporarily busy. Switch to the Ultra-Fast 20B model for instant generation.
-              </p>
+      {/* 429 Rate Limit Inline Fallback Banner */}
+      {isRateLimited && (
+        <div className="p-4 rounded-lg bg-amber-950/60 border border-amber-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-start sm:items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5 sm:mt-0" />
+            <div className="text-xs text-amber-200">
+              <span className="font-semibold text-white">Rate limit reached on {selectedModelInfo.name}.</span>{" "}
+              Switch to the ultra-fast 20B model to generate immediately without waiting.
             </div>
           </div>
           <button
@@ -212,9 +208,11 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
             onClick={() => {
               setSelectedModel(FALLBACK_MODEL_ID);
               setIsRateLimited(false);
-              setTimeout(handleGenerate, 50);
+              setTimeout(() => {
+                handleGenerate();
+              }, 100);
             }}
-            className="self-end sm:self-auto shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-amber-500 hover:bg-amber-400 text-gray-900 transition-colors cursor-pointer"
+            className="self-end sm:self-auto shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white transition-colors cursor-pointer"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Switch to 20B &amp; Retry
@@ -222,55 +220,96 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
         </div>
       )}
 
-      {/* Error Banner */}
+      {/* Standard Error Banner */}
       {errorBanner && (
-        <div className="p-3.5 rounded-lg border border-rose-800/60 bg-rose-950/40 flex items-start gap-2.5 text-rose-200 text-xs">
-          <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <p className="font-semibold text-white">Generation Error</p>
-            <p className="mt-0.5 text-rose-300/90">{errorBanner}</p>
+        <div className="p-4 rounded-lg bg-rose-950/60 border border-rose-800/80 flex items-start justify-between gap-3">
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+            <div className="text-xs text-rose-200 space-y-1">
+              <p className="font-semibold text-white">Generation Failed</p>
+              <p className="text-rose-300 font-mono text-[11px] break-all">{errorBanner}</p>
+            </div>
           </div>
           <button
             type="button"
-            onClick={() => setErrorBanner(null)}
-            className="text-rose-400 hover:text-white"
+            onClick={handleGenerate}
+            disabled={isGenerating}
+            className="self-end sm:self-auto shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-rose-800 hover:bg-rose-700 text-white transition-colors cursor-pointer"
           >
-            ×
+            <RefreshCw className="w-3.5 h-3.5" />
+            Retry
           </button>
         </div>
       )}
 
-      {/* Generation in Progress State */}
+      {/* Animated Multi-Step Progress (Active during generation) */}
       {isGenerating && (
-        <div className="rounded-xl border border-purple-800/60 bg-purple-950/30 p-5 space-y-3">
+        <div className="p-4 rounded-lg border border-gray-800 bg-gray-800/50 space-y-2.5">
           <div className="flex items-center justify-between text-xs">
-            <div className="flex items-center gap-2 text-purple-300 font-semibold">
-              <Loader2 className="w-4 h-4 animate-spin text-purple-400" />
-              <span>{generationSteps[currentStepIndex]?.label || "Generating..."}</span>
-            </div>
-            <span className="font-mono text-purple-400 font-bold">{progressPercent}%</span>
+            <span className="font-semibold text-white flex items-center gap-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-purple-400" />
+              {generationSteps[currentStepIndex]?.label || "Finalizing content..."}
+            </span>
+            <span className="font-mono font-semibold text-gray-400">
+              {progressPercent}%
+            </span>
           </div>
-          <div className="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+
+          {/* Progress Track */}
+          <div className="w-full h-1.5 rounded-full bg-gray-800 overflow-hidden relative">
             <div
-              className="bg-gradient-to-r from-purple-500 to-indigo-500 h-1.5 rounded-full transition-all duration-500"
+              className="h-full bg-purple-600 transition-all duration-500 rounded-full"
               style={{ width: `${progressPercent}%` }}
             />
+          </div>
+
+          {/* Step indicators */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-[11px]">
+            {generationSteps.map((step, idx) => {
+              const isDone = idx < currentStepIndex;
+              const isCurrent = idx === currentStepIndex;
+
+              return (
+                <div
+                  key={step.label}
+                  className={`flex items-center gap-1.5 truncate ${
+                    isDone
+                      ? "text-emerald-400 font-medium"
+                      : isCurrent
+                      ? "text-yellow-400 font-semibold"
+                      : "text-gray-500"
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                      isDone
+                        ? "bg-emerald-400"
+                        : isCurrent
+                        ? "bg-yellow-400 animate-ping"
+                        : "bg-gray-600"
+                    }`}
+                  />
+                  <span className="truncate">Step {idx + 1}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
 
-      {/* Input Form Fields */}
+      {/* Form Controls */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Model Selector */}
+        {/* Model Selection Selector */}
         <div className="md:col-span-2 space-y-2">
-          <div className="flex items-center justify-between">
-            <label className="block text-xs font-semibold text-gray-300">
-              Select AI Engine
-            </label>
-            <span className="text-[11px] text-gray-400">
-              Reasoning: Low • Schema Guaranteed
+          <label className="block text-xs font-semibold text-gray-300 flex items-center justify-between">
+            <span className="flex items-center gap-1.5">
+              <Cpu className="w-3.5 h-3.5 text-purple-400" />
+              AI Model Engine <span className="text-gray-400 font-normal">(Free Groq LPUs)</span>
             </span>
-          </div>
+            <span className="text-[11px] text-gray-400 font-mono">
+              Speed: <span className="text-yellow-400">{selectedModelInfo.speed}</span>
+            </span>
+          </label>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             {AVAILABLE_MODELS.map((model) => {
@@ -281,18 +320,20 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
                   type="button"
                   onClick={() => setSelectedModel(model.id)}
                   disabled={disabled || isGenerating}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl border text-left transition-all relative overflow-hidden cursor-pointer ${
                     isSelected
-                      ? "border-purple-500 bg-purple-950/40 ring-1 ring-purple-500/50"
-                      : "border-gray-800 bg-gray-900/60 hover:border-gray-700"
-                  } disabled:opacity-50`}
+                      ? "bg-purple-950/60 border-purple-500 shadow-md shadow-purple-950/50 ring-1 ring-purple-500/50"
+                      : "bg-gray-800/60 border-gray-700/80 hover:border-gray-600 hover:bg-gray-800"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-semibold text-white text-xs">{model.name}</span>
+                  <div className="flex items-center justify-between gap-1 mb-1">
+                    <span className="text-xs font-bold text-white truncate">
+                      {model.name}
+                    </span>
                     <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded-full font-mono font-semibold ${
-                        model.id === "openai/gpt-oss-120b"
-                          ? "bg-purple-900/80 text-yellow-300 border border-purple-700/60"
+                      className={`text-[9px] px-1.5 py-0.5 rounded font-semibold shrink-0 ${
+                        model.isDefault
+                          ? "bg-purple-900/90 text-yellow-300 border border-purple-700/60"
                           : model.id === "openai/gpt-oss-20b"
                           ? "bg-emerald-950/90 text-emerald-300 border border-emerald-800/60"
                           : "bg-gray-800 text-purple-300 border border-gray-700"
@@ -381,7 +422,7 @@ export function AIGeneratorPanel({ onGenerated, disabled }: AIGeneratorPanelProp
             Target Article Length
           </label>
           <div className="flex items-center gap-2">
-            {[600, 800, 1200].map((count) => (
+            {[600, 900, 1200].map((count) => (
               <button
                 key={count}
                 type="button"

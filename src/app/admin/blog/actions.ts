@@ -21,7 +21,13 @@ async function verifyAdminAuth() {
   return user;
 }
 
-function syncMarkdownFile(slug: string, title: string, excerpt: string, content: string) {
+function syncMarkdownFile(
+  slug: string,
+  title: string,
+  excerpt: string,
+  content: string,
+  tags: string[] = []
+) {
   try {
     if (!fs.existsSync(BLOG_DIR)) {
       fs.mkdirSync(BLOG_DIR, { recursive: true });
@@ -33,11 +39,13 @@ function syncMarkdownFile(slug: string, title: string, excerpt: string, content:
     const today = new Date().toISOString().split("T")[0];
     const cleanExcerpt = (excerpt || title).replace(/"/g, '\\"');
     const cleanTitle = title.replace(/"/g, '\\"');
+    const tagsJson = JSON.stringify(tags || []);
 
     const fileContent = `---
 title: "${cleanTitle}"
 date: "${today}"
 excerpt: "${cleanExcerpt}"
+tags: ${tagsJson}
 ---
 
 ${content}
@@ -65,7 +73,8 @@ export async function createPostAction(input: PostInput) {
       validated.slug,
       validated.title,
       validated.meta_description || validated.title,
-      validated.content
+      validated.content,
+      validated.tags || []
     );
 
     // 2. Persist in Supabase blog_posts table
@@ -121,7 +130,8 @@ export async function updatePostAction(id: string, input: PostInput) {
       validated.slug,
       validated.title,
       validated.meta_description || validated.title,
-      validated.content
+      validated.content,
+      validated.tags || []
     );
 
     // 2. Update Supabase blog_posts table

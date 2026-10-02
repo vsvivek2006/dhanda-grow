@@ -42,13 +42,24 @@ export function getLocalPosts(): BlogPost[] {
         const titleMatch = frontmatter.match(/title:\s*"(.*?)"/);
         const dateMatch = frontmatter.match(/date:\s*"(.*?)"/);
         const excerptMatch = frontmatter.match(/excerpt:\s*"(.*?)"/);
+        const tagsMatch = frontmatter.match(/tags:\s*(\[[\s\S]*?\])/);
 
         if (titleMatch) title = titleMatch[1];
         if (dateMatch) date = dateMatch[1];
         if (excerptMatch) excerpt = excerptMatch[1];
+        let tags: string[] = [];
+        if (tagsMatch) {
+          try {
+            tags = JSON.parse(tagsMatch[1]);
+          } catch {
+            tags = [];
+          }
+        }
+
+        return { slug, title, date, excerpt, content, tags };
       }
 
-      return { slug, title, date, excerpt, content };
+      return { slug, title, date, excerpt, content, tags: [] };
     });
 
   return posts;
