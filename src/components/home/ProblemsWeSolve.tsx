@@ -22,6 +22,7 @@ import {
   GoogleGLogo,
 } from "@/components/ui/BrandIcons";
 import { Button } from "@/components/ui/button";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 const problemPillars = [
   {
@@ -121,18 +122,20 @@ export function ProblemsWeSolve() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-purple-600/8 blur-[160px] pointer-events-none rounded-full" />
 
       {/* Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/[0.04] border border-white/10 text-zinc-300 mb-4 backdrop-blur-md">
-          <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-          <span>Real Problems • Fully Automated Solutions</span>
+      <RevealOnScroll direction="up" delay={0.1}>
+        <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/[0.04] border border-white/10 text-zinc-300 mb-4 backdrop-blur-md">
+            <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
+            <span>Real Problems • Fully Automated Solutions</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-[-0.04em] text-white mb-4">
+            Why Local Businesses Lose Customers Online
+          </h2>
+          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-normal">
+            You didn't open your business to spend your nights designing posters in Canva or figuring out Google algorithms. Here is exactly what is hurting your footfall today — and how Dhanda Grow automates it all.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-[-0.04em] text-white mb-4">
-          Why Local Businesses Lose Customers Online
-        </h2>
-        <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-normal">
-          You didn't open your business to spend your nights designing posters in Canva or figuring out Google algorithms. Here is exactly what is hurting your footfall today — and how Dhanda Grow automates it all.
-        </p>
-      </div>
+      </RevealOnScroll>
 
       {/* Platform Switcher Pills */}
       <div className="flex flex-wrap items-center justify-center gap-2.5 mb-10 relative z-10">
@@ -157,9 +160,10 @@ export function ProblemsWeSolve() {
       </div>
 
       {/* Deep-Dive Problem vs Solution Workstation */}
-      <div
-        className={`rounded-3xl border ${current.borderColor} bg-gradient-to-b from-[#0b0b18] to-[#06060e] p-6 sm:p-10 shadow-2xl relative z-10`}
-      >
+      <RevealOnScroll direction="up" delay={0.2}>
+        <div
+          className={`rounded-3xl border ${current.borderColor} bg-gradient-to-b from-[#0b0b18] to-[#06060e] p-6 sm:p-10 shadow-2xl relative z-10`}
+        >
         <div className="grid lg:grid-cols-12 gap-8 items-center">
           {/* Left Column: The Problem & Pain */}
           <div className="lg:col-span-5 space-y-6">
@@ -231,6 +235,7 @@ export function ProblemsWeSolve() {
           </div>
         </div>
       </div>
-    </section>
+    </RevealOnScroll>
+  </section>
   );
 }

@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/BrandIcons";
 import { BorderBeam } from "@/components/ui/BorderBeam";
 import { Button } from "@/components/ui/button";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 const mapQueries = [
   {
@@ -135,18 +136,20 @@ export function CoreGrowthEngines() {
       <div className="absolute bottom-10 right-1/4 w-[600px] h-[400px] bg-cyan-600/8 blur-[160px] pointer-events-none rounded-full" />
 
       {/* Header */}
-      <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/[0.04] border border-white/10 text-zinc-300 mb-4 backdrop-blur-md">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          <span>The Autonomous Growth Engine</span>
+      <RevealOnScroll direction="up" delay={0.1}>
+        <div className="text-center max-w-3xl mx-auto mb-16 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white/[0.04] border border-white/10 text-zinc-300 mb-4 backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span>The Autonomous Growth Engine</span>
+          </div>
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-[-0.04em] text-white mb-4">
+            Google Maps Dominance & Social Media Autopilot
+          </h2>
+          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-normal">
+            Designed specifically for local retail shops, restaurants, doctors, and salons. Two interconnected engines that attract nearby buyers and keep your brand buzzing every single day.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-[-0.04em] text-white mb-4">
-          Google Maps Dominance & Social Media Autopilot
-        </h2>
-        <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-normal">
-          Designed specifically for local retail shops, restaurants, doctors, and salons. Two interconnected engines that attract nearby buyers and keep your brand buzzing every single day.
-        </p>
-      </div>
+      </RevealOnScroll>
 
       {/* ============================================================== */}
       {/* TWIN CORE ENGINES: SIDE BY SIDE ARCHITECTURE                   */}
@@ -155,8 +158,9 @@ export function CoreGrowthEngines() {
         {/* ============================================================== */}
         {/* ENGINE 01: GOOGLE MAPS 3-PACK RANKING RADAR                    */}
         {/* ============================================================== */}
-        <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group">
-          <BorderBeam size={260} duration={14} colorFrom="#38bdf8" colorTo="#34d399" />
+        <RevealOnScroll direction="up" delay={0.15} className="h-full">
+          <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group h-full">
+            <BorderBeam size={260} duration={14} colorFrom="#38bdf8" colorTo="#34d399" />
 
           <div>
             {/* Engine Header */}
@@ -315,12 +319,14 @@ export function CoreGrowthEngines() {
             </Link>
           </div>
         </div>
+      </RevealOnScroll>
 
         {/* ============================================================== */}
         {/* ENGINE 02: AI SOCIAL MEDIA CREATIVE SUITE                      */}
         {/* ============================================================== */}
-        <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group">
-          <BorderBeam size={260} duration={14} colorFrom="#c084fc" colorTo="#f43f5e" />
+        <RevealOnScroll direction="up" delay={0.25} className="h-full">
+          <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group h-full">
+            <BorderBeam size={260} duration={14} colorFrom="#c084fc" colorTo="#f43f5e" />
 
           <div>
             {/* Engine Header */}
@@ -489,7 +495,8 @@ export function CoreGrowthEngines() {
             </Link>
           </div>
         </div>
-      </div>
-    </section>
+      </RevealOnScroll>
+    </div>
+  </section>
   );
 }

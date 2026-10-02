@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { ParallaxItem } from "@/components/ui/ParallaxSection";
 import {
   Sparkles,
   MapPin,
@@ -70,13 +72,29 @@ export function FramerHero() {
   const [activeTab, setActiveTab] = useState(0);
   const current = keynoteTabs[activeTab];
 
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const canvasY = useTransform(scrollYProgress, [0, 1], [0, 50]);
+  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 0.97]);
+  const smoothCanvasY = useSpring(canvasY, { stiffness: 100, damping: 25 });
+  const smoothCanvasScale = useSpring(canvasScale, { stiffness: 100, damping: 25 });
+
   return (
-    <section className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+    <section ref={heroRef} className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* Background Subtle Spotlight (Framer-style clean lighting) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-purple-500/12 via-cyan-500/8 to-transparent blur-[140px] pointer-events-none rounded-full" />
 
       {/* Hero Header */}
-      <div className="text-center max-w-4xl mx-auto relative z-10 mb-14">
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="text-center max-w-4xl mx-auto relative z-10 mb-14"
+      >
         {/* Social Media & Maps Automation Pill */}
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium bg-white/[0.04] border border-white/10 text-zinc-300 mb-6 backdrop-blur-md">
           <div className="flex items-center gap-2 mr-1">
@@ -163,12 +181,46 @@ export function FramerHero() {
             <strong className="text-white font-medium">4.9 / 5.0 rating</strong> from 10,000+ local shops, clinics & restaurants
           </span>
         </div>
-      </div>
+      </motion.div>
 
       {/* ============================================================== */}
       {/* FRAMER MASTER PRODUCT VIEWPORT (Clean, Flat, Modern Canvas)    */}
       {/* ============================================================== */}
       <div id="features" className="relative max-w-5xl mx-auto">
+        {/* Parallax Floating Metric Badges */}
+        <div className="hidden lg:block absolute -left-10 top-1/4 z-30 pointer-events-none">
+          <ParallaxItem speed={25}>
+            <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-zinc-950/90 border border-emerald-500/30 shadow-[0_12px_35px_rgba(0,0,0,0.7)] backdrop-blur-xl">
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-[10px] font-mono uppercase text-zinc-400 font-semibold">Local 3-Pack</span>
+                </div>
+                <div className="text-xs font-bold text-white">Rank #1 in 5km Radius</div>
+              </div>
+            </div>
+          </ParallaxItem>
+        </div>
+
+        <div className="hidden lg:block absolute -right-8 top-1/2 z-30 pointer-events-none">
+          <ParallaxItem speed={-25}>
+            <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-zinc-950/90 border border-purple-500/30 shadow-[0_12px_35px_rgba(0,0,0,0.7)] backdrop-blur-xl">
+              <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-mono uppercase text-zinc-400 font-semibold">WhatsApp Bot</span>
+                </div>
+                <div className="text-xs font-bold text-white">5★ Review Prompt Sent</div>
+              </div>
+            </div>
+          </ParallaxItem>
+        </div>
+
         {/* Navigation Tabs atop the Canvas */}
         <div className="flex items-center justify-center gap-2 mb-4">
           <div className="inline-flex p-1 rounded-xl bg-zinc-900/80 border border-white/10 backdrop-blur-xl">
@@ -192,8 +244,11 @@ export function FramerHero() {
           </div>
         </div>
 
-        {/* Master Canvas Card */}
-        <div className="relative rounded-2xl border border-white/10 bg-[#090910] p-2 sm:p-3 shadow-2xl overflow-hidden">
+        {/* Master Canvas Card with Scroll Parallax */}
+        <motion.div
+          style={{ y: smoothCanvasY, scale: smoothCanvasScale }}
+          className="relative rounded-2xl border border-white/10 bg-[#090910] p-2 sm:p-3 shadow-2xl overflow-hidden"
+        >
           <BorderBeam size={320} duration={12} colorFrom="#a855f7" colorTo="#38bdf8" />
 
           {/* Window Chrome Header */}
@@ -252,7 +307,7 @@ export function FramerHero() {
               </a>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
