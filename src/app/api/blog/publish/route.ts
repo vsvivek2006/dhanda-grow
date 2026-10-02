@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
 export async function POST(req: Request) {
   try {
-    const { title, excerpt, content, slug } = await req.json();
+    const { title, excerpt, content, slug, tags } = await req.json();
 
     if (!title || !content) {
       return NextResponse.json(
@@ -41,6 +42,23 @@ ${content}
 
     const filePath = path.join(BLOG_DIR, `${postSlug}.md`);
     fs.writeFileSync(filePath, fileContent, "utf8");
+
+    // Also persist/sync into Supabase blog_posts table
+    try {
+      await supabaseAdmin.from("blog_posts").upsert(
+        {
+          slug: postSlug,
+          title,
+          excerpt: excerpt || title,
+          content,
+          tags: Array.isArray(tags) ? tags : [],
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "slug" }
+      );
+    } catch (dbErr) {
+      console.warn("Supabase blog sync notice:", dbErr);
+    }
 
     return NextResponse.json({
       success: true,

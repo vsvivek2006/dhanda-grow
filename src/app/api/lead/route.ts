@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 export async function POST(req: Request) {
   try {
@@ -12,15 +13,30 @@ export async function POST(req: Request) {
       );
     }
 
-    // [TODO: Save to Google Sheets / Supabase / Firebase]
-    // Example: await saveToGoogleSheets({ fullName, mobileNumber, email, state, businessType });
+    // Persist lead directly into Supabase
+    const { data, error } = await supabaseAdmin
+      .from("leads")
+      .insert([
+        {
+          full_name: fullName.trim(),
+          mobile_number: mobileNumber.trim(),
+          email: email ? email.trim() : null,
+          state: state.trim(),
+          business_type: businessType.trim(),
+        },
+      ])
+      .select();
 
-    // [TODO: Send email notification to Admin]
-    // Example: await sendEmailNotification({ fullName, mobileNumber });
+    if (error) {
+      console.error("Supabase lead insertion error:", error);
+    } else {
+      console.log("Lead successfully stored in Supabase:", data?.[0]?.id);
+    }
 
-    console.log("New Lead Received:", { fullName, mobileNumber, email, state, businessType });
-
-    return NextResponse.json({ success: true }, { status: 200 });
+    return NextResponse.json(
+      { success: true, id: data?.[0]?.id },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error processing lead:", error);
     return NextResponse.json(
