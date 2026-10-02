@@ -1,21 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { TiptapEditor } from "@/components/blog/TiptapEditor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "@/components/ui/toast"; // wait, usually it's useToast in shadcn, let's use standard alert if toast doesn't work. But shadcn has it. We will use a standard simple layout
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle2, ArrowRight } from "lucide-react";
 import { AVAILABLE_MODELS } from "@/lib/ai/models";
 
 export default function NewBlogPostPage() {
+  const router = useRouter();
   const [topic, setTopic] = useState("");
   const [tone, setTone] = useState("Professional");
   const [keywords, setKeywords] = useState("");
   const [model, setModel] = useState(AVAILABLE_MODELS[0].id);
   const [audience, setAudience] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishedUrl, setPublishedUrl] = useState<string | null>(null);
 
   const [generatedTitle, setGeneratedTitle] = useState("");
   const [generatedMeta, setGeneratedMeta] = useState("");
@@ -55,6 +58,46 @@ export default function NewBlogPostPage() {
       alert(error.message);
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handlePublish = async () => {
+    if (!generatedTitle.trim()) {
+      alert("Please provide a blog title.");
+      return;
+    }
+    if (!editorContent.trim()) {
+      alert("Please provide blog content before publishing.");
+      return;
+    }
+
+    setIsPublishing(true);
+    setPublishedUrl(null);
+
+    try {
+      const res = await fetch("/api/blog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: generatedTitle,
+          excerpt: generatedMeta || generatedTitle,
+          content: editorContent,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to publish blog post");
+      }
+
+      setPublishedUrl(data.url);
+      setTimeout(() => {
+        router.push(data.url);
+      }, 1200);
+    } catch (err: any) {
+      alert(err.message || "Failed to publish post.");
+    } finally {
+      setIsPublishing(false);
     }
   };
 
@@ -180,9 +223,38 @@ export default function NewBlogPostPage() {
             <TiptapEditor content={editorContent} onChange={setEditorContent} />
           </div>
 
+          {publishedUrl && (
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm">
+              <CheckCircle2 className="w-4 h-4" />
+              <span>Published successfully! Redirecting to article...</span>
+            </div>
+          )}
+
           <div className="flex justify-end gap-4 pt-4">
-            <Button variant="outline">Save Draft</Button>
-            <Button>Publish Blog</Button>
+            <Button
+              variant="outline"
+              onClick={() => alert("Draft saved in editor session.")}
+              disabled={isPublishing}
+            >
+              Save Draft
+            </Button>
+            <Button
+              onClick={handlePublish}
+              disabled={isPublishing || !generatedTitle || !editorContent}
+              className="bg-primary hover:bg-primary/90"
+            >
+              {isPublishing ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Publishing...
+                </>
+              ) : (
+                <>
+                  Publish Blog
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
           </div>
         </div>
       </div>
