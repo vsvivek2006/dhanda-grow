@@ -2,15 +2,14 @@ import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blog-utils';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://getgstfast.com';
+  const baseUrl = 'https://dhanda.app';
 
   const staticRoutes = [
     '',
     '/about',
+    '/services',
+    '/faq',
     '/contact',
-    '/pricing',
-    '/gst-registration',
-    '/gst-registration-documents-required',
     '/blog',
     '/privacy-policy',
     '/terms-and-conditions',
@@ -19,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
-    priority: route === '' || route === '/gst-registration' ? 1 : 0.8,
+    priority: route === '' ? 1 : 0.8,
   }));
 
   // Add blog posts to sitemap

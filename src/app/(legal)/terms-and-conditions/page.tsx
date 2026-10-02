@@ -2,51 +2,46 @@ import type { Metadata } from "next";
 import { BRAND_NAME, SUPPORT_EMAIL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | GetGSTFast",
-  description: "Terms and Conditions for GetGSTFast.",
+  title: `Terms and Conditions | ${BRAND_NAME}`,
+  description: `Terms and Conditions for ${BRAND_NAME} AI Marketing Platform.`,
 };
 
 export default function TermsPage() {
   return (
     <div className="py-20 bg-background">
-      <div className="container mx-auto max-w-3xl px-4 prose prose-slate">
-        <h1 className="font-heading text-4xl font-bold text-navy mb-8">Terms and Conditions</h1>
+      <div className="container mx-auto max-w-3xl px-4 prose prose-slate dark:prose-invert">
+        <h1 className="font-heading text-4xl font-bold text-foreground mb-8">Terms and Conditions</h1>
         
         <p className="text-muted-foreground mb-8">Last Updated: {new Date().toLocaleDateString('en-IN')}</p>
 
         <h3>1. Acceptance of Terms</h3>
         <p>
-          By accessing and using {BRAND_NAME} ("Website", "we", "us", or "our"), you accept and agree to be bound by the terms and provision of this agreement.
+          By accessing, signing up for, or using {BRAND_NAME} ("Service", "we", "us", or "our"), operated by Ezo Technologies, you agree to be bound by these terms.
         </p>
 
         <h3>2. Description of Service</h3>
         <p>
-          {BRAND_NAME} provides consultation and assistance services for obtaining Goods and Services Tax (GST) Registration in India. We act as a facilitator to help you prepare, submit, and track your application on the official GST portal.
+          {BRAND_NAME} is an AI-powered local business marketing automation platform. We provide tools for Google Business Profile management, local SEO analysis, automated social media content creation, and customer review management.
         </p>
 
-        <h3>3. Private Consultancy Disclaimer</h3>
+        <h3>3. User Responsibilities & Account Security</h3>
         <p>
-          <strong>WE ARE NOT A GOVERNMENT AGENCY.</strong> {BRAND_NAME} is a private professional consultancy firm. We are not affiliated with, endorsed by, or in any way officially connected with the Government of India, the GST Council, or the Goods and Services Tax Network (GSTN). The official government portal is gst.gov.in. Our fee is a service charge for our professional time and expertise.
+          You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to provide accurate and complete business information for connected social profiles and Google Business accounts.
         </p>
 
-        <h3>4. Pricing and Fees</h3>
+        <h3>4. Intellectual Property & AI Generation</h3>
         <p>
-          The government fee for new GST registration is ₹0. We charge a flat professional service fee (currently ₹499) for our assistance. This fee is strictly for our consulting and filing services.
+          You retain ownership of your business brand, trademarks, and uploaded images. Content generated via our AI tools for your social posts is licensed to you for promotional use in accordance with third-party platform policies.
         </p>
 
-        <h3>5. User Responsibilities</h3>
+        <h3>5. Limitation of Liability</h3>
         <p>
-          You agree to provide true, accurate, current, and complete information about yourself and your business as prompted by our forms. You understand that providing false documents to the government is a punishable offense, and {BRAND_NAME} assumes no liability for the authenticity of the documents you provide.
+          {BRAND_NAME} provides automation tools to assist your marketing efforts. We do not guarantee specific ranking positions on search engines or third-party platforms, as search algorithms and platform policies operate independently.
         </p>
 
-        <h3>6. Timelines and Guarantees</h3>
+        <h3>6. Contact Information</h3>
         <p>
-          While we strive to file applications within 24-48 hours of receiving complete documents, the actual issuance of the GSTIN depends solely on the tax officers and the government portal. We do not guarantee a specific timeframe for approval.
-        </p>
-
-        <h3>7. Contact Information</h3>
-        <p>
-          For any questions regarding these terms, please contact us at {SUPPORT_EMAIL}.
+          For any questions regarding these terms, please contact us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
         </p>
       </div>
     </div>

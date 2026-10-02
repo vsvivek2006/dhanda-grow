@@ -42,11 +42,13 @@ const STATES = [
 ];
 
 const BUSINESS_TYPES = [
-  "Proprietorship",
-  "Partnership",
-  "LLP",
-  "Private Limited",
-  "Other"
+  "Restaurant / Cafe / Bakery",
+  "Retail / Clothing / Store",
+  "Salon / Parlour / Spa",
+  "Clinic / Doctor / Health",
+  "Gym / Fitness Studio",
+  "Local Service / Agency",
+  "Other Local Business"
 ];
 
 export function LeadForm() {
@@ -91,7 +93,7 @@ export function LeadForm() {
 
   return (
     <div className="bg-card text-card-foreground p-6 md:p-8 rounded-2xl shadow-lg border border-border">
-      <h3 className="text-xl font-heading font-bold mb-6 text-navy text-center">Start Your Application</h3>
+      <h3 className="text-xl font-heading font-bold mb-6 text-foreground text-center">Get Free Demo & Strategy Call</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -204,15 +206,15 @@ export function LeadForm() {
                 </FormControl>
                 <div className="space-y-1 leading-none">
                   <FormLabel className="text-xs text-muted-foreground font-normal">
-                    I agree to share my details for GST registration assistance and accept the Privacy Policy.
+                    I agree to receive a demo and support assistance and accept the Privacy Policy.
                   </FormLabel>
                 </div>
               </FormItem>
             )}
           />
 
-          <Button type="submit" disabled={isLoading} className="w-full bg-primary hover:bg-cta-hover h-12 text-lg font-semibold mt-6">
-            {isLoading ? "Submitting..." : "Get My GST Number"}
+          <Button type="submit" disabled={isLoading} className="w-full bg-gradient-brand hover:opacity-90 h-12 text-base font-bold mt-6 text-white rounded-xl shadow-lg shadow-purple-600/30 transition-all hover:scale-[1.02]">
+            {isLoading ? "Submitting..." : "Get Free Google Maps Audit & Demo"}
           </Button>
           
           <div className="flex items-center justify-center gap-2 mt-4 text-xs text-muted-foreground">

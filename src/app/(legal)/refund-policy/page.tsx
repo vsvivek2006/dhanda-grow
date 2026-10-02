@@ -1,42 +1,42 @@
 import type { Metadata } from "next";
-import { BRAND_NAME, SERVICE_PRICE, SUPPORT_EMAIL } from "@/lib/constants";
+import { BRAND_NAME, SUPPORT_EMAIL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Refund Policy | GetGSTFast",
-  description: "Refund Policy for GetGSTFast.",
+  title: `Refund Policy | ${BRAND_NAME}`,
+  description: `Refund Policy for ${BRAND_NAME}.`,
 };
 
 export default function RefundPolicyPage() {
   return (
     <div className="py-20 bg-background">
-      <div className="container mx-auto max-w-3xl px-4 prose prose-slate">
-        <h1 className="font-heading text-4xl font-bold text-navy mb-8">Refund Policy</h1>
+      <div className="container mx-auto max-w-3xl px-4 prose prose-slate dark:prose-invert">
+        <h1 className="font-heading text-4xl font-bold text-foreground mb-8">Refund Policy</h1>
         
         <p className="text-muted-foreground mb-8">Last Updated: {new Date().toLocaleDateString('en-IN')}</p>
 
-        <h3>1. 100% Refund Guarantee (Pre-Filing)</h3>
+        <h3>1. Free Trial & Subscriptions</h3>
         <p>
-          If you change your mind or decide not to proceed with the GST registration <strong>before</strong> we have submitted your application to the government portal, we will issue a full 100% refund of your {SERVICE_PRICE} service fee. No questions asked.
+          {BRAND_NAME} offers free demo access and trial capabilities to allow local businesses to evaluate our marketing automation features before committing to paid tiers.
         </p>
 
-        <h3>2. Post-Filing Refunds</h3>
+        <h3>2. Subscription Cancellations</h3>
         <p>
-          Once your application has been successfully prepared, verified, and submitted to the GST portal (and an Application Reference Number / ARN has been generated), our service is considered rendered. <strong>No refunds will be issued after the ARN is generated.</strong>
+          You may cancel your monthly or annual subscription at any time via your account dashboard or by contacting our support team. Upon cancellation, your access remains active until the end of your current billing period.
         </p>
 
-        <h3>3. Government Rejections</h3>
+        <h3>3. Refund Requests</h3>
         <p>
-          If the GST department rejects your application due to issues with the documents provided (e.g., mismatched name, invalid rent agreement, owner's refusal), the fee remains non-refundable as our professional time was fully utilised in the preparation, filing, and replying to queries. However, our team will assist you in re-applying once you provide the correct documents, at no extra professional fee.
+          If you encounter technical issues that prevent you from utilizing our software, and our support team is unable to resolve them within 7 business days, you may request a pro-rated refund for the affected billing period.
         </p>
 
         <h3>4. Processing Time</h3>
         <p>
-          Approved refunds will be processed back to your original method of payment within 5-7 business days.
+          Approved refunds will be processed back to your original payment method within 5-7 business days.
         </p>
 
-        <h3>5. How to Request a Refund</h3>
+        <h3>5. How to Contact Support</h3>
         <p>
-          To request a refund before your application is filed, simply message us on WhatsApp or email us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> with your payment reference number.
+          To discuss billing or request assistance, please email us at <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>.
         </p>
       </div>
     </div>

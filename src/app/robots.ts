@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/thank-you', '/api/'],
     },
-    sitemap: 'https://getgstfast.com/sitemap.xml',
+    sitemap: 'https://dhanda.app/sitemap.xml',
   };
 }

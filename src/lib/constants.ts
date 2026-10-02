@@ -1,7 +1,9 @@
-export const BRAND_NAME = "GetGSTFast";
-export const BRAND_DOMAIN = "getgstfast.com";
-export const SERVICE_PRICE = "₹499";
-export const SUPPORT_PHONE = "[TODO: 9876543210]";
-export const SUPPORT_WHATSAPP = "[TODO: 9876543210]";
-export const SUPPORT_EMAIL = "[TODO: support@getgstfast.com]";
-export const WHATSAPP_LINK = `https://wa.me/91${SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=Hi,%20I%20want%20GST%20registration%20for%20${SERVICE_PRICE}.`;
+export const BRAND_NAME = "Dhanda Grow";
+export const BRAND_DOMAIN = "dhanda.app";
+export const SERVICE_PRICE = "Free";
+export const SUPPORT_PHONE = "+91 9619887428";
+export const SUPPORT_WHATSAPP = "+91 9619887428";
+export const SUPPORT_EMAIL = "support@ezobooks.in";
+export const WHATSAPP_LINK = `https://wa.me/91${SUPPORT_WHATSAPP.replace(/\D/g, '')}?text=Need%20Help%20in%20AI%20Marketing`;
+export const APP_STORE_URL = "https://apps.apple.com/in/app/dhanda/id6739134664";
+export const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.dhanda.app&hl=en_IN";
