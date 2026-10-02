@@ -72,10 +72,7 @@ export function Sidebar({
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-      );
+      const { supabase } = await import("@/lib/supabase/client");
       await supabase.auth.signOut();
       await fetch("/api/auth/signout", { method: "POST" });
       window.location.href = "/login";

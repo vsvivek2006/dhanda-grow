@@ -37,10 +37,7 @@ export function AdminNotificationBell() {
   const loadNotifications = useCallback(async () => {
     setIsLoading(true);
     try {
-      const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-      );
+      const { supabase } = await import("@/lib/supabase/client");
       const { data: posts } = await supabase
         .from("blog_posts")
         .select("id, title, slug, created_at")
