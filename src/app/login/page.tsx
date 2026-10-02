@@ -43,10 +43,9 @@ function LoginForm() {
       }
 
       setSuccessMsg("Authenticated! Redirecting to dashboard...");
-      router.refresh();
       setTimeout(() => {
-        router.push(redirectPath);
-      }, 500);
+        window.location.href = redirectPath;
+      }, 300);
     } catch (err: any) {
       setErrorMsg(err.message || "Invalid credentials. Please check your admin email and password.");
     } finally {
