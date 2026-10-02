@@ -1,6 +1,15 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Admin Authentication & Route Protection", () => {
+  test("Unauthenticated user accessing /admin is redirected to /login?redirect=/admin/leads without 404", async ({
+    page,
+  }) => {
+    const res = await page.goto("/admin");
+    expect(res?.status()).toBe(200);
+    await expect(page).toHaveURL(/\/login\?redirect=%2Fadmin%2Fleads/);
+    await expect(page.locator("h1")).toHaveText("Admin Sign In");
+  });
+
   test("Unauthenticated user accessing /admin/leads is redirected to /login with redirect query param", async ({
     page,
   }) => {
