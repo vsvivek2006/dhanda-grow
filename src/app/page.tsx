@@ -931,18 +931,18 @@ export default function HomePage() {
                 href={APP_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-xs font-bold transition-all hover:scale-105 inline-flex items-center gap-2"
+                className="px-5 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-xs font-bold transition-all hover:scale-105 inline-flex items-center gap-2.5 shadow-md"
               >
-                <AppleLogo className="w-4 h-4 text-white" />
+                <AppleLogo className="w-5 h-5 text-white shrink-0" />
                 <span>Download on App Store</span>
               </a>
               <a
                 href={PLAY_STORE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-xs font-bold transition-all hover:scale-105 inline-flex items-center gap-2"
+                className="px-5 py-2.5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 text-xs font-bold transition-all hover:scale-105 inline-flex items-center gap-2.5 shadow-md"
               >
-                <GooglePlayLogo className="w-4 h-4" />
+                <GooglePlayLogo className="w-5 h-5 shrink-0" />
                 <span>Get it on Google Play</span>
               </a>
             </div>

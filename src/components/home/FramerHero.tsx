@@ -139,21 +139,27 @@ export function FramerHero() {
               href={APP_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-semibold flex items-center gap-2 transition-colors"
-              title="Download on App Store"
+              className="px-3 py-1.5 rounded-xl bg-black/60 hover:bg-black/90 border border-white/15 text-white flex items-center gap-2 transition-all hover:scale-105 shadow-md group"
+              title="Download on Apple App Store for iPhone"
             >
-              <AppleLogo className="w-4 h-4 text-white" />
-              <span className="text-xs">iOS</span>
+              <AppleLogo className="w-4 h-4 text-white group-hover:scale-110 transition-transform" />
+              <div className="text-left leading-none">
+                <div className="text-[8px] text-zinc-400 uppercase font-mono tracking-wider">App Store</div>
+                <div className="text-[11px] font-bold text-white">iPhone</div>
+              </div>
             </a>
             <a
               href={PLAY_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-semibold flex items-center gap-2 transition-colors"
-              title="Get it on Google Play"
+              className="px-3 py-1.5 rounded-xl bg-black/60 hover:bg-black/90 border border-white/15 text-white flex items-center gap-2 transition-all hover:scale-105 shadow-md group"
+              title="Get it on Google Play for Android"
             >
-              <GooglePlayLogo className="w-4 h-4" />
-              <span className="text-xs">Android</span>
+              <GooglePlayLogo className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <div className="text-left leading-none">
+                <div className="text-[8px] text-zinc-400 uppercase font-mono tracking-wider">Google Play</div>
+                <div className="text-[11px] font-bold text-white">Android</div>
+              </div>
             </a>
           </div>
         </div>
