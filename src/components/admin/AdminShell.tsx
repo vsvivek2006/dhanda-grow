@@ -98,7 +98,7 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
               <span className="text-slate-300 font-semibold">Dhanda Grow</span>
               <span className="text-slate-600">/</span>
               <span className="text-purple-400 font-medium font-mono text-[11px] uppercase tracking-wider">
-                Admin Workspace
+                Blog Studio
               </span>
             </div>
           </div>
@@ -106,10 +106,10 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
           {/* Right Header Buttons */}
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
-              href="/"
+              href="/blog"
               target="_blank"
               className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 border border-white/10 transition-colors"
-              title="View Live Website"
+              title="View Live Blog"
             >
               <ExternalLink className="w-4 h-4" />
             </Link>

@@ -39,53 +39,23 @@ interface NavGroup {
 
 const NAV_GROUPS: NavGroup[] = [
   {
-    title: "Overview",
+    title: "Blog Studio",
     items: [
       {
-        label: "Dashboard",
+        label: "Blog Hub",
         href: "/admin",
         icon: LayoutDashboard,
         exact: true,
-      },
-    ],
-  },
-  {
-    title: "Marketing & Blog",
-    items: [
-      {
-        label: "Blog Posts",
-        href: "/admin/blog",
-        icon: FileText,
       },
       {
         label: "AI Article Writer",
         href: "/admin/blog/new",
         icon: Sparkles,
       },
-    ],
-  },
-  {
-    title: "CRM & Inquiries",
-    items: [
       {
-        label: "Customer Leads",
-        href: "/admin/leads",
-        icon: Users,
-      },
-    ],
-  },
-  {
-    title: "Growth Tools",
-    items: [
-      {
-        label: "Google Maps Audit",
-        href: "/tools/google-maps-ranking",
-        icon: Compass,
-      },
-      {
-        label: "ROI Calculator",
-        href: "/roi-calculator",
-        icon: TrendingUp,
+        label: "All Blog Posts",
+        href: "/admin/blog",
+        icon: FileText,
       },
     ],
   },
@@ -196,13 +166,13 @@ export function Sidebar({
 
           <div className="pt-2 border-t border-white/10 mt-2">
             <Link
-              href="/"
+              href="/blog"
               target="_blank"
               className="flex items-center justify-between px-3 py-2 rounded-xl text-xs text-slate-400 hover:text-white hover:bg-white/5 transition-colors"
             >
               <div className="flex items-center gap-2.5">
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                <span>View Live Site</span>
+                <span>View Live Blog</span>
               </div>
               <span className="text-[10px] text-slate-500 font-mono">↗</span>
             </Link>

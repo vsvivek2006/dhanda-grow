@@ -14,6 +14,8 @@ import {
   Loader2,
 } from "lucide-react";
 
+import { createBrowserClient } from "@supabase/ssr";
+
 export interface AdminNotification {
   id: string;
   type: "lead" | "post" | "system";
@@ -31,28 +33,33 @@ export function AdminNotificationBell() {
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Load notifications from API or recent events
+  // Load notifications from recent blog posts
   const loadNotifications = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Fetch latest leads to generate notifications
-      const res = await fetch("/api/admin/leads");
-      if (res.ok) {
-        const data = await res.json();
-        const leads = data.leads || [];
-        const leadNotifs: AdminNotification[] = leads.slice(0, 5).map((lead: any) => ({
-          id: `lead-${lead.id}`,
-          type: "lead",
-          title: "New Customer Inquiry",
-          message: `${lead.name} (${lead.phone}) inquired about ${lead.service || "Growth Service"}`,
-          timestamp: lead.created_at,
-          href: "/admin/leads",
-        }));
+      const supabase = createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+      );
+      const { data: posts } = await supabase
+        .from("blog_posts")
+        .select("id, title, slug, created_at")
+        .order("created_at", { ascending: false })
+        .limit(5);
 
-        setNotifications(leadNotifs);
+      if (posts && posts.length > 0) {
+        const postNotifs: AdminNotification[] = posts.map((post: any) => ({
+          id: `post-${post.id || post.slug}`,
+          type: "post",
+          title: "Published Article",
+          message: post.title,
+          timestamp: post.created_at,
+          href: `/blog/${post.slug}`,
+        }));
+        setNotifications(postNotifs);
       }
     } catch {
-      // Fallback notifications if fetch fails
+      // Fallback
       setNotifications([]);
     } finally {
       setIsLoading(false);
@@ -224,16 +231,16 @@ export function AdminNotificationBell() {
 
           {/* Footer */}
           <div className="p-2.5 border-t border-white/10 bg-[#0d0d26] flex items-center justify-between text-[11px] text-slate-400 px-3">
-            <span>Dhanda Grow Platform</span>
+            <span>Dhanda Grow Blog</span>
             <button
               type="button"
               onClick={() => {
                 setIsOpen(false);
-                router.push("/admin/leads");
+                router.push("/admin/blog");
               }}
               className="text-purple-400 hover:text-purple-300 font-medium inline-flex items-center gap-1 cursor-pointer"
             >
-              <span>View Leads</span>
+              <span>All Articles</span>
               <ExternalLink className="w-3 h-3" />
             </button>
           </div>
