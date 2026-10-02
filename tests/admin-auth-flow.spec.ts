@@ -53,10 +53,14 @@ test.describe("Complete Admin Auth Flow (End-to-End)", () => {
     await expect(page).toHaveURL(/\/admin\/leads/, { timeout: 15000 });
     console.log("Step 3.2: Successfully redirected to /admin/leads!");
 
-    // 4. Verify Admin Dashboard rendered with authenticated layout
+    // 4. Verify Admin Dashboard rendered with authenticated layout and single header
     await expect(page.locator("h1")).toHaveText("Customer Leads Dashboard", { timeout: 10000 });
     await expect(page.locator("text=Total Captured Leads")).toBeVisible();
     await expect(page.getByRole("button", { name: /Sign Out/i })).toBeVisible();
+
+    // Verify single admin header and no duplicate public navbar
+    await expect(page.locator("header")).toHaveCount(1);
+    await expect(page.locator('header a:has-text("Services")')).toHaveCount(0);
 
     // Take screenshot of authenticated admin dashboard as proof
     await page.screenshot({ path: "public/images/auth-flow-dashboard-proof.png" });

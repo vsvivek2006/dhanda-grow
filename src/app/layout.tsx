@@ -1,12 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { MobileActionBar } from "@/components/layout/MobileActionBar";
-import { FloatingWhatsApp } from "@/components/shared/FloatingWhatsApp";
 import { Analytics } from "@/components/shared/Analytics";
-import { ScrollProgressBar } from "@/components/ui/ScrollProgressBar";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -167,12 +163,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Analytics />
-        <ScrollProgressBar />
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <MobileActionBar />
-        <FloatingWhatsApp />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
