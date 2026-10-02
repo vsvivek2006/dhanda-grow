@@ -94,7 +94,7 @@ export function ApplioFeatures() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16 md:mb-24">
           {threeSteps.map((step) => (
             <SpotlightCard key={step.num} className="p-8 flex flex-col justify-between group">
               <div>
@@ -135,7 +135,7 @@ export function ApplioFeatures() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16 md:mb-24">
           {appReviews.map((rev, idx) => (
             <SpotlightCard key={idx} className="p-7 flex flex-col justify-between">
               <div>
@@ -175,7 +175,7 @@ export function ApplioFeatures() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/15 blur-3xl pointer-events-none rounded-full" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-600/15 blur-3xl pointer-events-none rounded-full" />
 
-          <div className="relative z-10 grid md:grid-cols-12 gap-8 items-center">
+          <div className="relative z-10 flex flex-col md:grid md:grid-cols-12 gap-8 items-center">
             <div className="md:col-span-8 space-y-4">
               <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
                 Get Started In 60 Seconds

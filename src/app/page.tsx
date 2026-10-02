@@ -161,27 +161,27 @@ export default function HomePage() {
       <RevealOnScroll direction="up" delay={0.1}>
         <section className="border-y border-white/10 bg-[#07071a]/90 py-10 px-4 relative z-20">
           <div className="container mx-auto max-w-7xl">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
               <div className="space-y-1">
-                <div className="text-3xl md:text-5xl font-black text-gradient-brand">
+                <div className="text-2xl sm:text-3xl md:text-5xl font-black text-gradient-brand">
                   10,000+
                 </div>
                 <div className="text-xs md:text-sm text-slate-400 font-medium">Local Businesses Active</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl md:text-5xl font-black text-gradient-brand">
+                <div className="text-2xl sm:text-3xl md:text-5xl font-black text-gradient-brand">
                   50,000+
                 </div>
                 <div className="text-xs md:text-sm text-slate-400 font-medium">5-Star Reviews Gathered</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl md:text-5xl font-black text-gradient-brand">
-                  2,000,000+
+                <div className="text-xl sm:text-2xl md:text-5xl font-black text-gradient-brand">
+                  20 Lakh+
                 </div>
                 <div className="text-xs md:text-sm text-slate-400 font-medium">AI Creatives & Posts</div>
               </div>
               <div className="space-y-1">
-                <div className="text-3xl md:text-5xl font-black text-gradient-brand">
+                <div className="text-2xl sm:text-3xl md:text-5xl font-black text-gradient-brand">
                   4.8 / 5.0
                 </div>
                 <div className="text-xs md:text-sm text-slate-400 font-medium">Merchant Satisfaction Rating</div>
@@ -551,7 +551,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Quick Thumbnails Row */}
-                <div className="grid grid-cols-5 gap-2 pt-3 mt-1">
+                <div className="grid grid-cols-5 gap-1.5 pt-3 mt-1">
                   {appScreenshots.map((item, idx) => (
                     <button
                       key={idx}
@@ -780,13 +780,13 @@ export default function HomePage() {
 
         <RevealOnScroll direction="up" delay={0.15}>
           <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 no-scrollbar">
-            <table className="w-full min-w-[620px] text-left border-collapse glass-card rounded-3xl overflow-hidden border border-white/15">
+            <table className="w-full min-w-[560px] text-left border-collapse glass-card rounded-3xl overflow-hidden border border-white/15">
               <thead>
-                <tr className="border-b border-white/10 bg-white/5 text-xs md:text-sm">
-                  <th className="p-5 text-slate-300 font-semibold">Features & Benefits</th>
-                  <th className="p-5 text-slate-400 font-normal">Marketing Agency</th>
-                  <th className="p-5 text-slate-400 font-normal">Doing It Yourself</th>
-                  <th className="p-5 text-white font-bold bg-purple-900/40 border-l border-r border-purple-500/30">
+                  <tr className="border-b border-white/10 bg-white/5 text-xs md:text-sm">
+                  <th className="p-3 sm:p-5 text-slate-300 font-semibold">Features & Benefits</th>
+                  <th className="p-3 sm:p-5 text-slate-400 font-normal">Marketing Agency</th>
+                  <th className="p-3 sm:p-5 text-slate-400 font-normal">Doing It Yourself</th>
+                  <th className="p-3 sm:p-5 text-white font-bold bg-purple-900/40 border-l border-r border-purple-500/30">
                     <div className="flex items-center gap-1.5 text-cyan-300">
                       <Sparkles className="w-4 h-4" /> Dhanda Grow
                     </div>
@@ -795,42 +795,42 @@ export default function HomePage() {
               </thead>
               <tbody className="divide-y divide-white/10 text-xs md:text-sm">
                 <tr>
-                  <td className="p-5 font-semibold text-white">Monthly Cost</td>
-                  <td className="p-5 text-slate-400">₹20,000 - ₹50,000 / mo</td>
-                  <td className="p-5 text-slate-400">15+ hours of your free time</td>
-                  <td className="p-5 font-bold text-emerald-400 bg-purple-900/20 border-l border-r border-purple-500/20">
+                  <td className="p-3 sm:p-5 font-semibold text-white">Monthly Cost</td>
+                  <td className="p-3 sm:p-5 text-slate-400">₹20,000 - ₹50,000 / mo</td>
+                  <td className="p-3 sm:p-5 text-slate-400">15+ hours of your free time</td>
+                  <td className="p-3 sm:p-5 font-bold text-emerald-400 bg-purple-900/20 border-l border-r border-purple-500/20">
                     Free / Affordable
                   </td>
                 </tr>
                 <tr>
-                  <td className="p-5 font-semibold text-white">Google Maps Audit & Rank Tracking</td>
-                  <td className="p-5 text-slate-400">Manual monthly report</td>
-                  <td className="p-5 text-slate-400">Rarely done / Guesswork</td>
-                  <td className="p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
+                  <td className="p-3 sm:p-5 font-semibold text-white">Google Maps Audit & Rank Tracking</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Manual monthly report</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Rarely done / Guesswork</td>
+                  <td className="p-3 sm:p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
                     Real-time 24/7 AI Radar
                   </td>
                 </tr>
                 <tr>
-                  <td className="p-5 font-semibold text-white">Daily Social Posters & Festival Graphics</td>
-                  <td className="p-5 text-slate-400">Takes 3-5 days per creative</td>
-                  <td className="p-5 text-slate-400">Hours spent struggling with design</td>
-                  <td className="p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
+                  <td className="p-3 sm:p-5 font-semibold text-white">Daily Social Posters & Festival Graphics</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Takes 3-5 days per creative</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Hours spent struggling with design</td>
+                  <td className="p-3 sm:p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
                     Instant 1-Click Generation
                   </td>
                 </tr>
                 <tr>
-                  <td className="p-5 font-semibold text-white">WhatsApp Review Automation</td>
-                  <td className="p-5 text-slate-400">Not included / Extra charge</td>
-                  <td className="p-5 text-slate-400">Awkward to ask manually</td>
-                  <td className="p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
+                  <td className="p-3 sm:p-5 font-semibold text-white">WhatsApp Review Automation</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Not included / Extra charge</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Awkward to ask manually</td>
+                  <td className="p-3 sm:p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
                     100% Automated Workflow
                   </td>
                 </tr>
                 <tr>
-                  <td className="p-5 font-semibold text-white">AI 24/7 Review Replies</td>
-                  <td className="p-5 text-slate-400">Delayed by days</td>
-                  <td className="p-5 text-slate-400">Ignored or forgotten</td>
-                  <td className="p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
+                  <td className="p-3 sm:p-5 font-semibold text-white">AI 24/7 Review Replies</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Delayed by days</td>
+                  <td className="p-3 sm:p-5 text-slate-400">Ignored or forgotten</td>
+                  <td className="p-3 sm:p-5 font-bold text-white bg-purple-900/20 border-l border-r border-purple-500/20">
                     Instant under 10 seconds
                   </td>
                 </tr>
