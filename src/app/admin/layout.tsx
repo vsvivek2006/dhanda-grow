@@ -38,9 +38,9 @@ export default function AdminLayout({
                 </Link>
               </Button>
               <Button asChild variant="ghost" size="sm" className="text-slate-300 hover:text-white hover:bg-white/5">
-                <Link href="/blog/new" className="flex items-center gap-2">
+                <Link href="/admin/blog" className="flex items-center gap-2">
                   <PenTool className="w-4 h-4 text-purple-400" />
-                  <span>AI Blog Creator</span>
+                  <span>Blog &amp; AI Writer</span>
                 </Link>
               </Button>
             </nav>

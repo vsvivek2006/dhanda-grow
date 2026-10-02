@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@/components/shared/Analytics";
 import { SiteChrome } from "@/components/layout/SiteChrome";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -163,6 +164,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Analytics />
+        <Toaster richColors position="top-right" theme="dark" closeButton />
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
