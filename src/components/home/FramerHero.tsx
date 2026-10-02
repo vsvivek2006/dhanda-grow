@@ -89,7 +89,7 @@ export function FramerHero() {
             <GoogleMapsLogo className="w-3.5 h-3.5" />
           </div>
           <span className="text-white font-semibold">Automated Local Marketing</span>
-          <span className="text-zinc-600 hidden sm:inline">•</span>
+          <span className="text-zinc-600 hidden sm:inline">?</span>
           <span className="text-zinc-400 hidden sm:inline">Zero Design Skills Needed</span>
         </div>
 
@@ -131,7 +131,7 @@ export function FramerHero() {
           </Button>
         </div>
 
-        {/* Store Badges — own row on mobile */}
+        {/* Store Badges ? own row on mobile */}
         <div className="flex items-center justify-center gap-2.5 mb-5 sm:mb-6">
           <a
             href={APP_STORE_URL}
@@ -221,7 +221,7 @@ export function FramerHero() {
             </div>
           </div>
 
-          {/* Product Image — taller ratio on mobile */}
+          {/* Product Image ? taller ratio on mobile */}
           <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] rounded-xl overflow-hidden bg-black/90 border border-white/5">
             <Image
               src={current.image}
