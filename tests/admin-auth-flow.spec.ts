@@ -3,6 +3,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Complete Admin Auth Flow (End-to-End)", () => {
   test("Full lifecycle: Unauthenticated block -> Invalid credentials rejection -> Successful login -> Protected access -> Sign out -> Re-verification", async ({
     page,
+    isMobile,
   }) => {
     page.on("console", (msg) => console.log("PAGE CONSOLE:", msg.type(), msg.text()));
     page.on("pageerror", (err) => console.log("PAGE ERROR:", err.message));
@@ -56,6 +57,10 @@ test.describe("Complete Admin Auth Flow (End-to-End)", () => {
     // 4. Verify Admin Dashboard rendered with authenticated layout and single header
     await expect(page.locator("h1")).toHaveText("Customer Leads Dashboard", { timeout: 10000 });
     await expect(page.locator("text=Total Captured Leads")).toBeVisible();
+
+    if (isMobile) {
+      await page.click('header button[aria-label="Open sidebar menu"]');
+    }
     await expect(page.getByRole("button", { name: /Sign Out/i })).toBeVisible();
 
     // Verify single admin header and no duplicate public navbar
@@ -75,6 +80,9 @@ test.describe("Complete Admin Auth Flow (End-to-End)", () => {
     // 6. Perform Sign Out
     console.log("Step 6: Executing Sign Out...");
     await page.goto("/admin/leads");
+    if (isMobile) {
+      await page.click('header button[aria-label="Open sidebar menu"]');
+    }
     const signOutBtn = page.getByRole("button", { name: /Sign Out/i });
     await expect(signOutBtn).toBeVisible();
     await signOutBtn.click();

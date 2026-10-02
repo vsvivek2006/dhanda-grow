@@ -53,29 +53,14 @@ export async function updateSession(request: NextRequest) {
   if (isProtectedPage && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    // Normalize /admin or /admin/ to /admin/leads
-    const targetRedirect =
-      pathname === "/admin" || pathname === "/admin/"
-        ? "/admin/leads"
-        : pathname;
-    url.searchParams.set("redirect", targetRedirect);
-    return NextResponse.redirect(url);
-  }
-
-  // If authenticated user visits /admin directly, redirect to /admin/leads
-  if ((pathname === "/admin" || pathname === "/admin/") && user) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin/leads";
+    url.searchParams.set("redirect", pathname);
     return NextResponse.redirect(url);
   }
 
   if (isLoginPage && user) {
     const url = request.nextUrl.clone();
     const redirectParam = request.nextUrl.searchParams.get("redirect");
-    const targetPath =
-      !redirectParam || redirectParam === "/admin" || redirectParam === "/admin/"
-        ? "/admin/leads"
-        : redirectParam;
+    const targetPath = redirectParam || "/admin";
     url.pathname = targetPath;
     url.searchParams.delete("redirect");
     return NextResponse.redirect(url);

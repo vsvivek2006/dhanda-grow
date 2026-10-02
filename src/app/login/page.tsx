@@ -12,7 +12,7 @@ import { Lock, Mail, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectPath = searchParams.get("redirect") || "/admin/leads";
+  const redirectPath = searchParams.get("redirect") || "/admin";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -7,7 +7,7 @@ test.describe("AI Blog Editor & Management Suite", () => {
     await page.fill('input[type="email"]', "admin@dhandhagrow.com");
     await page.fill('input[type="password"]', "Dhanda#2026!Admin#Grow");
     await page.click('button[type="submit"]');
-    await expect(page).toHaveURL(/\/admin\/leads/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/admin/, { timeout: 15000 });
   });
 
   test("Admin Blog Hub renders PostTable with search and status filters", async ({ page }) => {
