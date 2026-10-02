@@ -159,7 +159,7 @@ export function CoreGrowthEngines() {
         {/* ENGINE 01: GOOGLE MAPS 3-PACK RANKING RADAR                    */}
         {/* ============================================================== */}
         <RevealOnScroll direction="up" delay={0.15} className="h-full">
-          <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group h-full">
+          <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-5 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group h-full">
             <BorderBeam size={260} duration={14} colorFrom="#38bdf8" colorTo="#34d399" />
 
           <div>
@@ -325,7 +325,7 @@ export function CoreGrowthEngines() {
         {/* ENGINE 02: AI SOCIAL MEDIA CREATIVE SUITE                      */}
         {/* ============================================================== */}
         <RevealOnScroll direction="up" delay={0.25} className="h-full">
-          <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-6 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group h-full">
+          <div className="rounded-3xl border border-white/10 bg-[#080814]/90 p-5 sm:p-8 backdrop-blur-xl shadow-2xl flex flex-col justify-between relative overflow-hidden group h-full">
             <BorderBeam size={260} duration={14} colorFrom="#c084fc" colorTo="#f43f5e" />
 
           <div>

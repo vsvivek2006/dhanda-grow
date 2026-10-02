@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "dhandhagrow.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "dhanda.app",
         pathname: "/**",
       },

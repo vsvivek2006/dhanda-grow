@@ -1,5 +1,6 @@
 export const BRAND_NAME = "Dhanda Grow";
-export const BRAND_DOMAIN = "dhanda.app";
+export const BRAND_DOMAIN = "dhandhagrow.com";
+export const SITE_URL = "https://dhandhagrow.com";
 export const SERVICE_PRICE = "Free";
 export const SUPPORT_PHONE = "+91 9619887428";
 export const SUPPORT_WHATSAPP = "+91 9619887428";

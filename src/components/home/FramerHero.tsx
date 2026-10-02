@@ -71,7 +71,9 @@ export function FramerHero() {
   return (
     <section className="relative pt-10 sm:pt-16 pb-14 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
       {/* Background Spotlight */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-purple-500/12 via-cyan-500/8 to-transparent blur-[140px] pointer-events-none rounded-full" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-b from-purple-500/12 via-cyan-500/8 to-transparent blur-[140px] rounded-full" />
+      </div>
 
       {/* Hero Header */}
       <motion.div

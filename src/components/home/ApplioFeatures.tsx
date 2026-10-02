@@ -171,30 +171,30 @@ export function ApplioFeatures() {
           DIRECT DOWNLOAD BANNER (APPLIO STYLE)
       ────────────────────────────────────────── */}
       <RevealOnScroll direction="up" delay={0.2}>
-        <div className="relative rounded-3xl overflow-hidden p-6 sm:p-10 border border-white/20 bg-gradient-to-br from-[#12122b] via-[#0c0c1e] to-[#060612] shadow-2xl">
+        <div className="relative rounded-3xl overflow-hidden p-5 sm:p-8 md:p-10 border border-white/20 bg-gradient-to-br from-[#12122b] via-[#0c0c1e] to-[#060612] shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/15 blur-3xl pointer-events-none rounded-full" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-600/15 blur-3xl pointer-events-none rounded-full" />
 
-          <div className="relative z-10 flex flex-col md:grid md:grid-cols-12 gap-8 items-center">
-            <div className="md:col-span-8 space-y-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
+          <div className="relative z-10 flex flex-col md:grid md:grid-cols-12 gap-8 items-center w-full min-w-0">
+            <div className="w-full md:col-span-8 space-y-4 min-w-0">
+              <span className="inline-block text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono">
                 Get Started In 60 Seconds
               </span>
               <h3 className="text-2xl sm:text-4xl font-extrabold text-white leading-tight">
                 Ready to Dominate Google Maps & Festival Marketing in Your Town?
               </h3>
-              <p className="text-zinc-300 text-sm sm:text-base max-w-xl">
+              <p className="text-zinc-300 text-sm sm:text-base max-w-xl leading-relaxed">
                 Download the Dhanda Grow app now for iOS and Android. Zero credit card needed. Enjoy instant Google profile analysis and 3 free festival creatives.
               </p>
 
-              <div className="flex flex-wrap items-center gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                 <a
                   href={APP_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-black border border-white/20 text-white hover:border-violet-500/50 hover:scale-105 transition-all shadow-xl"
+                  className="flex items-center justify-center sm:justify-start gap-3 px-5 py-3 rounded-2xl bg-black border border-white/20 text-white hover:border-violet-500/50 hover:scale-[1.02] sm:hover:scale-105 transition-all shadow-xl"
                 >
-                  <AppleLogo className="w-6 h-6 text-white" />
+                  <AppleLogo className="w-6 h-6 text-white shrink-0" />
                   <div className="text-left">
                     <div className="text-[10px] text-zinc-400 uppercase font-mono">Download on the</div>
                     <div className="text-sm font-bold text-white">App Store</div>
@@ -205,9 +205,9 @@ export function ApplioFeatures() {
                   href={PLAY_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-black border border-white/20 text-white hover:border-cyan-500/50 hover:scale-105 transition-all shadow-xl"
+                  className="flex items-center justify-center sm:justify-start gap-3 px-5 py-3 rounded-2xl bg-black border border-white/20 text-white hover:border-cyan-500/50 hover:scale-[1.02] sm:hover:scale-105 transition-all shadow-xl"
                 >
-                  <GooglePlayLogo className="w-6 h-6" />
+                  <GooglePlayLogo className="w-6 h-6 shrink-0" />
                   <div className="text-left">
                     <div className="text-[10px] text-zinc-400 uppercase font-mono">Get it on</div>
                     <div className="text-sm font-bold text-white">Google Play</div>
@@ -216,7 +216,7 @@ export function ApplioFeatures() {
               </div>
             </div>
 
-            <div className="md:col-span-4 flex justify-center">
+            <div className="hidden md:flex md:col-span-4 justify-center">
               <div className="p-6 rounded-2xl bg-black/80 border border-white/15 backdrop-blur-xl text-center shadow-2xl">
                 <div className="w-32 h-32 mx-auto rounded-xl bg-white p-2 flex items-center justify-center mb-3">
                   <QrCode className="w-28 h-28 text-black" />

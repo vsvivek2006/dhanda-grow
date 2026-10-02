@@ -6,9 +6,39 @@ import { CalendarIcon, Sparkles } from "lucide-react";
 import { BRAND_NAME } from "@/lib/constants";
 import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
+import { BreadcrumbSchema } from "@/components/seo/JsonLdSchemas";
+
 export const metadata: Metadata = {
-  title: `Local Business Growth Blog & Guides | ${BRAND_NAME}`,
-  description: "Read practical guides on Google Maps ranking, social media automation, customer review management, and local business growth.",
+  title: "AI Marketing for Local Business — Insights & Guides | Dhanda Grow Blog",
+  description:
+    "Explore practical guides, local SEO tutorials, and marketing automation playbooks designed to help Indian shops and service businesses grow foot traffic.",
+  alternates: {
+    canonical: "https://dhandhagrow.com/blog",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://dhandhagrow.com/blog",
+    siteName: "Dhanda Grow",
+    title: "AI Marketing for Local Business — Insights & Guides | Dhanda Grow Blog",
+    description:
+      "Explore practical guides, local SEO tutorials, and marketing automation playbooks designed to help Indian shops and service businesses grow foot traffic.",
+    images: [
+      {
+        url: "/images/dhanda-3d-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Dhanda Grow Blog & Guides",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Marketing for Local Business — Insights & Guides | Dhanda Grow Blog",
+    description:
+      "Explore practical guides, local SEO tutorials, and marketing automation playbooks designed to help Indian shops and service businesses grow foot traffic.",
+    images: ["/images/dhanda-3d-hero.jpg"],
+  },
 };
 
 export default function BlogIndexPage() {
@@ -16,6 +46,12 @@ export default function BlogIndexPage() {
 
   return (
     <div className="py-20 bg-background min-h-screen relative overflow-hidden">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Blog", url: "/blog" },
+        ]}
+      />
       {/* Background glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 

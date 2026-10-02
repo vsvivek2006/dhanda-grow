@@ -28,7 +28,7 @@ test.describe("UI & UX Visual Audit", () => {
     // Verify stats numbers are rendered as visible text
     await expect(page.getByText("10,000+", { exact: true })).toBeVisible();
     await expect(page.getByText("50,000+", { exact: true })).toBeVisible();
-    await expect(page.getByText("2,000,000+", { exact: true })).toBeVisible();
+    await expect(page.getByText(/20 Lakh\+|2,000,000\+/i)).toBeVisible();
     await expect(page.getByText("4.8 / 5.0", { exact: true })).toBeVisible();
     const statsSection = page.locator('section:has-text("Local Businesses Active")');
     await statsSection.screenshot({ path: "public/images/stats-bar-proof.png" });

@@ -51,7 +51,12 @@ const BUSINESS_TYPES = [
   "Other Local Business"
 ];
 
-export function LeadForm() {
+interface LeadFormProps {
+  className?: string;
+  isEmbedded?: boolean;
+}
+
+export function LeadForm({ className = "", isEmbedded = false }: LeadFormProps = {}) {
   const router = useRouter();
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -92,10 +97,18 @@ export function LeadForm() {
   }
 
   return (
-    <div className="bg-card text-card-foreground p-6 md:p-8 rounded-2xl shadow-lg border border-border">
-      <h3 className="text-xl font-heading font-bold mb-6 text-foreground text-center">Get Free Demo & Strategy Call</h3>
+    <div
+      className={
+        isEmbedded
+          ? `w-full min-w-0 ${className}`
+          : `glass-card text-card-foreground p-5 sm:p-7 md:p-8 rounded-3xl shadow-2xl border border-purple-500/30 bg-[#0a0a22] w-full min-w-0 ${className}`
+      }
+    >
+      <h3 className="text-xl font-heading font-bold mb-6 text-foreground text-center">
+        Get Free Demo & Strategy Call
+      </h3>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full min-w-0">
           <FormField
             control={form.control}
             name="fullName"
@@ -141,17 +154,17 @@ export function LeadForm() {
             )}
           />
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full min-w-0">
             <FormField
               control={form.control}
               name="state"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full min-w-0">
                   <FormLabel>State *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -171,12 +184,12 @@ export function LeadForm() {
               control={form.control}
               name="businessType"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="w-full min-w-0">
                   <FormLabel>Business Type *</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select" />
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select business" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -197,15 +210,16 @@ export function LeadForm() {
             control={form.control}
             name="consent"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md p-4 bg-muted/50 mt-2">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-xl p-3.5 sm:p-4 bg-white/[0.03] border border-white/10 mt-2">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="shrink-0 mt-0.5"
                   />
                 </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="text-xs text-muted-foreground font-normal">
+                <div className="space-y-1 leading-none min-w-0">
+                  <FormLabel className="text-xs text-muted-foreground font-normal leading-relaxed cursor-pointer">
                     I agree to receive a demo and support assistance and accept the Privacy Policy.
                   </FormLabel>
                 </div>
@@ -213,7 +227,11 @@ export function LeadForm() {
             )}
           />
 
-          <Button type="submit" disabled={isLoading} className="w-full bg-gradient-brand hover:opacity-90 h-12 text-base font-bold mt-6 text-white rounded-xl shadow-lg shadow-purple-600/30 transition-all hover:scale-[1.02]">
+          <Button
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-gradient-brand hover:opacity-90 min-h-12 h-auto py-3 px-4 text-sm sm:text-base font-bold mt-6 text-white rounded-xl shadow-lg shadow-purple-600/30 transition-all hover:scale-[1.01] whitespace-normal text-center leading-snug cursor-pointer"
+          >
             {isLoading ? "Submitting..." : "Get Free Google Maps Audit & Demo"}
           </Button>
           

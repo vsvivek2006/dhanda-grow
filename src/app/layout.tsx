@@ -21,7 +21,10 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://dhanda.app"),
+  metadataBase: new URL("https://dhandhagrow.com"),
+  alternates: {
+    canonical: "https://dhandhagrow.com",
+  },
   title: {
     default: "Dhanda Grow | AI Marketing for Local Businesses",
     template: "%s | Dhanda Grow",
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
     "Dhanda Grow",
     "Ezo Technologies",
   ],
-  authors: [{ name: "Ezo Technologies Pvt Ltd", url: "https://dhanda.app" }],
+  authors: [{ name: "Ezo Technologies Pvt Ltd", url: "https://dhandhagrow.com" }],
   creator: "Ezo Technologies Pvt Ltd",
   publisher: "Ezo Technologies Pvt Ltd",
   formatDetection: {
@@ -48,17 +51,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://dhanda.app",
+    url: "https://dhandhagrow.com",
     siteName: "Dhanda Grow",
     title: "Dhanda Grow | AI Marketing for Local Businesses",
     description:
       "Automate Google Maps ranking, daily social media creatives, and 5-star reviews on complete autopilot for local Indian businesses.",
     images: [
       {
-        url: "https://ezobooks.in/kfi/file/399732/GDijO6m",
+        url: "/images/dhanda-3d-hero.jpg",
         width: 1200,
         height: 630,
-        alt: "Dhanda Grow AI Platform",
+        alt: "Dhanda Grow AI Marketing Platform",
       },
     ],
   },
@@ -67,7 +70,7 @@ export const metadata: Metadata = {
     title: "Dhanda Grow | AI Marketing for Local Businesses",
     description:
       "Automate Google Maps ranking, daily social media creatives, and 5-star reviews on complete autopilot for local Indian businesses.",
-    images: ["https://ezobooks.in/kfi/file/399732/GDijO6m"],
+    images: ["/images/dhanda-3d-hero.jpg"],
   },
   robots: {
     index: true,
@@ -96,11 +99,21 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": "https://dhandhagrow.com/#website",
+        "name": "Dhanda Grow",
+        "url": "https://dhandhagrow.com",
+        "inLanguage": "en-IN",
+        "publisher": {
+          "@id": "https://dhandhagrow.com/#organization"
+        }
+      },
+      {
         "@type": "Organization",
-        "@id": "https://dhanda.app/#organization",
+        "@id": "https://dhandhagrow.com/#organization",
         "name": "Ezo Technologies Pvt Ltd",
-        "url": "https://dhanda.app",
-        "logo": "https://ezobooks.in/kfi/file/399732/GDijO6m",
+        "url": "https://dhandhagrow.com",
+        "logo": "https://dhandhagrow.com/logo.svg",
         "sameAs": [
           "https://www.instagram.com/dhanda.ai.marketing/",
           "https://in.linkedin.com/company/ezobooks",
@@ -124,11 +137,18 @@ export default function RootLayout({
       },
       {
         "@type": "SoftwareApplication",
-        "@id": "https://dhanda.app/#software",
+        "@id": "https://dhandhagrow.com/#software",
         "name": "Dhanda Grow",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web, iOS, Android",
-        "url": "https://dhanda.app",
+        "url": "https://dhandhagrow.com",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "1250",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
         "offers": {
           "@type": "Offer",
           "price": "0",

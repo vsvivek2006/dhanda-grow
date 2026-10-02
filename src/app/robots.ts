@@ -1,12 +1,13 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/constants';
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/thank-you', '/api/'],
+      disallow: ['/thank-you', '/api/', '/blog/new'],
     },
-    sitemap: 'https://dhanda.app/sitemap.xml',
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

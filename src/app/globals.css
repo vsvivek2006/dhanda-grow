@@ -118,7 +118,9 @@
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
-  display: inline-block;
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .text-gradient-purple {
@@ -126,7 +128,9 @@
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
-  display: inline-block;
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .text-gradient-brand {
@@ -134,7 +138,9 @@
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
-  display: inline-block;
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 /* Ensure any Tailwind bg-clip-text always uses WebKit prefix */
@@ -149,7 +155,9 @@
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
-  display: inline-block;
+  display: inline;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 @supports not (-webkit-background-clip: text) {

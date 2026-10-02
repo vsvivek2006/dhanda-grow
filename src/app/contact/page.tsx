@@ -5,14 +5,77 @@ import { SUPPORT_EMAIL, SUPPORT_PHONE, WHATSAPP_LINK, BRAND_NAME } from "@/lib/c
 import { LeadForm } from "@/components/shared/LeadForm";
 import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
+import { BreadcrumbSchema } from "@/components/seo/JsonLdSchemas";
+
 export const metadata: Metadata = {
-  title: `Contact Us | ${BRAND_NAME} Support`,
-  description: "Need help with Dhanda Grow? Get onboarding assistance, Google Maps ranking guidance, or social media automation support from our team.",
+  title: "Contact Dhanda Grow — Start With AI Marketing for Your Local Business",
+  description:
+    "Get in touch with Dhanda Grow specialists in Jaipur, India. Schedule your free 1-on-1 demo for Google Maps ranking, AI posters, and automated review management.",
+  alternates: {
+    canonical: "https://dhandhagrow.com/contact",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://dhandhagrow.com/contact",
+    siteName: "Dhanda Grow",
+    title: "Contact Dhanda Grow — Start With AI Marketing for Your Local Business",
+    description:
+      "Get in touch with Dhanda Grow specialists in Jaipur, India. Schedule your free 1-on-1 demo for Google Maps ranking, AI posters, and automated review management.",
+    images: [
+      {
+        url: "/images/dhanda-3d-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Contact Dhanda Grow",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Dhanda Grow — Start With AI Marketing for Your Local Business",
+    description:
+      "Get in touch with Dhanda Grow specialists in Jaipur, India. Schedule your free 1-on-1 demo for Google Maps ranking, AI posters, and automated review management.",
+    images: ["/images/dhanda-3d-hero.jpg"],
+  },
 };
 
 export default function ContactPage() {
+  const contactJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": "https://dhandhagrow.com/contact/#webpage",
+    "name": "Contact Dhanda Grow",
+    "url": "https://dhandhagrow.com/contact",
+    "description":
+      "Contact Dhanda Grow for local business AI marketing and Google Business Profile optimization assistance.",
+    "mainEntity": {
+      "@type": "LocalBusiness",
+      "name": "Dhanda Grow",
+      "telephone": SUPPORT_PHONE,
+      "email": SUPPORT_EMAIL,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jaipur",
+        "addressRegion": "Rajasthan",
+        "addressCountry": "IN",
+      },
+      "url": "https://dhandhagrow.com",
+    },
+  };
+
   return (
     <div className="py-20 bg-background relative overflow-hidden">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Contact", url: "/contact" },
+        ]}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+      />
       {/* Background glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 

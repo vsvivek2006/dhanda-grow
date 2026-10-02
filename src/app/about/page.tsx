@@ -4,15 +4,50 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle2, Bot, MessageCircle, MapPin, Building, Target, Sparkles, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { RevealOnScroll } from "@/components/ui/ParallaxSection";
+import { BreadcrumbSchema } from "@/components/seo/JsonLdSchemas";
 
 export const metadata: Metadata = {
-  title: `About Us | ${BRAND_NAME} by Ezo Technologies`,
-  description: "Dhanda Grow is an AI-powered digital marketing platform built by Ezo Technologies to help local businesses automate Google Maps rankings, social media, and customer reviews.",
+  title: "About Dhanda Grow — AI Marketing Experts for Local Brands",
+  description:
+    "Learn how Dhanda Grow uses AI marketing to level the playing field for local businesses. Meet the team behind smarter customer acquisition and growth strategies.",
+  alternates: {
+    canonical: "https://dhandhagrow.com/about",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://dhandhagrow.com/about",
+    siteName: "Dhanda Grow",
+    title: "About Dhanda Grow — AI Marketing Experts for Local Brands",
+    description:
+      "Learn how Dhanda Grow uses AI marketing to level the playing field for local businesses. Meet the team behind smarter customer acquisition and growth strategies.",
+    images: [
+      {
+        url: "/images/dhanda-3d-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "About Dhanda Grow by Ezo Technologies",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Dhanda Grow — AI Marketing Experts for Local Brands",
+    description:
+      "Learn how Dhanda Grow uses AI marketing to level the playing field for local businesses. Meet the team behind smarter customer acquisition and growth strategies.",
+    images: ["/images/dhanda-3d-hero.jpg"],
+  },
 };
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#04040f] text-slate-100 font-sans relative overflow-hidden">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "About Us", url: "/about" },
+        ]}
+      />
       {/* Glow Orbs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-glow rounded-full blur-[140px] pointer-events-none" />
 

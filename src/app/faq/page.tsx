@@ -11,9 +11,39 @@ import {
 import { BRAND_NAME, WHATSAPP_LINK } from "@/lib/constants";
 import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
+import { BreadcrumbSchema, FAQSchema } from "@/components/seo/JsonLdSchemas";
+
 export const metadata: Metadata = {
-  title: `Frequently Asked Questions | ${BRAND_NAME}`,
-  description: "Get answers to all questions regarding Dhanda Grow: Google Maps optimization, automated social media posting, WhatsApp review requests, and setup.",
+  title: "AI Marketing for Local Business FAQs | Dhanda Grow",
+  description:
+    "Find clear answers on automated Google Maps SEO, WhatsApp 5-star reviews, AI festive social creatives, and setup with Dhanda Grow.",
+  alternates: {
+    canonical: "https://dhandhagrow.com/faq",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://dhandhagrow.com/faq",
+    siteName: "Dhanda Grow",
+    title: "AI Marketing for Local Business FAQs | Dhanda Grow",
+    description:
+      "Find clear answers on automated Google Maps SEO, WhatsApp 5-star reviews, AI festive social creatives, and setup with Dhanda Grow.",
+    images: [
+      {
+        url: "/images/dhanda-3d-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Dhanda Grow FAQ",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Marketing for Local Business FAQs | Dhanda Grow",
+    description:
+      "Find clear answers on automated Google Maps SEO, WhatsApp 5-star reviews, AI festive social creatives, and setup with Dhanda Grow.",
+    images: ["/images/dhanda-3d-hero.jpg"],
+  },
 };
 
 const faqs = [
@@ -60,25 +90,15 @@ const faqs = [
 ];
 
 export default function FAQPage() {
-  const faqJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map((faq) => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer,
-      },
-    })),
-  };
-
   return (
     <div className="flex flex-col min-h-screen bg-[#04040f] text-slate-100 font-sans relative overflow-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "FAQ", url: "/faq" },
+        ]}
       />
+      <FAQSchema faqs={faqs} />
       {/* Glow Orbs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-glow rounded-full blur-[140px] pointer-events-none" />
 

@@ -146,9 +146,11 @@ export default function HomePage() {
   return (
     <div className="bg-[#050508] text-zinc-100 min-h-screen relative overflow-hidden font-sans">
       {/* Framer-grade Ambient Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-purple-600/10 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute top-[1400px] -left-48 w-[600px] h-[600px] bg-cyan-600/8 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute top-[2800px] -right-48 w-[600px] h-[600px] bg-purple-600/8 rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-purple-600/10 rounded-full blur-[150px]" />
+        <div className="absolute top-[1400px] -left-48 w-[600px] h-[600px] bg-cyan-600/8 rounded-full blur-[160px]" />
+        <div className="absolute top-[2800px] -right-48 w-[600px] h-[600px] bg-purple-600/8 rounded-full blur-[160px]" />
+      </div>
 
       {/* ──────────────────────────────────────────
           HERO SECTION: Framer Style Software Showcase
@@ -530,7 +532,7 @@ export default function HomePage() {
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/70" />
                   </div>
                   <div className="text-[11px] font-mono font-medium text-zinc-400 bg-white/5 px-3 py-0.5 rounded-full border border-white/10">
-                    dhanda.app • {appScreenshots[activeScreenIndex].badge}
+                    dhandhagrow.com • {appScreenshots[activeScreenIndex].badge}
                   </div>
                   <div className="flex items-center gap-1.5 text-[10px] font-medium text-emerald-400">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -845,38 +847,36 @@ export default function HomePage() {
       ────────────────────────────────────────── */}
       <section className="py-14 sm:py-24 px-4 container mx-auto max-w-5xl relative border-t border-white/10 overflow-hidden" id="lead-capture">
         <RevealOnScroll direction="up" delay={0.1}>
-          <div className="grid md:grid-cols-12 gap-10 items-center">
-            <div className="md:col-span-6 space-y-6">
-              <span className="text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3.5 py-1.5 rounded-full border border-purple-500/20">
+          <div className="grid md:grid-cols-12 gap-8 md:gap-10 items-center w-full min-w-0">
+            <div className="md:col-span-6 space-y-5 sm:space-y-6 min-w-0">
+              <span className="inline-block text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3.5 py-1.5 rounded-full border border-purple-500/20">
                 Get Started In 2 Minutes
               </span>
-              <h2 className="font-heading text-3xl md:text-5xl font-extrabold tracking-tight">
+              <h2 className="font-heading text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
                 Get Your Free <span className="text-gradient-brand">Google Maps Audit</span> & Demo
               </h2>
-              <p className="text-slate-300 text-base leading-relaxed">
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
                 Drop your details below. Our growth specialist will run a complimentary audit of your Google Maps presence and demonstrate how Dhanda Grow will automate your marketing.
               </p>
 
               <ul className="space-y-3 text-sm text-slate-300">
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                   <span>Complimentary Google Maps Competitor Analysis</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                   <span>3 Free Festival Creatives tailored with your logo</span>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
                   <span>Zero obligations • 100% free consultation</span>
                 </li>
               </ul>
             </div>
 
-            <div className="md:col-span-6">
-              <div className="glass-card rounded-3xl p-6 md:p-8 border border-purple-500/30 shadow-2xl bg-[#0a0a22]">
-                <LeadForm />
-              </div>
+            <div className="md:col-span-6 w-full min-w-0">
+              <LeadForm />
             </div>
           </div>
         </RevealOnScroll>

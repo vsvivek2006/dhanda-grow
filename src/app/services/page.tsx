@@ -19,10 +19,39 @@ import {
 import Link from "next/link";
 import { BRAND_NAME, WHATSAPP_LINK } from "@/lib/constants";
 import { RevealOnScroll } from "@/components/ui/ParallaxSection";
+import { BreadcrumbSchema, ServiceSchema } from "@/components/seo/JsonLdSchemas";
 
 export const metadata: Metadata = {
-  title: `Services & AI Marketing Capabilities | ${BRAND_NAME}`,
-  description: "Explore Dhanda Grow capabilities: Google Maps ranking optimization, 1-click social media poster generation, WhatsApp review automation, and 24/7 AI review responses.",
+  title: "AI Marketing Services for Local Businesses | Dhanda Grow",
+  description:
+    "Explore Dhanda Grow's AI marketing services built for local businesses — smarter ads, automated customer outreach, and data-driven campaigns that deliver results.",
+  alternates: {
+    canonical: "https://dhandhagrow.com/services",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://dhandhagrow.com/services",
+    siteName: "Dhanda Grow",
+    title: "AI Marketing Services for Local Businesses | Dhanda Grow",
+    description:
+      "Explore Dhanda Grow's AI marketing services built for local businesses — smarter ads, automated customer outreach, and data-driven campaigns that deliver results.",
+    images: [
+      {
+        url: "/images/3d-maps-radar.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Dhanda Grow Local SEO and Marketing Services",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Marketing Services for Local Businesses | Dhanda Grow",
+    description:
+      "Explore Dhanda Grow's AI marketing services built for local businesses — smarter ads, automated customer outreach, and data-driven campaigns that deliver results.",
+    images: ["/images/3d-maps-radar.jpg"],
+  },
 };
 
 const capabilities = [
@@ -87,6 +116,18 @@ const capabilities = [
 export default function ServicesPage() {
   return (
     <div className="flex flex-col min-h-screen bg-[#04040f] text-slate-100 font-sans relative overflow-hidden">
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Services", url: "/services" },
+        ]}
+      />
+      <ServiceSchema
+        services={capabilities.map((c) => ({
+          name: c.title,
+          description: c.description,
+        }))}
+      />
       {/* Background glow effects */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-glow rounded-full blur-[140px] pointer-events-none" />
 
