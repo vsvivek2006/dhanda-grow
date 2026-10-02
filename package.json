@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:ui": "playwright test"
+    "test:ui": "playwright test",
+    "create-admin": "node scripts/create-admin.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

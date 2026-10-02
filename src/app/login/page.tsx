@@ -7,14 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DhandaLogo } from "@/components/ui/DhandaLogo";
-import { Lock, Mail, Loader2, AlertCircle, Sparkles, CheckCircle2 } from "lucide-react";
+import { Lock, Mail, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectPath = searchParams.get("redirect") || "/admin/leads";
 
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,47 +30,25 @@ function LoginForm() {
       return;
     }
 
-    if (password.length < 6) {
-      setErrorMsg("Password must be at least 6 characters long.");
-      return;
-    }
-
     setLoading(true);
 
     try {
-      if (mode === "signin") {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-        if (error) {
-          throw error;
-        }
-
-        setSuccessMsg("Authenticated! Redirecting to dashboard...");
-        router.refresh();
-        setTimeout(() => {
-          router.push(redirectPath);
-        }, 500);
-      } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-
-        if (error) {
-          throw error;
-        }
-
-        setSuccessMsg("Admin account registered successfully! Signing you in...");
-        router.refresh();
-        setTimeout(() => {
-          router.push(redirectPath);
-        }, 800);
+      if (error) {
+        throw error;
       }
+
+      setSuccessMsg("Authenticated! Redirecting to dashboard...");
+      router.refresh();
+      setTimeout(() => {
+        router.push(redirectPath);
+      }, 500);
     } catch (err: any) {
-      setErrorMsg(err.message || "Authentication failed. Please check your credentials.");
+      setErrorMsg(err.message || "Invalid credentials. Please check your admin email and password.");
     } finally {
       setLoading(false);
     }
@@ -88,48 +65,14 @@ function LoginForm() {
           <span>Internal Admin Portal</span>
         </div>
         <h1 className="font-heading text-2xl sm:text-3xl font-bold text-white">
-          {mode === "signin" ? "Admin Sign In" : "Register Admin Account"}
+          Admin Sign In
         </h1>
         <p className="text-sm text-slate-400 mt-2">
-          Secure access for Dhanda Grow leads management & AI blog tools.
+          Authorized personnel only. Sign in with your registered admin credentials.
         </p>
       </div>
 
       <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl bg-[#09091f]">
-        {/* Toggle Mode */}
-        <div className="flex p-1 bg-white/5 rounded-xl border border-white/10 mb-6">
-          <button
-            type="button"
-            onClick={() => {
-              setMode("signin");
-              setErrorMsg("");
-              setSuccessMsg("");
-            }}
-            className={`flex-1 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all ${
-              mode === "signin"
-                ? "bg-purple-600 text-white shadow-md"
-                : "text-slate-400 hover:text-white"
-            }`}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setMode("signup");
-              setErrorMsg("");
-              setSuccessMsg("");
-            }}
-            className={`flex-1 py-2 text-xs sm:text-sm font-semibold rounded-lg transition-all ${
-              mode === "signup"
-                ? "bg-purple-600 text-white shadow-md"
-                : "text-slate-400 hover:text-white"
-            }`}
-          >
-            Setup Admin
-          </button>
-        </div>
-
         {errorMsg && (
           <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-red-300 text-xs sm:text-sm">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
@@ -183,12 +126,10 @@ function LoginForm() {
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Authenticating...
+                Signing In...
               </>
-            ) : mode === "signin" ? (
-              "Sign In to Admin Portal"
             ) : (
-              "Create Admin Account"
+              "Sign In to Admin Portal"
             )}
           </Button>
         </form>
