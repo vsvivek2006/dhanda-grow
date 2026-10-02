@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, ExternalLink } from "lucide-react";
-import { DhandaLogo } from "@/components/ui/DhandaLogo";
+import { DhandaLogoIcon } from "@/components/ui/DhandaLogo";
 import { Sidebar } from "./Sidebar";
 import { AdminNotificationBell } from "./AdminNotificationBell";
 
@@ -81,12 +81,14 @@ export function AdminShell({ userEmail, children }: AdminShellProps) {
               <Menu className="w-5 h-5" />
             </button>
 
-            {/* Mobile Header Title */}
+            {/* Mobile Header Title (1:1 Growth-Service Parity) */}
             <Link
               href="/admin/blog"
               className="lg:hidden flex items-center gap-2 text-sm font-bold text-white tracking-wide"
             >
-              <DhandaLogo size="sm" />
+              <div className="w-6 h-6 rounded-md bg-gray-950 p-0.5 flex items-center justify-center shrink-0 border border-purple-500/30">
+                <DhandaLogoIcon size={18} className="w-4 h-4" />
+              </div>
               <span>
                 Dhanda <span className="text-yellow-400">Grow</span>
               </span>

@@ -12,7 +12,7 @@ import {
   Loader2,
   Sparkles,
 } from "lucide-react";
-import { DhandaLogo } from "@/components/ui/DhandaLogo";
+import { DhandaLogoIcon } from "@/components/ui/DhandaLogo";
 
 interface SidebarProps {
   userEmail?: string | null;
@@ -64,20 +64,22 @@ export function Sidebar({
 
   const navContent = (
     <div className="flex flex-col h-full bg-gray-900 border-r border-gray-800">
-      {/* Brand Header */}
-      <div className="h-16 px-4 flex items-center justify-between border-b border-gray-800 shrink-0">
+      {/* Brand Header (1:1 Growth-Service Parity) */}
+      <div className="px-4 py-3.5 border-b border-gray-800/80 flex items-center justify-between shrink-0">
         <Link
           href="/admin/blog"
           className="flex items-center gap-2.5 group"
           onClick={onClose}
         >
-          <DhandaLogo size="sm" />
+          <div className="w-8 h-8 rounded-lg bg-gray-950 p-1 flex items-center justify-center shadow-md shadow-purple-950/50 group-hover:scale-105 transition-transform shrink-0 border border-purple-500/30">
+            <DhandaLogoIcon size={24} className="w-6 h-6" />
+          </div>
           <div>
             <div className="text-sm font-bold tracking-tight text-white leading-none">
               Dhanda <span className="text-yellow-400">Grow</span>
             </div>
             <p className="text-[10px] text-gray-400 font-medium mt-1">
-              Admin Blog Studio
+              Admin Portal
             </p>
           </div>
         </Link>
