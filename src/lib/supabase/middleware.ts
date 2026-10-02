@@ -41,10 +41,7 @@ export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isProtectedPage =
     pathname.startsWith("/admin") || pathname.startsWith("/blog/new");
-  const isProtectedApi =
-    pathname.startsWith("/api/admin") ||
-    pathname === "/api/blog/publish" ||
-    pathname === "/api/blog/generate";
+  const isProtectedApi = pathname.startsWith("/api/admin");
   const isLoginPage = pathname === "/login";
 
   if (isProtectedApi && !user) {

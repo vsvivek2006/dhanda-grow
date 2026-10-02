@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles, Menu, X, ArrowRight, Smartphone } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Sparkles, Menu, X, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SUPPORT_PHONE } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,14 @@ import { DhandaLogo } from "@/components/ui/DhandaLogo";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Handle scroll styling
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -90,29 +98,36 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer & Backdrop */}
       {isOpen && (
-        <div className="md:hidden fixed inset-x-4 top-24 z-50 glass-card rounded-3xl p-6 shadow-2xl border border-white/15 animate-fade-down bg-[#0a0a20]/95 backdrop-blur-xl">
-          <nav className="flex flex-col space-y-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-lg font-bold text-slate-200 hover:text-purple-400 transition-colors py-1"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
-            <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-              <Button asChild className="w-full bg-gradient-brand text-white h-12 text-base font-bold rounded-2xl shadow-lg">
-                <Link href="/contact" onClick={() => setIsOpen(false)}>
-                  Get Started Free
+        <>
+          <div
+            className="md:hidden fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="md:hidden fixed inset-x-4 top-24 z-50 glass-card rounded-3xl p-6 shadow-2xl border border-white/15 animate-fade-down bg-[#0a0a20]/95 backdrop-blur-xl">
+            <nav className="flex flex-col space-y-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-lg font-bold text-slate-200 hover:text-purple-400 transition-colors py-1"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
                 </Link>
-              </Button>
-            </div>
-          </nav>
-        </div>
+              ))}
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                <Button asChild className="w-full bg-gradient-brand text-white h-12 text-base font-bold rounded-2xl shadow-lg">
+                  <Link href="/contact" onClick={() => setIsOpen(false)}>
+                    Get Started Free
+                  </Link>
+                </Button>
+              </div>
+            </nav>
+          </div>
+        </>
       )}
     </>
   );
