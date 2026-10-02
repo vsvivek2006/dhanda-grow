@@ -38,7 +38,7 @@ import { CoreGrowthEngines } from "@/components/home/CoreGrowthEngines";
 import { ProblemsWeSolve } from "@/components/home/ProblemsWeSolve";
 import { FramerHero } from "@/components/home/FramerHero";
 import { ApplioFeatures } from "@/components/home/ApplioFeatures";
-import { RevealOnScroll, ParallaxItem } from "@/components/ui/ParallaxSection";
+import { RevealOnScroll } from "@/components/ui/ParallaxSection";
 
 const appScreenshots = [
   {
@@ -208,7 +208,7 @@ export default function HomePage() {
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Left Text */}
           <div className="lg:col-span-6">
-            <RevealOnScroll direction="left" delay={0.1}>
+            <RevealOnScroll delay={0.05}>
               <div className="space-y-6">
                 <span className="text-xs font-bold text-purple-400 uppercase tracking-widest bg-purple-500/10 px-3.5 py-1.5 rounded-full border border-purple-500/20">
                   Feature 01 • Local SEO Radar
@@ -260,42 +260,33 @@ export default function HomePage() {
             </RevealOnScroll>
           </div>
 
-          {/* Right 3D Visual with Floating Parallax Badge */}
-          <div className="lg:col-span-6 relative">
-            <RevealOnScroll direction="right" delay={0.15}>
-              <div className="relative">
-                <ParallaxItem speed={-0.12} className="hidden sm:block absolute -top-4 -right-4 z-20 pointer-events-none">
-                  <div className="px-3.5 py-1.5 rounded-full bg-cyan-950/90 border border-cyan-400/40 text-cyan-200 text-xs font-semibold shadow-xl backdrop-blur-md flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-cyan-400" />
-                    <span>+340% Local Footfall</span>
+          {/* Right 3D Visual */}
+          <div className="lg:col-span-6">
+            <RevealOnScroll delay={0.05}>
+              <ThreeDCard depth={20} glowColor="rgba(6, 182, 212, 0.4)">
+                <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-[#0a0a24] p-3">
+                  <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
+                    <Image
+                      src="/images/3d-maps-radar.jpg"
+                      alt="3D Google Maps Ranking Radar and Rating Shield"
+                      fill
+                      className="object-cover object-center"
+                    />
                   </div>
-                </ParallaxItem>
 
-                <ThreeDCard depth={25} glowColor="rgba(6, 182, 212, 0.4)">
-                  <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-[#0a0a24] p-3">
-                    <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
-                      <Image
-                        src="/images/3d-maps-radar.jpg"
-                        alt="3D Google Maps Ranking Radar and Rating Shield"
-                        fill
-                        className="object-cover object-center"
-                      />
-                    </div>
-
-                    <div className="p-4 mt-2 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-xs text-cyan-300 font-bold uppercase tracking-wider">Neighborhood Grid Telemetry</div>
-                          <div className="text-sm font-black text-white">Dominating 12 of 14 Local Geocodes</div>
-                        </div>
-                        <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">
-                          Top 3 Active
-                        </span>
+                  <div className="p-4 mt-2 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-xs text-cyan-300 font-bold uppercase tracking-wider">Neighborhood Grid Telemetry</div>
+                        <div className="text-sm font-black text-white">Dominating 12 of 14 Local Geocodes</div>
                       </div>
+                      <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">
+                        Top 3 Active
+                      </span>
                     </div>
                   </div>
-                </ThreeDCard>
-              </div>
+                </div>
+              </ThreeDCard>
             </RevealOnScroll>
           </div>
         </div>
@@ -307,47 +298,38 @@ export default function HomePage() {
       <section className="py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Left 3D Visual (Alternating) */}
-          <div className="lg:col-span-6 order-2 lg:order-1 relative">
-            <RevealOnScroll direction="left" delay={0.15}>
-              <div className="relative">
-                <ParallaxItem speed={0.12} className="hidden sm:block absolute -top-4 -left-4 z-20 pointer-events-none">
-                  <div className="px-3.5 py-1.5 rounded-full bg-purple-950/90 border border-purple-400/40 text-purple-200 text-xs font-semibold shadow-xl backdrop-blur-md flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-pink-400" />
-                    <span>365 Festival Posters Ready</span>
+          <div className="lg:col-span-6 order-2 lg:order-1">
+            <RevealOnScroll delay={0.05}>
+              <ThreeDCard depth={20} glowColor="rgba(168, 85, 247, 0.45)">
+                <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-[#0c0c2a] p-3">
+                  <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
+                    <Image
+                      src="/images/3d-social-studio.jpg"
+                      alt="3D AI Social Media Generator Studio with Floating Phone and Festival Posters"
+                      fill
+                      className="object-cover object-center"
+                    />
                   </div>
-                </ParallaxItem>
 
-                <ThreeDCard depth={25} glowColor="rgba(168, 85, 247, 0.45)">
-                  <div className="relative rounded-3xl overflow-hidden border border-white/20 shadow-2xl bg-[#0c0c2a] p-3">
-                    <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
-                      <Image
-                        src="/images/3d-social-studio.jpg"
-                        alt="3D AI Social Media Generator Studio with Floating Phone and Festival Posters"
-                        fill
-                        className="object-cover object-center"
-                      />
-                    </div>
-
-                    <div className="p-4 mt-2 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-xs text-purple-300 font-bold uppercase tracking-wider">AI Content Studio</div>
-                          <div className="text-sm font-black text-white">Diwali & Holiday Campaign Auto-Generated</div>
-                        </div>
-                        <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold">
-                          1-Tap Publish
-                        </span>
+                  <div className="p-4 mt-2 rounded-2xl bg-black/80 backdrop-blur-md border border-white/10">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-xs text-purple-300 font-bold uppercase tracking-wider">AI Content Studio</div>
+                        <div className="text-sm font-black text-white">Diwali & Holiday Campaign Auto-Generated</div>
                       </div>
+                      <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold">
+                        1-Tap Publish
+                      </span>
                     </div>
                   </div>
-                </ThreeDCard>
-              </div>
+                </div>
+              </ThreeDCard>
             </RevealOnScroll>
           </div>
 
           {/* Right Text */}
           <div className="lg:col-span-6 order-1 lg:order-2">
-            <RevealOnScroll direction="right" delay={0.1}>
+            <RevealOnScroll delay={0.05}>
               <div className="space-y-6">
                 <span className="text-xs font-bold text-cyan-400 uppercase tracking-widest bg-cyan-500/10 px-3.5 py-1.5 rounded-full border border-cyan-500/20">
                   Feature 02 • Social Media Autopilot
@@ -407,7 +389,7 @@ export default function HomePage() {
       <section className="py-24 px-4 container mx-auto max-w-7xl relative border-t border-white/10 overflow-hidden">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6">
-            <RevealOnScroll direction="left" delay={0.1}>
+            <RevealOnScroll delay={0.05}>
               <div className="space-y-6">
                 <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20">
                   Feature 03 • 5★ Reputation Engine
@@ -460,61 +442,52 @@ export default function HomePage() {
           </div>
 
           {/* Right Interactive Card */}
-          <div className="lg:col-span-6 relative">
-            <RevealOnScroll direction="right" delay={0.15}>
-              <div className="relative">
-                <ParallaxItem speed={-0.12} className="hidden sm:block absolute -bottom-4 -right-4 z-20 pointer-events-none">
-                  <div className="px-3.5 py-1.5 rounded-full bg-emerald-950/90 border border-emerald-400/40 text-emerald-200 text-xs font-semibold shadow-xl backdrop-blur-md flex items-center gap-1.5">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                    <span>4.9★ Average Rating Verified</span>
+          <div className="lg:col-span-6">
+            <RevealOnScroll delay={0.05}>
+              <ThreeDCard depth={20} glowColor="rgba(37, 211, 102, 0.35)">
+                <div className="glass-card p-8 rounded-3xl border border-white/20 bg-gradient-to-b from-[#091b16] to-[#040c0b] shadow-2xl space-y-5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                      Automated WhatsApp Review Sequence
+                    </span>
+                    <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">
+                      100% Automated
+                    </span>
                   </div>
-                </ParallaxItem>
 
-                <ThreeDCard depth={25} glowColor="rgba(37, 211, 102, 0.35)">
-                  <div className="glass-card p-8 rounded-3xl border border-white/20 bg-gradient-to-b from-[#091b16] to-[#040c0b] shadow-2xl space-y-5">
+                  <div className="rounded-2xl p-5 bg-[#075e54]/30 border border-[#25d366]/40 space-y-2">
+                    <div className="text-xs text-emerald-300 font-bold flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-[#25d366]" /> Sent via WhatsApp to Customer:
+                    </div>
+                    <p className="text-xs md:text-sm text-white leading-relaxed">
+                      &quot;Hi Ritu! Thank you for visiting [Your Shop] today. We hope you loved your experience! Tap here to leave a 5-star review on Google: bit.ly/rate-us&quot;
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl p-4 bg-white/5 border border-white/10 space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
-                        Automated WhatsApp Review Sequence
-                      </span>
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">
-                        100% Automated
-                      </span>
-                    </div>
-
-                    <div className="rounded-2xl p-5 bg-[#075e54]/30 border border-[#25d366]/40 space-y-2">
-                      <div className="text-xs text-emerald-300 font-bold flex items-center gap-2">
-                        <MessageCircle className="w-4 h-4 text-[#25d366]" /> Sent via WhatsApp to Customer:
+                      <span className="text-xs font-bold text-white">Ritu Verma reviewed on Google Maps</span>
+                      <div className="flex items-center gap-0.5 text-amber-400">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                        ))}
                       </div>
-                      <p className="text-xs md:text-sm text-white leading-relaxed">
-                        &quot;Hi Ritu! Thank you for visiting [Your Shop] today. We hope you loved your experience! Tap here to leave a 5-star review on Google: bit.ly/rate-us&quot;
-                      </p>
                     </div>
-
-                    <div className="rounded-2xl p-4 bg-white/5 border border-white/10 space-y-1.5">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-white">Ritu Verma reviewed on Google Maps</span>
-                        <div className="flex items-center gap-0.5 text-amber-400">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                          ))}
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-300 italic">
-                        &quot;Wonderful collection and polite staff! Very happy with my purchase.&quot;
-                      </p>
-                    </div>
-
-                    <div className="rounded-2xl p-4 bg-purple-950/40 border border-purple-500/40 space-y-1">
-                      <div className="text-xs font-bold text-purple-300 flex items-center gap-1.5">
-                        <Bot className="w-4 h-4" /> AI Auto-Replied (Sent in 4 seconds):
-                      </div>
-                      <p className="text-xs text-slate-200">
-                        &quot;Thank you so much Ritu! It was our pleasure to serve you. We look forward to welcoming you back soon!&quot;
-                      </p>
-                    </div>
+                    <p className="text-xs text-slate-300 italic">
+                      &quot;Wonderful collection and polite staff! Very happy with my purchase.&quot;
+                    </p>
                   </div>
-                </ThreeDCard>
-              </div>
+
+                  <div className="rounded-2xl p-4 bg-purple-950/40 border border-purple-500/40 space-y-1">
+                    <div className="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+                      <Bot className="w-4 h-4" /> AI Auto-Replied (Sent in 4 seconds):
+                    </div>
+                    <p className="text-xs text-slate-200">
+                      &quot;Thank you so much Ritu! It was our pleasure to serve you. We look forward to welcoming you back soon!&quot;
+                    </p>
+                  </div>
+                </div>
+              </ThreeDCard>
             </RevealOnScroll>
           </div>
         </div>
@@ -547,7 +520,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           {/* Active Screen Display in High-Fidelity Showcase Frame */}
           <div className="lg:col-span-6 flex flex-col items-center justify-center">
-            <RevealOnScroll direction="left" delay={0.15}>
+            <RevealOnScroll delay={0.05}>
               <div className="w-full max-w-[480px] rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-white/[0.09] via-white/[0.04] to-transparent border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85)] backdrop-blur-xl">
                 {/* Showcase Top Bar */}
                 <div className="flex items-center justify-between pb-3 px-1 border-b border-white/10 mb-3">
@@ -604,7 +577,7 @@ export default function HomePage() {
 
           {/* Navigation & Screen Details */}
           <div className="lg:col-span-6">
-            <RevealOnScroll direction="right" delay={0.2}>
+            <RevealOnScroll delay={0.05}>
               <div className="space-y-6">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
