@@ -68,7 +68,7 @@ export default async function EditBlogPostPage({ params }: EditBlogPostPageProps
       }
 
       // 3. Fallback to local markdown file
-      const localPost = getPostBySlug(id);
+      const localPost = await getPostBySlug(id);
       if (localPost) {
         return {
           id: localPost.slug,

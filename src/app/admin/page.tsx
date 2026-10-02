@@ -12,7 +12,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import { getAllPosts } from "@/lib/blog-utils";
+import { getLocalPosts } from "@/lib/blog-utils";
 import { PostTable } from "@/components/admin/PostTable";
 import type { PostSummary } from "@/lib/validations/post";
 
@@ -35,7 +35,7 @@ export default async function AdminBlogOverviewPage() {
   }
 
   // Fetch local markdown posts
-  const localPosts = getAllPosts();
+  const localPosts = getLocalPosts();
   const postsMap = new Map<string, PostSummary>();
 
   // Populate from DB

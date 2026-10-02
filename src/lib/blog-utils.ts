@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { supabaseAdmin } from "@/lib/supabase/server";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
@@ -9,9 +10,11 @@ export interface BlogPost {
   date: string;
   excerpt: string;
   content: string;
+  tags?: string[];
+  cover_image_url?: string;
 }
 
-export function getAllPosts(): BlogPost[] {
+export function getLocalPosts(): BlogPost[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
 
   const files = fs.readdirSync(BLOG_DIR);
@@ -23,11 +26,11 @@ export function getAllPosts(): BlogPost[] {
       const fullPath = path.join(BLOG_DIR, filename);
       const fileContents = fs.readFileSync(fullPath, "utf8");
 
-      // Extremely simple frontmatter parser for our exact format
+      // Simple frontmatter parser for our exact format
       const match = fileContents.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-      
+
       let title = slug;
-      let date = "";
+      let date = new Date().toISOString().split("T")[0];
       let excerpt = "";
       let content = fileContents;
 
@@ -45,14 +48,81 @@ export function getAllPosts(): BlogPost[] {
       }
 
       return { slug, title, date, excerpt, content };
-    })
-    // Sort by date descending
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    });
 
   return posts;
 }
 
-export function getPostBySlug(slug: string): BlogPost | null {
-  const posts = getAllPosts();
-  return posts.find((p) => p.slug === slug) || null;
+export async function getAllPosts(): Promise<BlogPost[]> {
+  const postsMap = new Map<string, BlogPost>();
+
+  // 1. Seed with local markdown files
+  try {
+    const localPosts = getLocalPosts();
+    for (const post of localPosts) {
+      postsMap.set(post.slug, post);
+    }
+  } catch (err) {
+    console.warn("Notice loading local markdown posts:", err);
+  }
+
+  // 2. Query Supabase blog_posts table (takes priority over local file defaults)
+  try {
+    const { data: dbPosts, error } = await supabaseAdmin
+      .from("blog_posts")
+      .select("id, title, slug, excerpt, content, tags, cover_image_url, created_at, updated_at")
+      .order("created_at", { ascending: false });
+
+    if (!error && dbPosts) {
+      for (const row of dbPosts) {
+        postsMap.set(row.slug, {
+          slug: row.slug,
+          title: row.title,
+          date: row.created_at
+            ? new Date(row.created_at).toISOString().split("T")[0]
+            : new Date().toISOString().split("T")[0],
+          excerpt: row.excerpt || row.title,
+          content: row.content,
+          tags: Array.isArray(row.tags) ? row.tags : [],
+          cover_image_url: row.cover_image_url || undefined,
+        });
+      }
+    }
+  } catch (err) {
+    console.warn("Notice querying Supabase blog posts:", err);
+  }
+
+  // Sort descending by date
+  return Array.from(postsMap.values()).sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  // Check Supabase first
+  try {
+    const { data: row, error } = await supabaseAdmin
+      .from("blog_posts")
+      .select("id, title, slug, excerpt, content, tags, cover_image_url, created_at, updated_at")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (!error && row) {
+      return {
+        slug: row.slug,
+        title: row.title,
+        date: row.created_at
+          ? new Date(row.created_at).toISOString().split("T")[0]
+          : new Date().toISOString().split("T")[0],
+        excerpt: row.excerpt || row.title,
+        content: row.content,
+        tags: Array.isArray(row.tags) ? row.tags : [],
+        cover_image_url: row.cover_image_url || undefined,
+      };
+    }
+  } catch (err) {
+    console.warn(`Notice querying Supabase for slug "${slug}":`, err);
+  }
+
+  // Fallback to local markdown files
+  const localPosts = getLocalPosts();
+  return localPosts.find((p) => p.slug === slug) || null;
 }

@@ -9,7 +9,7 @@ import { BRAND_NAME } from "@/lib/constants";
 import { BreadcrumbSchema, ArticleSchema } from "@/components/seo/JsonLdSchemas";
 
 export async function generateStaticParams() {
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
+  const post = await getPostBySlug(resolvedParams.slug);
   
   if (!post) {
     return { title: "Post Not Found" };
@@ -61,11 +61,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const post = getPostBySlug(resolvedParams.slug);
+  const post = await getPostBySlug(resolvedParams.slug);
 
   if (!post) {
     notFound();
   }
+
+  const isHtml = /<[a-z][\s\S]*>/i.test(post.content);
 
   return (
     <div className="bg-background min-h-screen">
@@ -108,7 +110,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
       <div className="container mx-auto max-w-3xl px-4 py-16">
         <article className="prose prose-lg dark:prose-invert max-w-none text-foreground/90 leading-relaxed [&_h2]:font-heading [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-10 [&_h2]:mb-4 [&_h3]:font-heading [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-8 [&_h3]:mb-3 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_p]:mb-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_hr]:my-10 [&_hr]:border-border">
-          <ReactMarkdown>{post.content}</ReactMarkdown>
+          {isHtml ? (
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          ) : (
+            <ReactMarkdown>{post.content}</ReactMarkdown>
+          )}
         </article>
 
         {/* CTA Banner */}

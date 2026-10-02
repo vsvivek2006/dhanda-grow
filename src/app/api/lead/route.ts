@@ -43,9 +43,13 @@ export async function POST(req: Request) {
 
     if (error) {
       console.error("Supabase lead insertion error:", error);
-    } else {
-      console.log("Lead successfully stored in Supabase:", data?.[0]?.id);
+      return NextResponse.json(
+        { error: "Failed to store lead. Please try again or reach out directly." },
+        { status: 500 }
+      );
     }
+
+    console.log("Lead successfully stored in Supabase:", data?.[0]?.id);
 
     return NextResponse.json(
       { success: true, id: data?.[0]?.id },

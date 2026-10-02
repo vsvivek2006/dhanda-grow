@@ -1,6 +1,4 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { createSupabaseServerClient, supabaseAdmin } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
@@ -43,40 +41,44 @@ export async function POST(request: Request) {
     const extension = file.name.split(".").pop() || "png";
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${extension}`;
 
-    // Attempt Supabase storage first
-    try {
-      const filePath = `covers/${fileName}`;
-      const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
-        .from("blog-images")
-        .upload(filePath, buffer, {
-          contentType: file.type,
-          upsert: true,
-        });
+    // Upload directly to Supabase storage
+    const filePath = `covers/${fileName}`;
+    let { data: uploadData, error: uploadError } = await supabaseAdmin.storage
+      .from("blog-images")
+      .upload(filePath, buffer, {
+        contentType: file.type,
+        upsert: true,
+      });
 
-      if (!uploadError && uploadData) {
-        const { data: publicUrlData } = supabaseAdmin.storage
+    if (uploadError) {
+      // If bucket doesn't exist, create it and retry upload
+      if (uploadError.message.toLowerCase().includes("not found")) {
+        await supabaseAdmin.storage.createBucket("blog-images", { public: true });
+        const retry = await supabaseAdmin.storage
           .from("blog-images")
-          .getPublicUrl(filePath);
-
-        if (publicUrlData?.publicUrl) {
-          return NextResponse.json({ url: publicUrlData.publicUrl });
-        }
+          .upload(filePath, buffer, {
+            contentType: file.type,
+            upsert: true,
+          });
+        uploadError = retry.error;
+        uploadData = retry.data;
       }
-    } catch {
-      // Supabase storage bucket not configured, fall back to local public upload
     }
 
-    // Local file fallback in public/uploads/
-    const uploadsDir = path.resolve(process.cwd(), "public/uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
+    if (uploadError) {
+      throw new Error(`Storage upload failed: ${uploadError.message}`);
     }
 
-    const localFilePath = path.resolve(uploadsDir, fileName);
-    fs.writeFileSync(localFilePath, buffer);
+    const { data: publicUrlData } = supabaseAdmin.storage
+      .from("blog-images")
+      .getPublicUrl(filePath);
+
+    if (!publicUrlData?.publicUrl) {
+      throw new Error("Failed to obtain public URL for uploaded image.");
+    }
 
     return NextResponse.json({
-      url: `/uploads/${fileName}`,
+      url: publicUrlData.publicUrl,
       size: buffer.length,
     });
   } catch (err: unknown) {

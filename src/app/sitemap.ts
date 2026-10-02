@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/lib/blog-utils';
 import { SITE_URL } from '@/lib/constants';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -63,7 +63,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   // Add blog posts to sitemap
-  const posts = getAllPosts();
+  const posts = await getAllPosts();
   const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.date),
