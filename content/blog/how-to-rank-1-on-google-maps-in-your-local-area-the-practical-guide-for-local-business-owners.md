@@ -3,6 +3,8 @@ title: "How to Rank #1 on Google Maps in Your Local Area: The Practical Guide fo
 date: "2026-10-02"
 excerpt: "Learn proven strategies and step-by-step tactics to master how to rank #1 on google maps in your local area. Practical tips designed specifically for local shops and service brands."
 tags: ["Google Maps", "Local SEO", "Business Growth"]
+cover_image_url: "/images/3d-maps-radar.jpg"
+author: "Vikram Malhotra, Local SEO Lead"
 ---
 
 <h2>Introduction: Why How to Rank #1 on Google Maps in Your Local Area Matters Right Now</h2>

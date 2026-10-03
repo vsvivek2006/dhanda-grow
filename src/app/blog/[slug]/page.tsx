@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getAllPosts } from "@/lib/blog-utils";
+import { getPostBySlug, getAllPosts, getPostCoverImage } from "@/lib/blog-utils";
 import { Calendar, User, ArrowLeft, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const postUrl = `https://dhandhagrow.com/blog/${post.slug}`;
   const title = `${post.title} | ${BRAND_NAME}`;
   const authorName = post.author || "Dhanda Grow Team";
-  const coverImage = post.cover_image_url || "/images/dhanda-3d-hero.jpg";
+  const coverImage = getPostCoverImage(post.cover_image_url, post.slug);
 
   return {
     title,
@@ -83,7 +83,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const authorName = post.author || "Dhanda Grow Team";
   const postUrl = `https://dhandhagrow.com/blog/${post.slug}`;
-  const coverImage = post.cover_image_url || "/images/dhanda-3d-hero.jpg";
+  const coverImage = getPostCoverImage(post.cover_image_url, post.slug);
 
   return (
     <article className="min-h-screen bg-gray-950 text-white">

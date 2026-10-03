@@ -28,6 +28,7 @@ import { ApplioFeatures } from "@/components/home/ApplioFeatures";
 import { AppScreenshotsShowcase } from "@/components/home/AppScreenshotsShowcase";
 import { IndustrySelector } from "@/components/home/IndustrySelector";
 import { RevealOnScroll } from "@/components/ui/ParallaxSection";
+import { getAllPosts, getPostCoverImage } from "@/lib/blog-utils";
 
 export const metadata: Metadata = {
   title: "Dhanda Grow | AI Marketing for Local Businesses",
@@ -38,7 +39,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export const revalidate = 60; // Refresh quickly when new posts are published
+
+export default async function HomePage() {
+  const posts = await getAllPosts();
+  const recentPosts = posts.slice(0, 3);
 
   return (
     <div className="bg-[#050508] text-zinc-100 min-h-screen relative overflow-hidden font-sans">
@@ -488,6 +493,100 @@ export default function HomePage() {
           </div>
         </RevealOnScroll>
       </section>
+
+      {/* ──────────────────────────────────────────
+          LATEST ARTICLES & GROWTH PLAYBOOKS
+      ────────────────────────────────────────── */}
+      {recentPosts.length > 0 && (
+        <section className="py-16 sm:py-24 px-4 container mx-auto max-w-7xl relative z-10 border-t border-white/10">
+          <RevealOnScroll direction="up" delay={0.1}>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/25 text-purple-300 text-xs font-semibold uppercase tracking-wider mb-4">
+                  <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
+                  <span>Knowledge &amp; Actionable Playbooks</span>
+                </div>
+                <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                  Latest Playbooks to <span className="text-gradient-brand">Grow Your Local Business</span>
+                </h2>
+                <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-xl">
+                  Step-by-step guides on Google Maps SEO, review automation, and social media marketing built specifically for Indian local merchants.
+                </p>
+              </div>
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-cyan-300 transition-colors group shrink-0"
+              >
+                <span>Explore All Articles</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {recentPosts.map((post, idx) => {
+                const coverImg = getPostCoverImage(post.cover_image_url, post.slug || idx);
+                return (
+                  <div
+                    key={post.slug}
+                    className="glass-card rounded-3xl border border-white/10 hover:border-purple-500/40 transition-all duration-300 overflow-hidden flex flex-col group hover:-translate-y-1.5 shadow-xl hover:shadow-purple-950/40"
+                  >
+                    <Link href={`/blog/${post.slug}`} className="block relative aspect-video w-full overflow-hidden bg-gray-900">
+                      <Image
+                        src={coverImg}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent" />
+                      {post.tags && post.tags[0] && (
+                        <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[11px] font-bold bg-black/75 backdrop-blur-md text-purple-300 border border-purple-500/30">
+                          #{post.tags[0]}
+                        </span>
+                      )}
+                    </Link>
+
+                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                      <div className="space-y-2.5">
+                        <div className="flex items-center gap-2 text-xs text-slate-400">
+                          <Calendar className="w-3.5 h-3.5 text-purple-400" />
+                          <time dateTime={post.date}>
+                            {new Date(post.date).toLocaleDateString("en-IN", {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                            })}
+                          </time>
+                        </div>
+
+                        <h3 className="font-heading text-lg sm:text-xl font-bold text-white group-hover:text-purple-300 transition-colors line-clamp-2 leading-snug">
+                          <Link href={`/blog/${post.slug}`}>
+                            {post.title}
+                          </Link>
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-slate-400 line-clamp-2 leading-relaxed">
+                          {post.excerpt}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-white/5">
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-yellow-400 hover:text-yellow-300 transition-colors"
+                        >
+                          <span>Read full playbook</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </RevealOnScroll>
+        </section>
+      )}
 
       {/* ──────────────────────────────────────────
           LEAD CAPTURE / STRATEGY DEMO SECTION

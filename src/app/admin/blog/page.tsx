@@ -12,7 +12,7 @@ export default async function AdminBlogListPage() {
     try {
       const { data: dbPosts, error } = await supabaseAdmin
         .from("blog_posts")
-        .select("id, title, slug, excerpt, tags, created_at, updated_at")
+        .select("id, title, slug, excerpt, tags, cover_image_url, author, created_at, updated_at")
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -29,8 +29,8 @@ export default async function AdminBlogListPage() {
           title: p.title,
           slug: p.slug,
           meta_description: p.excerpt || "",
-          cover_image_url: "",
-          author: "Dhanda Grow Team",
+          cover_image_url: p.cover_image_url || "",
+          author: p.author || "Dhanda Grow Team",
           tags: Array.isArray(p.tags) ? p.tags : [],
           status: "published",
           source: "manual",
@@ -48,9 +48,9 @@ export default async function AdminBlogListPage() {
             title: lp.title,
             slug: lp.slug,
             meta_description: lp.excerpt || "",
-            cover_image_url: "",
-            author: "Dhanda Grow Team",
-            tags: [],
+            cover_image_url: lp.cover_image_url || "",
+            author: lp.author || "Dhanda Grow Team",
+            tags: lp.tags || [],
             status: "published",
             source: "manual",
             published_at: lp.date,

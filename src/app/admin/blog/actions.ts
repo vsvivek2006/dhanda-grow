@@ -26,7 +26,9 @@ function syncMarkdownFile(
   title: string,
   excerpt: string,
   content: string,
-  tags: string[] = []
+  tags: string[] = [],
+  cover_image_url?: string,
+  author?: string
 ) {
   try {
     if (!fs.existsSync(BLOG_DIR)) {
@@ -39,6 +41,8 @@ function syncMarkdownFile(
     const today = new Date().toISOString().split("T")[0];
     const cleanExcerpt = (excerpt || title).replace(/"/g, '\\"');
     const cleanTitle = title.replace(/"/g, '\\"');
+    const cleanAuthor = (author || "Dhanda Grow Team").replace(/"/g, '\\"');
+    const cleanCover = (cover_image_url || "").replace(/"/g, '\\"');
     const tagsJson = JSON.stringify(tags || []);
 
     const fileContent = `---
@@ -46,6 +50,8 @@ title: "${cleanTitle}"
 date: "${today}"
 excerpt: "${cleanExcerpt}"
 tags: ${tagsJson}
+cover_image_url: "${cleanCover}"
+author: "${cleanAuthor}"
 ---
 
 ${content}
@@ -68,13 +74,15 @@ export async function createPostAction(input: PostInput) {
     };
     const validated = postSchema.parse(normalizedInput);
 
-    // 1. Sync markdown file on disk
+    // 1. Sync markdown file on disk with cover_image_url and author
     syncMarkdownFile(
       validated.slug,
       validated.title,
       validated.meta_description || validated.title,
       validated.content,
-      validated.tags || []
+      validated.tags || [],
+      validated.cover_image_url,
+      validated.author
     );
 
     // 2. Persist in Supabase blog_posts table
@@ -87,6 +95,8 @@ export async function createPostAction(input: PostInput) {
           excerpt: validated.meta_description || validated.title,
           content: validated.content,
           tags: validated.tags || [],
+          cover_image_url: validated.cover_image_url || null,
+          author: validated.author || "Dhanda Grow Team",
           updated_at: new Date().toISOString(),
         },
         { onConflict: "slug" }
@@ -98,6 +108,7 @@ export async function createPostAction(input: PostInput) {
       console.warn("Supabase upsert warning:", error.message);
     }
 
+    revalidatePath("/");
     revalidatePath("/admin/blog");
     revalidatePath("/blog");
     revalidatePath(`/blog/${validated.slug}`);
@@ -131,7 +142,9 @@ export async function updatePostAction(id: string, input: PostInput) {
       validated.title,
       validated.meta_description || validated.title,
       validated.content,
-      validated.tags || []
+      validated.tags || [],
+      validated.cover_image_url,
+      validated.author
     );
 
     // 2. Update Supabase blog_posts table
@@ -143,6 +156,8 @@ export async function updatePostAction(id: string, input: PostInput) {
         excerpt: validated.meta_description || validated.title,
         content: validated.content,
         tags: validated.tags || [],
+        cover_image_url: validated.cover_image_url || null,
+        author: validated.author || "Dhanda Grow Team",
         updated_at: new Date().toISOString(),
       })
       .eq("id", id)
@@ -158,11 +173,14 @@ export async function updatePostAction(id: string, input: PostInput) {
           excerpt: validated.meta_description || validated.title,
           content: validated.content,
           tags: validated.tags || [],
+          cover_image_url: validated.cover_image_url || null,
+          author: validated.author || "Dhanda Grow Team",
           updated_at: new Date().toISOString(),
         })
         .eq("slug", validated.slug);
     }
 
+    revalidatePath("/");
     revalidatePath("/admin/blog");
     revalidatePath(`/admin/blog/${id}/edit`);
     revalidatePath("/blog");
@@ -207,6 +225,7 @@ export async function deletePostAction(id: string) {
       }
     }
 
+    revalidatePath("/");
     revalidatePath("/admin/blog");
     revalidatePath("/blog");
     if (postSlug) {

@@ -16,6 +16,31 @@ export interface BlogPost {
   author?: string;
 }
 
+export const DEFAULT_BLOG_COVERS = [
+  "/images/dhanda-3d-hero.jpg",
+  "/images/3d-maps-radar.jpg",
+  "/images/3d-social-studio.jpg",
+  "/images/3d-reviews-growth.jpg",
+];
+
+export function getPostCoverImage(coverUrl?: string | null, slugOrIndex?: string | number): string {
+  if (coverUrl && typeof coverUrl === "string" && coverUrl.trim().length > 0 && !coverUrl.includes("undefined")) {
+    return coverUrl.trim();
+  }
+  if (typeof slugOrIndex === "number") {
+    return DEFAULT_BLOG_COVERS[Math.abs(slugOrIndex) % DEFAULT_BLOG_COVERS.length];
+  }
+  if (typeof slugOrIndex === "string" && slugOrIndex.trim().length > 0) {
+    let hash = 0;
+    for (let i = 0; i < slugOrIndex.length; i++) {
+      hash = (hash << 5) - hash + slugOrIndex.charCodeAt(i);
+      hash |= 0;
+    }
+    return DEFAULT_BLOG_COVERS[Math.abs(hash) % DEFAULT_BLOG_COVERS.length];
+  }
+  return DEFAULT_BLOG_COVERS[0];
+}
+
 export function getLocalPosts(): BlogPost[] {
   if (!fs.existsSync(BLOG_DIR)) return [];
 
@@ -35,6 +60,8 @@ export function getLocalPosts(): BlogPost[] {
       let date = new Date().toISOString().split("T")[0];
       let excerpt = "";
       let content = fileContents;
+      let cover_image_url: string | undefined = undefined;
+      let author: string | undefined = undefined;
 
       if (match) {
         const frontmatter = match[1];
@@ -44,10 +71,15 @@ export function getLocalPosts(): BlogPost[] {
         const dateMatch = frontmatter.match(/date:\s*"(.*?)"/);
         const excerptMatch = frontmatter.match(/excerpt:\s*"(.*?)"/);
         const tagsMatch = frontmatter.match(/tags:\s*(\[[\s\S]*?\])/);
+        const coverMatch = frontmatter.match(/cover_image_url:\s*"(.*?)"/);
+        const authorMatch = frontmatter.match(/author:\s*"(.*?)"/);
 
         if (titleMatch) title = titleMatch[1];
         if (dateMatch) date = dateMatch[1];
         if (excerptMatch) excerpt = excerptMatch[1];
+        if (coverMatch && coverMatch[1]) cover_image_url = coverMatch[1];
+        if (authorMatch && authorMatch[1]) author = authorMatch[1];
+
         let tags: string[] = [];
         if (tagsMatch) {
           try {
@@ -57,7 +89,7 @@ export function getLocalPosts(): BlogPost[] {
           }
         }
 
-        return { slug, title, date, excerpt, content, tags };
+        return { slug, title, date, excerpt, content, tags, cover_image_url, author };
       }
 
       return { slug, title, date, excerpt, content, tags: [] };
@@ -83,7 +115,7 @@ export const getAllPosts = cache(async (): Promise<BlogPost[]> => {
   try {
     const { data: dbPosts, error } = await supabaseAdmin
       .from("blog_posts")
-      .select("id, title, slug, excerpt, tags, cover_image_url, created_at, updated_at")
+      .select("id, title, slug, excerpt, tags, cover_image_url, author, created_at, updated_at")
       .order("created_at", { ascending: false });
 
     if (!error && dbPosts) {
@@ -98,6 +130,7 @@ export const getAllPosts = cache(async (): Promise<BlogPost[]> => {
           content: "", // Content is deliberately deferred to getPostBySlug to keep listing payloads lightweight
           tags: Array.isArray(row.tags) ? row.tags : [],
           cover_image_url: row.cover_image_url || undefined,
+          author: row.author || undefined,
         });
       }
     }
@@ -114,7 +147,7 @@ export const getPostBySlug = cache(async (slug: string): Promise<BlogPost | null
   try {
     const { data: row, error } = await supabaseAdmin
       .from("blog_posts")
-      .select("id, title, slug, excerpt, content, tags, cover_image_url, created_at, updated_at")
+      .select("id, title, slug, excerpt, content, tags, cover_image_url, author, created_at, updated_at")
       .eq("slug", slug)
       .maybeSingle();
 
@@ -129,6 +162,7 @@ export const getPostBySlug = cache(async (slug: string): Promise<BlogPost | null
         content: row.content || "",
         tags: Array.isArray(row.tags) ? row.tags : [],
         cover_image_url: row.cover_image_url || undefined,
+        author: row.author || undefined,
       };
     }
   } catch (err) {
