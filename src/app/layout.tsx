@@ -6,7 +6,7 @@ import { SiteChrome } from "@/components/layout/SiteChrome";
 import { Toaster } from "sonner";
 
 const inter = Inter({
-  variable: "--font-sans",
+  variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
 });
