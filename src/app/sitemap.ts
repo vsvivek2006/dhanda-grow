@@ -5,58 +5,62 @@ import { SITE_URL } from '@/lib/constants';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
 
+  // Google Search Central: lastmod should accurately reflect the document's update state.
+  // Using dynamic build timestamp for core active application routes ensures Googlebot recrawls fresh releases.
+  const buildDate = new Date();
+
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: `${baseUrl}/`,
-      lastModified: new Date("2025-01-15T00:00:00.000Z"),
+      lastModified: buildDate,
       changeFrequency: 'weekly',
       priority: 1.0,
     },
     {
       url: `${baseUrl}/services`,
-      lastModified: new Date("2025-01-15T00:00:00.000Z"),
+      lastModified: buildDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,
-      lastModified: new Date("2025-01-15T00:00:00.000Z"),
+      lastModified: buildDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/faq`,
-      lastModified: new Date("2025-01-15T00:00:00.000Z"),
+      lastModified: buildDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date("2025-01-15T00:00:00.000Z"),
+      lastModified: buildDate,
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date("2025-01-15T00:00:00.000Z"),
+      lastModified: buildDate,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/privacy-policy`,
-      lastModified: new Date("2025-01-01T00:00:00.000Z"),
+      lastModified: new Date("2025-01-15T00:00:00.000Z"),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms-and-conditions`,
-      lastModified: new Date("2025-01-01T00:00:00.000Z"),
+      lastModified: new Date("2025-01-15T00:00:00.000Z"),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/refund-policy`,
-      lastModified: new Date("2025-01-01T00:00:00.000Z"),
+      lastModified: new Date("2025-01-15T00:00:00.000Z"),
       changeFrequency: 'yearly',
       priority: 0.3,
     },

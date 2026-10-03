@@ -82,6 +82,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
 
   const authorName = post.author || "Dhanda Grow Team";
+  const postUrl = `https://dhandhagrow.com/blog/${post.slug}`;
+  const coverImage = post.cover_image_url || "/images/dhanda-3d-hero.jpg";
 
   return (
     <article className="min-h-screen bg-gray-950 text-white">
@@ -96,7 +98,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         title={post.title}
         description={post.excerpt}
         datePublished={post.date}
-        url={`https://dhandhagrow.com/blog/${post.slug}`}
+        dateModified={post.date}
+        url={postUrl}
+        image={coverImage}
+        authorName={authorName}
       />
 
       {/* Article Hero Header (Growth-Service Parity) */}
@@ -212,6 +217,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             </Link>
           </div>
         )}
+
+        {/* E-E-A-T Author Card (Google Search Quality Rater Guidelines compliance) */}
+        <div className="mt-16 p-6 sm:p-8 rounded-2xl bg-gray-900/80 border border-purple-900/40 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+          <div className="w-14 h-14 rounded-full bg-purple-900/80 border border-purple-600/50 flex items-center justify-center text-yellow-400 shrink-0 shadow-lg shadow-purple-950/50">
+            <User className="w-7 h-7" />
+          </div>
+          <div className="space-y-2 text-center sm:text-left">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+              <span className="font-bold text-white text-base sm:text-lg">{authorName}</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-800/60 font-medium">
+                Local Business Growth Specialist
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-purple-200/80 leading-relaxed max-w-xl">
+              Published by the local marketing strategy team at Dhanda Grow (by Ezo Technologies). We build AI marketing automation tools to help Indian shop owners, clinics, and service businesses dominate Google Maps and social media.
+            </p>
+          </div>
+        </div>
 
         {/* Bottom CTA Banner (Growth-Service Parity) */}
         <div className="mt-16 p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-gray-900 via-purple-950/60 to-indigo-950 border border-purple-800/40 text-center space-y-6 shadow-2xl shadow-black/50">

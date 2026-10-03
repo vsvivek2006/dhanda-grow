@@ -60,6 +60,7 @@ interface ArticleSchemaProps {
   url: string;
   image?: string;
   authorName?: string;
+  authorType?: "Person" | "Organization";
 }
 
 export function ArticleSchema({
@@ -70,7 +71,15 @@ export function ArticleSchema({
   url,
   image = "https://dhandhagrow.com/images/dhanda-3d-hero.jpg",
   authorName = "Ezo Technologies Editorial Team",
+  authorType,
 }: ArticleSchemaProps) {
+  const isOrg =
+    authorType === "Organization" ||
+    (!authorType &&
+      (authorName.toLowerCase().includes("team") ||
+        authorName.toLowerCase().includes("ezo") ||
+        authorName.toLowerCase().includes("grow")));
+
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -79,12 +88,13 @@ export function ArticleSchema({
     "image": image.startsWith("http") ? image : `https://dhandhagrow.com${image}`,
     "datePublished": datePublished,
     "dateModified": dateModified || datePublished,
+    "inLanguage": "en-IN",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": url.startsWith("http") ? url : `https://dhandhagrow.com${url}`,
     },
     "author": {
-      "@type": "Organization",
+      "@type": isOrg ? "Organization" : "Person",
       "name": authorName,
       "url": "https://dhandhagrow.com",
     },
