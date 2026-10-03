@@ -222,7 +222,9 @@ export function CoreGrowthEngines() {
                 src="/images/3d-maps-radar.jpg"
                 alt="3D Google Maps Local 3-Pack Telemetry"
                 fill
+                sizes="(max-width: 1024px) 100vw, 600px"
                 className="object-cover object-center"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/80 border border-white/15 backdrop-blur-md text-[11px] font-mono text-cyan-300 flex items-center gap-2">
@@ -366,7 +368,9 @@ export function CoreGrowthEngines() {
                 src="/images/3d-social-studio.jpg"
                 alt="3D AI Social Media Generator Studio"
                 fill
+                sizes="(max-width: 1024px) 100vw, 600px"
                 className="object-cover object-center"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
               <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/80 border border-white/15 backdrop-blur-md text-[11px] font-mono text-pink-300 flex items-center gap-2">

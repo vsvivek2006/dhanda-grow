@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 3600; // Cache and revalidate every hour for high-speed TTFB
+
 export default async function BlogIndexPage() {
   const posts = await getAllPosts();
 

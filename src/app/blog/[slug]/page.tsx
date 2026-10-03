@@ -8,6 +8,8 @@ import { BRAND_NAME } from "@/lib/constants";
 import { BreadcrumbSchema, ArticleSchema } from "@/components/seo/JsonLdSchemas";
 import { cleanHtml, normalizeContentToHtml } from "@/lib/ai/contentFormatter";
 
+export const revalidate = 3600; // Cache and revalidate every hour for high-speed TTFB
+
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   return posts.map((post) => ({

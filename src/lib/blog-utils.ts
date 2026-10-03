@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { cache } from "react";
 import { supabaseAdmin } from "@/lib/supabase/server";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
@@ -65,7 +66,7 @@ export function getLocalPosts(): BlogPost[] {
   return posts;
 }
 
-export async function getAllPosts(): Promise<BlogPost[]> {
+export const getAllPosts = cache(async (): Promise<BlogPost[]> => {
   const postsMap = new Map<string, BlogPost>();
 
   // 1. Seed with local markdown files
@@ -78,11 +79,11 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     console.warn("Notice loading local markdown posts:", err);
   }
 
-  // 2. Query Supabase blog_posts table (takes priority over local file defaults)
+  // 2. Query Supabase blog_posts table (exclude heavy 'content' column to minimize DB wire transfer)
   try {
     const { data: dbPosts, error } = await supabaseAdmin
       .from("blog_posts")
-      .select("id, title, slug, excerpt, content, tags, cover_image_url, created_at, updated_at")
+      .select("id, title, slug, excerpt, tags, cover_image_url, created_at, updated_at")
       .order("created_at", { ascending: false });
 
     if (!error && dbPosts) {
@@ -94,7 +95,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
             ? new Date(row.created_at).toISOString().split("T")[0]
             : new Date().toISOString().split("T")[0],
           excerpt: row.excerpt || row.title,
-          content: row.content,
+          content: "", // Content is deliberately deferred to getPostBySlug to keep listing payloads lightweight
           tags: Array.isArray(row.tags) ? row.tags : [],
           cover_image_url: row.cover_image_url || undefined,
         });
@@ -106,9 +107,9 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 
   // Sort descending by date
   return Array.from(postsMap.values()).sort((a, b) => (a.date < b.date ? 1 : -1));
-}
+});
 
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export const getPostBySlug = cache(async (slug: string): Promise<BlogPost | null> => {
   // Check Supabase first
   try {
     const { data: row, error } = await supabaseAdmin
@@ -125,7 +126,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
           ? new Date(row.created_at).toISOString().split("T")[0]
           : new Date().toISOString().split("T")[0],
         excerpt: row.excerpt || row.title,
-        content: row.content,
+        content: row.content || "",
         tags: Array.isArray(row.tags) ? row.tags : [],
         cover_image_url: row.cover_image_url || undefined,
       };
@@ -137,4 +138,4 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
   // Fallback to local markdown files
   const localPosts = getLocalPosts();
   return localPosts.find((p) => p.slug === slug) || null;
-}
+});

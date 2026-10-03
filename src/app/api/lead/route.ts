@@ -1,8 +1,35 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 
+// In-memory idempotency cache (TTL: 5 minutes) to handle rapid double-clicks and retries
+const idempotencyCache = new Map<string, { id: string; timestamp: number }>();
+
+function cleanExpiredIdempotencyKeys() {
+  const now = Date.now();
+  for (const [key, value] of idempotencyCache.entries()) {
+    if (now - value.timestamp > 5 * 60 * 1000) {
+      idempotencyCache.delete(key);
+    }
+  }
+}
+
 export async function POST(req: Request) {
   try {
+    cleanExpiredIdempotencyKeys();
+
+    const idempotencyKey =
+      req.headers.get("Idempotency-Key") ||
+      req.headers.get("X-Idempotency-Key");
+
+    // 1. Return cached response if identical idempotency key was submitted within 5 mins
+    if (idempotencyKey && idempotencyCache.has(idempotencyKey)) {
+      const cached = idempotencyCache.get(idempotencyKey)!;
+      return NextResponse.json(
+        { success: true, id: cached.id, duplicate: true },
+        { status: 200 }
+      );
+    }
+
     const body = await req.json();
     const { fullName, mobileNumber, email, state, businessType } = body;
 
@@ -27,7 +54,34 @@ export async function POST(req: Request) {
       );
     }
 
-    // Persist lead directly into Supabase
+    // 2. Natural deduplication window:
+    // If the same mobile number was already recorded in the last 60 seconds, return the existing lead
+    try {
+      const sixtySecondsAgo = new Date(Date.now() - 60 * 1000).toISOString();
+      const { data: existingLead } = await supabaseAdmin
+        .from("leads")
+        .select("id")
+        .eq("mobile_number", cleanPhone)
+        .gte("created_at", sixtySecondsAgo)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (existingLead?.id) {
+        if (idempotencyKey) {
+          idempotencyCache.set(idempotencyKey, { id: existingLead.id, timestamp: Date.now() });
+        }
+        return NextResponse.json(
+          { success: true, id: existingLead.id, duplicate: true },
+          { status: 200 }
+        );
+      }
+    } catch (checkErr) {
+      // Non-blocking fallback if check fails
+      console.warn("Notice checking duplicate lead window:", checkErr);
+    }
+
+    // 3. Persist lead directly into Supabase
     const { data, error } = await supabaseAdmin
       .from("leads")
       .insert([
@@ -39,7 +93,7 @@ export async function POST(req: Request) {
           business_type: cleanBusiness,
         },
       ])
-      .select();
+      .select("id");
 
     if (error) {
       console.error("Supabase lead insertion error:", error);
@@ -49,10 +103,15 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("Lead successfully stored in Supabase:", data?.[0]?.id);
+    const insertedId = data?.[0]?.id;
+    if (idempotencyKey && insertedId) {
+      idempotencyCache.set(idempotencyKey, { id: insertedId, timestamp: Date.now() });
+    }
+
+    console.log("Lead successfully stored in Supabase:", insertedId);
 
     return NextResponse.json(
-      { success: true, id: data?.[0]?.id },
+      { success: true, id: insertedId },
       { status: 200 }
     );
   } catch (error) {

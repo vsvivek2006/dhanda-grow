@@ -2,6 +2,11 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const isProtectedPage = pathname.startsWith("/admin");
+  const isProtectedApi = pathname.startsWith("/api/admin");
+  const isLoginPage = pathname === "/login";
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -10,6 +15,20 @@ export async function updateSession(request: NextRequest) {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
 
   if (!supabaseUrl || !supabaseAnonKey) {
+    return supabaseResponse;
+  }
+
+  // High performance optimization:
+  // Check if any Supabase auth session cookies exist in the request
+  const allCookies = request.cookies.getAll();
+  const hasAuthCookie = allCookies.some(
+    (c) => c.name.startsWith("sb-") && c.name.includes("-auth-token")
+  );
+
+  // If this is a public route and the visitor has no auth token cookies,
+  // bypass remote Supabase Auth network call completely.
+  // This saves 100ms-500ms TTFB latency on all public page requests.
+  if (!isProtectedPage && !isProtectedApi && !isLoginPage && !hasAuthCookie) {
     return supabaseResponse;
   }
 
@@ -37,11 +56,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const pathname = request.nextUrl.pathname;
-  const isProtectedPage = pathname.startsWith("/admin");
-  const isProtectedApi = pathname.startsWith("/api/admin");
-  const isLoginPage = pathname === "/login";
 
   if (isProtectedApi && !user) {
     return NextResponse.json(
